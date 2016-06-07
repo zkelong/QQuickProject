@@ -1,0 +1,8 @@
+module QKit.style
+singleton Color 1.0 Color.qml
+singleton Style 1.0 Style.qml
+TextStyle 1.0 TextStyle.qml
+Theme 1.0 Theme.qml
+TextInputStyle 1.0 TextInputStyle.qml
+DialogStyle 1.0 DialogStyle.qml
+ImagePickerStyle 1.0 ImagePickerStyle.qml

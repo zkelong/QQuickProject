@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/defalutImage.png</file>
+        <file>res/0.png</file>
+        <file>res/1.png</file>
+        <file>res/2.png</file>
+        <file>res/3.png</file>
+        <file>res/4.png</file>
+        <file>res/5.png</file>
+        <file>res/6.png</file>
+        <file>res/7.png</file>
+        <file>res/8.png</file>
+        <file>res/9.png</file>
+        <file>res/x.png</file>
+        <file>res/arrow_left1.png</file>
+        <file>res/arrow_left2.png</file>
+        <file>res/arrow_left3.png</file>
+        <file>res/arrow_left4.png</file>
+        <file>res/arrow_left5.png</file>
+        <file>res/arrow_right1.png</file>
+        <file>res/arrow_right2.png</file>
+        <file>res/defaultAvatar.jpg</file>
+        <file>res/a1.jpg</file>
+    </qresource>
+</RCC>

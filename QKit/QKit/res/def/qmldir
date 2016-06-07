@@ -1,0 +1,3 @@
+singleton Color 1.0 Color.qml
+singleton Constant 1.0 Constant.qml
+singleton FontDef 1.0 FontDef.qml

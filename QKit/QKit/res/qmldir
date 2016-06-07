@@ -1,0 +1,22 @@
+module QKit
+Dialog 1.0 Dialog.qml
+Drawable 1.0 Drawable.qml
+AnimatedModifier 1.0 AnimatedModifier.qml
+AnimationLoader 1.0 AnimationLoader.qml
+Shadow 1.0 Shadow.qml
+BaseButton 1.0 BaseButton.qml
+HLine 1.0 HLine.qml
+VLine 1.0 VLine.qml
+AlertView 1.0 AlertView.qml
+NavigationBar 1.0 NavigationBar.qml
+NavigationView 1.0 NavigationView.qml
+ImagePicker 1.0 ImagePicker.qml
+ImageButton 1.0 ImageButton.qml
+ImageCapture 1.0 ImageCapture.qml
+ImageCaptureDelegate 1.0 ImageCaptureDelegate.qml
+ImageTaker 1.0 ImageTaker.qml
+ImageLoader 1.0 ImageLoader.qml
+ImageEditor 1.0 ImageEditor.qml
+singleton Request 1.0 Request.qml
+singleton ShareSdkPlatform 1.0 ShareSdkPlatform.qml
+singleton ImageTakeHelper 1.0 ImageTakeHelper.qml
