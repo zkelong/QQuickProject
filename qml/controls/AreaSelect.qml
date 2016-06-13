@@ -1,8 +1,7 @@
 import QtQuick 2.0
-import "./color.js" as Color
-import "font.js" as FontUtl
-import "../config.js" as Config
-import "../api.js" as Api
+import "../toolsbox/color.js" as Color
+import "../toolsbox/font.js" as FontUtl
+import "../toolsbox/config.js" as Config
 
 /**
   *选择省市信息--众筹星球里用的那个

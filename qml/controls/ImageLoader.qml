@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QKit 1.0
-import "./color.js" as Color
+import "../toolsbox/color.js" as Color
 
 /**
 *图片加载器

@@ -1,6 +1,6 @@
 import QtQuick 2.4
-import "./color.js" as Color
-import "./font.js" as FontUtl
+import "../toolsbox/color.js" as Color
+import "../toolsbox/font.js" as FontUtl
 
 /**
   *有指示箭头的进度条，有数字显示

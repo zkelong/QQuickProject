@@ -15,8 +15,6 @@ Window {
     width: Utl.dp(300)
     height: Utl.dp(600)
 
-
-
     //property alias positionService: pos //位置服务
 
     property bool exit: false   //退出操作
@@ -71,8 +69,6 @@ Window {
             exit = false
         }
     }
-
-
 
     //监听android返回键
     onActiveFocusItemChanged: {

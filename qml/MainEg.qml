@@ -26,6 +26,7 @@ Item {
         tabView.tabs = items;
     }
 
+
     TabView {
         id: tabView
         width: parent.width

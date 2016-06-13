@@ -1,7 +1,5 @@
 import QtQuick 2.0
 import "../controls"
-import "./animation"
-import "./img"
 import "../toolsbox/config.js" as Config
 import "../toolsbox/font.js" as FontUtl
 
@@ -12,7 +10,7 @@ View {
 
     NavigationBar {
         id: navbar
-        title: "UIMAIN"
+        title: "WINMAIN"
         onButtonClicked: {
             root.navigationView.pop()
         }
@@ -27,6 +25,18 @@ View {
         delegate: _delegate
         clip: true
         spacing: Utl.dp(5)
+    }
+
+    ListModel {
+        id: _model
+        ListElement {
+            lid: 1
+            strName: "MessageDialog"
+        }
+        ListElement {
+            lid: 2
+            strName: "Dialog"
+        }
     }
 
     Component {
@@ -58,54 +68,23 @@ View {
     }
 
     Component {
-        id: tbtn
-        TButtonGroup{}
+        id: msd
+        TMessageDialog{}
     }
-
     Component {
-        id: ani
-        TAnimation{}
-    }
-
-    Component {
-        id: ti
-        TImage{}
-    }
-
-    ListModel {
-        id: _model
-        ListElement {
-            lid: 1
-            strName: "Image"
-        }
-//        ListElement {
-//            lid: 2
-////            strName: "HueSaturation"
-//        }
-        ListElement {
-            lid: 3
-            strName: "ButtonGroup"
-        }
-        ListElement {
-            lid: 4
-            strName: "Animation"
-        }
+        id: td
+        TDialog{}
     }
 
     function toNext(id) {
         switch(id) {
         case 1:
-            root.navigationView.push(ti)
+            root.navigationView.push(msd)
             break;
         case 2:
-//            root.navigationView.push(thue)
-            break;
-        case 3:
-            root.navigationView.push(tbtn)
-            break;
-        case 4:
-            root.navigationView.push(ani)
+            root.navigationView.push(td)
             break;
         }
     }
 }
+

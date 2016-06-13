@@ -3,7 +3,6 @@ import QtQuick.Controls 1.3
 import QtQuick.Controls.Styles 1.3
 import QKit 1.0
 import "../toolsbox/color.js" as Color
-import "../toolsbox/config.js" as Config
 
 /**
 * 图片-加载器，显示加载中的busy图标
@@ -11,12 +10,15 @@ import "../toolsbox/config.js" as Config
 
 Rectangle {
     id:root
-    color:Color.Clear
+    color: Color.Clear
 
-    property string defaultSource: Config.DefaultImage  //默认图片
+    property string erroSource: "qrc:/res/loadFailure.png"  //默认图片
     property string source: "" //要加载的图片地址
     property alias cache: img.cache    //缓存--默认为true
     property alias image: img
+
+    property bool picReady: false   //图片加载完成
+
 
     onSourceChanged: {
         if(root.source.indexOf("http") == 0){
@@ -47,18 +49,9 @@ Rectangle {
         onStatusChanged: {
             if(img.status === Image.Ready){ //还有两状态：Image.Loading；Image.Error
                 busy.running = false
-            } else if(img.status === Image.Loading) {
-                defaultImg.visible = false
-            } else {
-                defaultImg.visible = true
+                picReady = true
             }
         }
-    }
-
-    Image {
-        id: defaultImg
-        visible: false
-        anchors.centerIn: parent
     }
 
     BusyIndicator {

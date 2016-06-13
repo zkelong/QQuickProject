@@ -1,7 +1,7 @@
 import QtQuick 2.4
 import "."
-import "./font.js" as FontUtl
-import "./color.js" as Color
+import "../toolsbox/font.js" as FontUtl
+import "../toolsbox/color.js" as Color
 
 /**
 *进度条
@@ -10,10 +10,10 @@ import "./color.js" as Color
 Item {
     id:root
     height: bg_progress.y + bg_progress.height
-    property double maximumValue: 100 //最大值, 将会取value/maximumValue的结果做为百分比
+    property double maximumValue: 100  //最大值, 将会取value/maximumValue的结果做为百分比
     property double minimumValue: 0 //最小值,如果value小于此值，那么使用此值做为计算标准
     property double value: 0 //当前值
-    property double percent//: Math.max(value,minimumValue)/maximumValue //当前值和最大值的比值
+    property double percent //: Math.max(value,minimumValue)/maximumValue //当前值和最大值的比值
     property alias color: progress.color
     property int barHeight: Utl.dp(2)
     property bool useAnimation: false
@@ -88,6 +88,5 @@ Item {
         x: bg_progress.x + progress.height - width / 2
         visible: false
     }
-
 }
 

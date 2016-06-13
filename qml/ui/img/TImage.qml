@@ -1,9 +1,7 @@
 import QtQuick 2.0
-import "../controls"
-import "./animation"
-import "./img"
-import "../toolsbox/config.js" as Config
-import "../toolsbox/font.js" as FontUtl
+import "../../controls"
+import "../../toolsbox/config.js" as Config
+import "../../toolsbox/font.js" as FontUtl
 
 View {
     id: root
@@ -12,7 +10,7 @@ View {
 
     NavigationBar {
         id: navbar
-        title: "UIMAIN"
+        title: "IMAGE"
         onButtonClicked: {
             root.navigationView.pop()
         }
@@ -58,53 +56,44 @@ View {
     }
 
     Component {
-        id: tbtn
-        TButtonGroup{}
+        id: tst
+        TStatusImage{}
     }
-
     Component {
-        id: ani
-        TAnimation{}
+        id: tri
+        TRoundImage{}
     }
-
     Component {
-        id: ti
-        TImage{}
+        id: thue
+        THueSaturation{}
     }
 
     ListModel {
         id: _model
         ListElement {
             lid: 1
-            strName: "Image"
+            strName: "StatusImage"
         }
-//        ListElement {
-//            lid: 2
-////            strName: "HueSaturation"
-//        }
+        ListElement {
+            lid: 2
+            strName: "RoundImage"
+        }
         ListElement {
             lid: 3
-            strName: "ButtonGroup"
-        }
-        ListElement {
-            lid: 4
-            strName: "Animation"
+            strName: "HueSaturation"
         }
     }
 
     function toNext(id) {
         switch(id) {
         case 1:
-            root.navigationView.push(ti)
+            root.navigationView.push(tst)
             break;
         case 2:
-//            root.navigationView.push(thue)
+            root.navigationView.push(tri)
             break;
         case 3:
-            root.navigationView.push(tbtn)
-            break;
-        case 4:
-            root.navigationView.push(ani)
+            root.navigationView.push(thue)
             break;
         }
     }

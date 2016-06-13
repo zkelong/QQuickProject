@@ -16,6 +16,8 @@ var NavigationLightGray = "#fdfdfd"
 var LineGray = "#e0e0e0"
 //view Color
 var ViewColor = "#e1e1e1"
+var ButtonColor = "#ace012"
+
 
 
 //常用颜色

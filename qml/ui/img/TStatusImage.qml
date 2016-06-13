@@ -1,7 +1,7 @@
 import QtQuick 2.0
-import "../controls"
-import "../toolsbox/config.js" as Config
-import "../toolsbox/font.js" as FontUtl
+import "../../controls"
+import "../../toolsbox/config.js" as Config
+import "../../toolsbox/font.js" as FontUtl
 
 View {
     id: root
@@ -16,6 +16,7 @@ View {
         }
     }
 
+    //左边一块
     Item {
         id: item_left
         width: parent.width/2
@@ -38,6 +39,7 @@ View {
             selected: false
         }
     }
+    //右边一块
     Item {
         id: item_right
         width: parent.width/2
@@ -63,7 +65,7 @@ View {
             selected: false
         }
     }
-
+    //底部按钮
     Item {
         width: parent.width
         anchors.top: item_left.bottom

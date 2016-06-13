@@ -21,5 +21,32 @@
         <file>res/arrow_right2.png</file>
         <file>res/defaultAvatar.jpg</file>
         <file>res/a1.jpg</file>
+        <file>res/emoji/emoji0.gif</file>
+        <file>res/emoji/emoji1.gif</file>
+        <file>res/emoji/emoji2.gif</file>
+        <file>res/emoji/emoji3.gif</file>
+        <file>res/emoji/emoji4.gif</file>
+        <file>res/emoji/emoji5.gif</file>
+        <file>res/emoji/emoji6.gif</file>
+        <file>res/emoji/emoji7.gif</file>
+        <file>res/emoji/emoji8.gif</file>
+        <file>res/emoji/emoji9.gif</file>
+        <file>res/emoji/emoji10.gif</file>
+        <file>res/emoji/emoji11.gif</file>
+        <file>res/emoji/emoji12.gif</file>
+        <file>res/emoji/emoji13.gif</file>
+        <file>res/emoji/emoji14.gif</file>
+        <file>res/emoji/emoji15.gif</file>
+        <file>res/emoji/emoji16.gif</file>
+        <file>res/emoji/emoji17.gif</file>
+        <file>res/emoji/emoji18.gif</file>
+        <file>res/emoji/emoji19.gif</file>
+        <file>res/emoji/emoji20.gif</file>
+        <file>res/emoji/emoji21.gif</file>
+        <file>res/emoji/emoji22.gif</file>
+        <file>res/emoji/emoji23.gif</file>
+        <file>res/microphonePic.png</file>
+        <file>res/a2.jpg</file>
+        <file>res/a4.jpg</file>
     </qresource>
 </RCC>

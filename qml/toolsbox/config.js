@@ -5,10 +5,8 @@
 //默认图片
 var DefaultImage = "qrc:/res/defalutImage.png"
 //头像默认图片
-var DefaultHeadImage = "qrc:/res/defaultAvatar.jpg"
+var DefaultAvatar = "qrc:/res/defaultAvatar.png"
 
-var DefaultImage = "qrc:/res/main_image_big.png"
-var DefaultAvatar = "qrc:/res/default_avatar.png"
 //限制电话格式正则表达式
 var CheckPhoneNum = /^((\+?86)|(\(\+86\)))?(13[0123456789][0-9]{8}|14[57][0-9]{8}|15[012356789][0-9]{8}|17[0678][0-9]{8}|18[0123456789][0-9]{8})$/;
 //var CheckPhoneNum = /^1[3|5|7|8][0-9]\d{4,8}$/

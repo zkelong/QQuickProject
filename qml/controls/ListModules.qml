@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-import "./color.js" as Color
-import "./font.js" as FontUtl
+import "../toolsbox/color.js" as Color
+import "../toolsbox/font.js" as FontUtl
 /**
  *显示版块--一起搞首页--一元、主播、签到那个样式
  *一个图片，图片下加文字--文字可通过showText来设置是否显示

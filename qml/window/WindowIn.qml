@@ -11,13 +11,13 @@ View {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-//            root.navigationView.push(ui)
+            root.navigationView.push(wm)
         }
     }
 
-//    Component {
-//        id: ui
-//        UiMain {}
-//    }
+    Component {
+        id: wm
+        WindowMain{}
+    }
 }
 

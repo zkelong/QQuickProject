@@ -10,6 +10,7 @@ Rectangle {
     color: "#000000"
     visible: false
     scale: 0.6
+    enabled: scale == 1
 
     property ListModel picsData: null   //待展示的图片 {picUrl: ""}
     property alias currentIndex: _listView.currentIndex //显示第几张
@@ -17,7 +18,8 @@ Rectangle {
     property bool _operateShow: true    //true-显示操作; false-隐藏操作
 
     onPicsDataChanged: {
-        if(picsData.count > 0) {
+        if(picsData && picsData.count > 0) {
+            loadedPics.clear()
             for(var i = 0; i < picsData.count; i++) {   //listvie位置留位置
                 loadedPics.append({picUrl: "", loaded: false, picShow: false})
             }
@@ -56,21 +58,24 @@ Rectangle {
             width: root.width
             height: root.height
             color: "#000000"
-            ImageBusyLoader {
-                id: img
-                width: root.width - Utl.dp(5)
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                image.width: root.width - Utl.dp(5)
-                image.fillMode: Image.PreserveAspectFit
-                image.sourceSize.width: 1280    //不要太大
-                image.sourceSize.height: 1280
-                image.visible: picShow   //节约内存
-                source: picUrl
+            onFocusChanged: {
+                if(!focus)
+                    img.resetNormalSize()
             }
-            MouseArea {
-                anchors.fill: parent
-                onClicked: hide()
+
+            FlickableImage{
+                id: img
+                minWidth: root.width - Utl.dp(10)
+                minHeight: root.height - Utl.dp(10)
+                width: root.width - Utl.dp(10)
+                height: root.height - Utl.dp(10)
+                anchors.centerIn: parent
+                image.visible: picShow   //节约内存
+                imageUrl: picUrl
+                onClicked: {
+                    resetNormalSize()
+                    hide()
+                }
             }
         }
     }
@@ -88,31 +93,19 @@ Rectangle {
                 return 0.6
         }
         onStarted: {
-            root.enabled = false
             if(_operateShow)
                 root.visible = true
         }
         onStopped: {
-            root.enabled = true
             if(!_operateShow)
                 root.visible = false
         }
     }
 
-    PropertyAnimation { //跳到
-        id: animx
-        target: _listView
-        properties: "contentX"
-        from: _listView.contentX
-        duration: 1
-        onStopped: {
-            _operateShow = true
-            anim.start()
-        }
-    }
-
     //显示
     function show(index) {
+        if(anim.running)
+            return
         _listView.currentIndex = index  //显示第index张
         if(loadedPics.get(currentIndex).loaded === false) {
             loadedPics.get(currentIndex).picUrl = picsData.get(currentIndex).picUrl
@@ -120,11 +113,12 @@ Rectangle {
         }
         showNearbyPic(index)
 
-        animx.to = root.width * _listView.currentIndex
-        animx.start()
+        _operateShow = true
+        _listView.contentX = root.width * _listView.currentIndex
+        anim.start()
     }
 
-    function showNearbyPic(index) { //为节约内存只显示靠近3张图片
+    function showNearbyPic(index) { //为节约内存只显示靠近3张图片--3张不够
         //当前三张显示出来
         loadedPics.get(index).picShow = true
         if(index > 0) {
@@ -133,10 +127,18 @@ Rectangle {
         if(index < loadedPics.count - 2) {
             loadedPics.get(index+1).picShow = true
         }
+        if(index > 3) { //--切换快了，显示不出来--可见的整多点（7）
+            loadedPics.get(index-4).picShow = false
+        }
+        if(index < loadedPics.count - 5) {
+            loadedPics.get(index+4).picShow = false
+        }
     }
 
     //隐藏
     function hide() {
+        if(anim.running)
+            return
         _operateShow = false
         anim.start()
     }

@@ -9,7 +9,6 @@
         <file>qml/app/AppIn.qml</file>
         <file>qml/app/AppMain.qml</file>
         <file>qml/controls/AACatalog.qml</file>
-        <file>qml/controls/AlertView.qml</file>
         <file>qml/controls/AreaSelect.qml</file>
         <file>qml/controls/ArrowProgressBar.qml</file>
         <file>qml/controls/BusyView.qml</file>
@@ -70,8 +69,18 @@
         <file>qml/ui/UiIn.qml</file>
         <file>qml/ui/UiMain.qml</file>
         <file>qml/window/WindowIn.qml</file>
-        <file>qml/ui/TStatusImage.qml</file>
-        <file>qml/ui/THueSaturation.qml</file>
         <file>qml/controls/AdjustableScrollBar.qml</file>
+        <file>qml/window/WindowMain.qml</file>
+        <file>qml/window/TMessageDialog.qml</file>
+        <file>qml/window/TDialog.qml</file>
+        <file>qml/ui/TButtonGroup.qml</file>
+        <file>qml/controls/FlickableImage.qml</file>
+        <file>qml/ui/animation/TAnimation.qml</file>
+        <file>qml/ui/animation/TAnimatedImage.qml</file>
+        <file>qml/ui/img/TImage.qml</file>
+        <file>qml/ui/img/TRoundImage.qml</file>
+        <file>qml/ui/img/TStatusImage.qml</file>
+        <file>qml/ui/img/THueSaturation.qml</file>
+        <file>qml/controls/RoundImage.qml</file>
     </qresource>
 </RCC>

@@ -4,225 +4,123 @@ import QtQuick.Controls.Styles 1.2
 import QtQuick.Dialogs 1.1
 import QKit 1.0
 import "../controls"
-import "../controls/color.js" as Color
-import "../controls/font.js" as FontUtl
+import "../toolsbox/color.js" as Color
+import "../toolsbox/font.js" as FontUtl
 
-/**
-*图片截图的***
-*/
-
-Rectangle {
+//截图
+Rectangle{
     id:root
-    z:10    //保证图层在最上边
     anchors.fill: parent
     color: Color.Black;
-
-    property var source;    //资源
-    property alias image: img
-    property bool screenshot: true
+    property var source;
+    property alias image:img
     property var path
-    property int i: 0
-    signal isSaved(var picPath)
-
-
+    property int i:0
+    signal isSave()
+    property real imgWidth;
+    property real imgHeight;
+    z:10
     onSourceChanged: {
         img.source=source
     }
 
-    Image {
-        id: img;
-        anchors.fill: parent;
-        fillMode: Image.PreserveAspectFit;
-        visible: false;
-        asynchronous: true; //一步加载图片
-        onStatusChanged: {
-            if(status == Image.Ready){
-                console.log("image loaded");
-                console.log("image source: "+source);
-                if(screenshot){
-                    mask.recalc();
+    Flickable {
+        id: flick
+        anchors.fill: parent
+        contentWidth:img.width+(root.width-selection.width)
+        contentHeight:img.height+(root.height-selection.height)
+        contentX:Math.max((contentWidth-root.width)/2,0)
+        contentY:Math.max((contentHeight-root.height)/2,0)
+        PinchArea {
+            id:pinch
+            width: Math.max(flick.contentWidth, flick.width)
+            height: Math.max(flick.contentHeight, flick.height)
+
+            property real initialWidth
+            property real initialHeight
+            pinch.maximumScale: 5;
+            pinch.minimumScale: 0.1;
+            onPinchStarted: {
+                initialWidth = img.width
+                initialHeight = img.height
+                pinch.accepted = true;
+            }
+
+            onPinchUpdated: {
+                console.log("scale = " + pinch.scale)
+                if(pinch.scale>1) {
+                    if((img.width+Utl.dp(10)*pinch.scale)/flick.width >= 3)
+                        return
+                    img.width+= Utl.dp(10)*pinch.scale
+                    img.height+= Utl.dp(10)*pinch.scale
                 }else{
-                    if(sourceSize.width< width && sourceSize.height < height){
-                        fillMode=Image.Pad
-                    }
-                    img.visible=true
+                    if((img.width-Utl.dp(10)/pinch.scale)<flick.width)
+                        return
+                    img.width-= Utl.dp(10)/pinch.scale
+                    img.height-= Utl.dp(10)/pinch.scale
                 }
             }
-        }
-    }
 
-    FileDialog {
-        id: fileDialog;
-        title: "Please choose an Image File";
-        nameFilters: ["Image Files (*.jpg *.png *.gif)"];
-        onAccepted: {
-            img.source = fileDialog.fileUrl;
-        }
-    }
-
-
-    Canvas {
-        id: forSaveCanvas;
-        width: 300;
-        height: 300;
-        contextType: "2d";
-        visible: false;
-        z: 2;
-        anchors.top: parent.top;
-        anchors.right: parent.right;
-        anchors.margins: 4;
-
-        property var imageData: null;
-        onPaint: {
-            var ctx = getContext("2d");
-            ctx.fillStyle="#000000";
-            ctx.fillRect(0, 0, width,height);
-            if(imageData != null){
-                context.drawImage(imageData,0,0,width+1,height+1);
+            onPinchFinished: {
+                // Move its content within bounds.
+                flick.returnToBounds()
             }
-        }
 
-        function setImageData(data){
-            imageData = data;
-            requestPaint();
-        }
-    }
+            Image {
+                id: img;
+                width: root.width
+                height: img.sourceSize.height*(root.width/image.sourceSize.width)
+                anchors.centerIn: parent
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        flick.returnToBounds()
+                        console.log(flick.contentWidth)
+                        console.log(flick.contentHeight)
+                    }
 
-    Canvas {
-        id: mask;
-        anchors.fill: parent;
-        z: 1;
-        property real w: width;
-        property real h: height;
-        property real dx: 0;
-        property real dy: 0;
-        property real dw: 0;
-        property real dh: 0;
-        //        property real frameX:aaaa.x //66;
-        //        property real frameY:aaaa.y //66;
-
-        function calc(){
-            var sw = img.sourceSize.width;
-            var sh = img.sourceSize.height;
-            if(sw > 0 && sh > 0){
-                if(sw <= w && sh <=h){
-                    dw = sw;
-                    dh = sh;
-                }else{
-                    var sRatio = sw / sh;
-                    dw = sRatio * h;
-                    if(dw > w){
-                        dh = w / sRatio;
-                        dw = w;
-                    }else{
-                        dh = h;
+                    onDoubleClicked: {
+                        if(img.width/flick.width >= 3) {
+                            img.width=root.width
+                            img.height=img.sourceSize.height*(root.width/image.sourceSize.width)
+                        } else {
+                            img.width*=1.5
+                            img.height*=1.5
+                        }
+                        center()
                     }
                 }
-                dx = (w - dw)/2;
-                dy = (h - dh)/2;
+
             }
-        }
-
-        function recalc(){
-            console.log("recalc")
-            calc();
-            requestPaint();
-        }
-
-        function getImageData(){
-            return context.getImageData(selection.x,selection.y,
-                                        selection.width,selection.height);
-        }
-
-        onPaint: {
-            var ctx = getContext("2d");
-            if(dw < 1 || dh < 1) {
-                return;
-            }
-            ctx.clearRect(0, 0, width, height);
-            ctx.drawImage(img, dx, dy, dw, dh);
-            selection.visible=true
-            var xStart =selection.x
-            var yStart =selection.y
-            ctx.save();
-            ctx.fillStyle = "#a0000000";
-            ctx.fillRect(0, 0, w, yStart);
-            var yOffset = yStart + selection.height;
-            ctx.fillRect(0, yOffset, w, h - yOffset);
-            ctx.fillRect(0, yStart, xStart, selection.height);
-            var xOffset = xStart + selection.width;
-            ctx.fillRect(xOffset,yStart, w - xOffset,selection.height);
-            ctx.beginPath();
-            ctx.fill();
-            ctx.stroke();
-            ctx.closePath ();
-            ctx.restore();
-            forSaveCanvas.setImageData(mask.getImageData());
         }
     }
+
+    function center(){
+        flick.contentX=(flick.contentWidth-root.width)/2
+        flick.contentY=(flick.contentHeight-root.height)/2
+    }
+
     Rectangle{
         id:selection
         width: parent.width
         height: width
         color:"#00000000"
-        visible:false
+        visible:true
         border.color:Color.White
         z:10
         anchors.centerIn: parent
     }
-    MultiPointTouchArea {
-        anchors.fill: parent;
-        minimumTouchPoints: 1;
-        maximumTouchPoints: 2;
-        property var px;
-        property var py;
-        property var distance1
-        property var distance2
-        touchPoints:[
-            TouchPoint{
-                id: point1;
-            },
-            TouchPoint{
-                id: point2;
-            }
-        ]
-        onUpdated: {
-            if(point2.pressed){
-                distance2=Math.abs(point1.x-point2.x)*Math.abs(point1.y-point2.y)
-                if((distance2-distance1)>200){
-                    mask.dx=mask.dx-25
-                    mask.dy=mask.dy-25
-                    mask.dw=mask.dw+50
-                    mask.dh=mask.dh+50
-                }else if(mask.dw-50>=selection.width && mask.dh-50>=selection.height){
-                    mask.dx=mask.dx+25
-                    mask.dy=mask.dy+25
-                    mask.dw=mask.dw-50
-                    mask.dh=mask.dh-50
-                }
-            }else{
-                if(mask.dx+(point1.x-px)<selection.x && (mask.dx+(point1.x-px)+mask.dw)>(selection.x+selection.width)){
-                    mask.dx=mask.dx+(point1.x-px);
-                }
-                if(mask.dy+(point1.y-py)<selection.y && (mask.dy+(point1.y-py)+mask.dh)>(selection.y+selection.height)){
-                    mask.dy=mask.dy+(point1.y-py);
-                }
-                px=point1.x
-                py=point1.y
-            }
-            mask.requestPaint();
-        }
-        onReleased: {
-            if(screenshot)
-                actionPanel.visible = true;
-        }
-        onPressed: {
-            px=point1.x
-            py=point1.y
-            distance1=Math.abs(point1.x-point2.x)*Math.abs(point1.y-point2.y)
-            if(screenshot)
-                actionPanel.visible = false;
-        }
+    Rectangle{
+        width: parent.width
+        anchors.top:parent.top
+        anchors.bottom: selection.top
+        color:Color.TransBlack
+    }
+    Rectangle{
+        width: parent.width
+        anchors.top:selection.bottom
+        anchors.bottom: actionPanel.top
+        color:Color.TransBlack
     }
 
     Rectangle {
@@ -239,28 +137,33 @@ Rectangle {
             anchors.verticalCenter: parent.verticalCenter
             anchors.right: parent.right
             anchors.rightMargin:Utl.dp(15)
-            scaleOnPressed:false
             font.pointSize:FontUtl.FontSizeMidE
             container.anchors.centerIn:saveBtn
-            label.text: screenshot?qsTr("确定"):qsTr("发送")
+            label.text:qsTr("确定")
             onClicked: {
-                if(screenshot){
-                    path = K.runTimeCachePath()+"/selected"+(i++)+".png"
-                    forSaveCanvas.save(path)
+                path = K.runTimeCachePath() + "/selected" + (i++) + ".png"
+
+                var scale = Math.min(img.width/img.sourceSize.width, img.height/img.sourceSize.height);
+                var offsetX = 0;
+                var offsetY = 0;
+                if(selection.height > img.height) {
+                    offsetY = (selection.height-img.height)/2
+                }else if(selection.width > img.width){
+                    offsetX = (selection.width-img.width)/2
                 }
-                isSaved(path)
+                var x = (flick.contentX - offsetX)/scale;
+                var y = (flick.contentY - offsetY)/scale;
+                var w = selection.width/scale;
+                var h = selection.height/scale;
+
+                console.log("scale=" + scale + " x=" + x + " y=" + y + " w=" + w + " h=" + h)
+
+                FileTools.clipImageAndSave(img,x,y,w,h, path);
+                isSave()
             }
         }
-        //Button {
-        //    width: Utl.dp(40)
-        //    height: Utl.dp(40)
-        //    anchors.horizontalCenter: parent.horizontalCenter
-        //    anchors.verticalCenter: parent.verticalCenter
-        //    scaleOnPressed:false
-        //    font.pointSize: FontUtl.FontSizeMidE
-        //    label.text: qsTr("打开")
-        //    onClicked: fileDialog.open();
-        //}
+
+
         Button {
             id:cancelBtn
             width: Utl.dp(40)
@@ -268,7 +171,6 @@ Rectangle {
             anchors.left: parent.left
             anchors.leftMargin:Utl.dp(15)
             anchors.verticalCenter: parent.verticalCenter
-            scaleOnPressed:false
             font.pointSize: FontUtl.FontSizeMidE
             container.anchors.centerIn:cancelBtn
             label.text: qsTr("取消")
