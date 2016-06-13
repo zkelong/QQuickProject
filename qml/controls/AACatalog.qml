@@ -11,7 +11,8 @@ Item {
 6.ArrowProgressBar··············
 7.BusyView······················
 8.Button························
-9.HueSaturation·················
+9.RoundImage····················圆形图片
+10.PullFlickable················可加载
 */
 /*************Qt standard library***************/
 /**

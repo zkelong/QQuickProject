@@ -39,6 +39,8 @@ OTHER_FILES += *.qml \
     qml/js/* \
     qml/toolsbox/* \
     qml/ui/*    \
+    qml/ui/animation/*    \
+    qml/ui/img/*    \
     qml/pathviewEx/* \
     qml/window/* \
 

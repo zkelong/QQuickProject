@@ -18,11 +18,12 @@ Rectangle{
     antialiasing: true
     clip: true
 
+    property alias source: _img.source  //图片
+    property bool selected: false   //是否选中
+
     property real borderScape: 0   //图片与线框的间距
-    property alias colorMask: _colorMask
-    property alias source: _img.source
-    property alias defaultSource: _img.defaultSource
-    property bool selected: false
+    property alias colorMask: _colorMask    //选中效果
+    property alias defaultSource: _img.defaultSource    //默认图片
 
     Rectangle{
         id: _mask

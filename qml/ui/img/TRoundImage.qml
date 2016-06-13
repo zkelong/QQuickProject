@@ -32,6 +32,7 @@ View {
             radius: Utl.dp(10)
             border.color: "red"
             border.width: Utl.dp(3)
+            borderScape: Utl.dp(3)
             anchors.horizontalCenter: parent.horizontalCenter
             source: "qrc:/res/a4.jpg"
             MouseArea {

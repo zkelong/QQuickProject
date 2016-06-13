@@ -82,5 +82,8 @@
         <file>qml/ui/img/TStatusImage.qml</file>
         <file>qml/ui/img/THueSaturation.qml</file>
         <file>qml/controls/RoundImage.qml</file>
+        <file>qml/controls/WaterfallView.qml</file>
+        <file>qml/ui/TWaterfallView.qml</file>
+        <file>qml/ui/TPullFlickable.qml</file>
     </qresource>
 </RCC>

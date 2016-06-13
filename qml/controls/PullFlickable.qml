@@ -1,6 +1,6 @@
 import QtQuick 2.4
-import "./color.js" as ColorUtl
-import "./font.js" as FontUtl
+import "../toolsbox/color.js" as ColorUtl
+import "../toolsbox/font.js" as FontUtl
 
 /**
 * 可刷新的Flickable
