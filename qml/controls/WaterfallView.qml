@@ -2,121 +2,123 @@ import QtQuick 2.0
 import QtQuick.Controls 1.3
 
 import "."
+import "../toolsbox/font.js" as FontUtl
 
-Item {
+PullFlickable {
     id: root
+    contentHeight: _row.height
 
-    property var dataList: []   //数据
+    property int footHeight: Utl.dp(30)
+
+    property bool clickLoadMore: false  //点击加载更多--默认是拉到底直接加载更多
+    property bool isReload: false   //是否是重新加载
+
+    property bool hasMore: false    //还有更多
+    property var data: [] //数据
     property var delegate   //样式
+    signal loadmore //加载更多
+
+    onDataChanged: {
+        if(data.length == 0) {
+            hasMore = false
+            return
+        }
+        if(isReload) {
+            lvm1.clear()
+            lvm2.clear()
+        }
+        for(var i = 0; i < data.length; i++) {
+            if(lv1.height < lv2.height) {
+                lvm1.append(data[i])
+            } else if(lv1.height > lv2.height) {
+                lvm2.append(data[i])
+            } else {
+                if(lvm1.count > lvm2.count) {
+                    lvm2.append(data[i])
+                } else {
+                    lvm1.append(data[i])
+                }
+            }
+        }
+    }
 
 
+    onReload: {
+        isReload = true
+        console.log("reload......")
+    }
 
+    onContentYChanged: {
+        console.log("water....ContenY")
+        if(root.hasMore && root.contentHeight > root.height){
+            if(root.contentY - root.originY + root.height >= (root.contentHeight - _itemMore.height/2)){ //加载更多
+                loading = true
+                isReload = false
+                loadmore()
+            }
+        }
+    }
 
-//    Component.onCompleted: {
-//        reLoadData()
-//    }
+    Row {
+        id: _row
+        anchors.left: parent.left; anchors.right: parent.right
+        anchors.top: parent.top; anchors.topMargin: 10
+        width: root.width - 20
+        height: childrenRect.height
+        anchors.margins: Utl.dp(5)
+        spacing: Utl.dp(5)
 
-//    function reLoadData() {
-//        lvm1.clear()
-//        lvm2.clear()
-//        var pic = ["http://img2.3lian.com/2014/f2/144/d/59.jpg",
-//                "http://pic3.nipic.com/20090529/2711368_174536043_2.jpg",
-//                "http://p9.qhimg.com/t013d4a160e61ec8a80.jpg",
-//                "http://pic31.nipic.com/20130702/6858319_221908434119_2.jpg",
-//                "http://cdn.duitang.com/uploads/item/201409/18/20140918053430_3jBHJ.thumb.700_0.jpeg",
-//                "http://www.myjy.com/upload/experience/20120915/20120915111642174.jpg",
-//                "http://img2.duitang.com/uploads/item/201302/19/20130219115924_ZLNnS.thumb.600_0.jpeg",
-//                "http://img4.duitang.com/uploads/item/201204/06/20120406170408_JdUyx.thumb.600_0.jpeg"]
-//        for(var i = 0; i < pic.length; i++) {
-//            var item = {}
-//            item.picUrl = pic[i]
-//            if(i%2 == 0) {
-//                lvm1.append(item)
-//            } else if(i%2 == 1){
-//                lvm2.append(item)
-//            }
-//        }
-//        pullflick.stopLoading(true)
-//    }
+        ListView {
+            id: lv1
+            width: (root.width - Utl.dp(15))/2
+            interactive: false
+            height: childrenRect.height
+            model: lvm1
+            delegate: root.delegate
+            spacing: Utl.dp(5)
+        }
+        ListView {
+            id: lv2
+            width: (root.width - Utl.dp(15))/2
+            height: childrenRect.height
+            interactive: false
+            model: lvm2
+            delegate: root.delegate
+            spacing: Utl.dp(5)
+        }
+    }
 
-//    function loadMoreData() {
-//        var pic = ["http://www.52tq.net/d/file/a/remenhuati/remenhuati/2015-11-24/ba76e390bc598de9ea708ae966bc1465.jpg",
-//                "http://img.ifeng.com/res/201001/0125_909092.jpg",
-//                "http://s2.img.766.com/155/120331/0921/239192.jpg",
-//                "http://k.zol-img.com.cn/gamebbs/46/a45085_s.jpg",
-//                "http://images2.china.com/game/zh_cn/onlinegame/jiong/11083938/20120331/2012033109545784886400.jpg",
-//                "http://imgsrc.baidu.com/forum/pic/item/8694a4c27d1ed21b6ac5745aad6eddc451da3f04.jpg",
-//                "http://imgk.zol.com.cn/gamebbs/46/a45081.jpg",
-//                "http://images2.china.com/game/zh_cn/onlinegame/jiong/11083938/20120331/2012033109545740120800.jpg",]
-//        var tag = 0;
-//        console.log("height: ", lv1.height, lv2.heigh, " contentHeight: ", lv1.contentHeight, lv2.contentHeight)
-//        if(lv1.height > lv2.heigh)
-//            tag = 1
-//        for(var i = 0; i < pic.length; i++) {
-//            var item = {}
-//            item.picUrl = pic[i]
-//            if(i%2 == tag) {
-//                lvm1.append(item)
-//            } else if(i%2 == 1){
-//                lvm2.append(item)
-//            }
-//        }
-//    }
+    //加载更多
+    Item {
+        id: _itemMore
+        visible: hasMore && lvm1.count > 0
+        width: parent.width
+        height: footHeight
+        anchors.top: _row.bottom
+        Text {
+            id:_label
+            anchors.centerIn: parent
+            font.pointSize: FontUtl.FontSizeSmallA
 
-//    PullFlickable {
-//        id: pullflick
-//        width: parent.width
-//        anchors.top: titleBar.bottom
-//        anchors.bottom: parent.bottom
-//        contentHeight: row.height
-//        clip: true
-//        onReload: reLoadData()
-//        onLoadMore: loadMoreData()
+            text: {
+                if(root.loading){
+                    return qsTr("正在加载更多...")
+                } else if (root.hasMore){
+                    return clickLoadMore ? qsTr("点击加载更多") : qsTr("加载更多")
+                }
+                return qsTr("全部加载完毕")
+            }
+        }
+        MouseArea {
+            visible: clickLoadMore && root.hasMore
+            anchors.fill: parent
+            onClicked: {
+                isReload = false
+                loadmore()
+            }
+        }
+    }
 
-//        Row {
-//           id: row
-//           anchors.left: parent.left; anchors.right: parent.right
-//           anchors.top: parent.top; anchors.topMargin: 10
-//           width: root.width - 20
-//           height: childrenRect.height
-//           anchors.margins: 10
-//           spacing: 10
-
-//           ListView {
-//               id: lv1
-//               width: (root.width - 30)/2
-//               interactive: false
-//               height: childrenRect.height
-//               model: lvm1
-//               delegate: lvd
-//               spacing: 10
-//           }
-//           ListView {
-//               id: lv2
-//               width: (root.width - 30)/2
-//               height: childrenRect.height
-//               interactive: false
-//               model: lvm2
-//               delegate: lvd
-//               spacing: 10
-//           }
-//        }
-//    }
-
-//    ListModel { id: lvm1 }
-//    ListModel { id: lvm2 }
-
-//    Component {
-//        id: lvd
-//        Rectangle {
-//            width: (root.width - 30)/2
-//            height: childrenRect.height
-//            Image {
-//                anchors.top: parent.top
-//                width: parent.width
-//                fillMode: Image.PreserveAspectFit
-//                source: picUrl
-//            }
-//        }
-//    }
+    ListModel { id: lvm1 }
+    ListModel { id: lvm2 }
 }

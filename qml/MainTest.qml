@@ -5,7 +5,7 @@ import "./api"      //用户登录信息
 import "./toolsbox/tools.js" as Tools
 import "./toolsbox/api.js" as JSApi  //应用的项目信息
 import "./toolsbox/code.js" as Code
-import "./toolsbox/testConfig.js" as Config
+import "./toolsbox/config.js" as Config
 
 View {
     id: root

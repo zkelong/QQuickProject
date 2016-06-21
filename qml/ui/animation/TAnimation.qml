@@ -5,6 +5,7 @@ import "../../toolsbox/font.js" as FontUtl
 
 View {
     id: root
+    hidenTabbarWhenPush: true
 
     property int cellHeight: Utl.dp(50)
 
@@ -25,14 +26,6 @@ View {
         delegate: _delegate
         clip: true
         spacing: Utl.dp(5)
-    }
-
-    ListModel {
-        id: _model
-        ListElement {
-            lid: 1
-            strName: "AnimatedImage/AnimatedSprite"
-        }
     }
 
     Component {
@@ -66,6 +59,14 @@ View {
     Component {
         id: tai
         TAnimatedImage{}
+    }
+
+    ListModel {
+        id: _model
+        ListElement {
+            lid: 1
+            strName: "AnimatedImage/AnimatedSprite"
+        }
     }
 
     function toNext(id) {

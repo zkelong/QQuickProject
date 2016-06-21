@@ -16,13 +16,13 @@ var NavigationLightGray = "#fdfdfd"
 var LineGray = "#e0e0e0"
 //view Color
 var ViewColor = "#e1e1e1"
+//button Color
 var ButtonColor = "#ace012"
 
 
 
 //常用颜色
 var Bordercolor = "#e2e2e2"
-
 
 //灰色
 var GrayLineColor = "#e1e1e1"
@@ -90,22 +90,34 @@ var DarRed = "#b93b09"
 var TargetAmount = "#f2987e"
 var ProjectTitle = "#ebf5d2"
 
-//注册界面
-var RegistExplain = "#aeaeae"
-var RegistBar = "#f87815"
-var RegistName = "#737373"
-var RegistPhone = "#8f8f8f"
-var RegistMM = "#707070"
-var RegistNext = "#41b4e0"
-var Registtt = "#d58c59"
-var RegistBut = "#41b4e0"
-var zeizhao = "#c6852d"
-var zeizhao2 = "#2088ba"
-var zeizhao3 = "#d5d5d5"
-var bttntext = "#d3701a"
-var codebtntext = "#22a1e1"
-var codebtnon = "#e2f2ff"
-var codebtndow = "#b3dafa"
-var textcolor = "#868686"
-var icomsg = "#baa06c"
-
+//颜色值
+var colorArry = ["#FFC0CB",
+        "#dc143c",
+        "#ff1493",
+        "#ff00ff",
+        "#800080",
+        "#4b0082",
+        "#0000ff",
+        "#000080",
+        "#00bfff",
+        "#00ffff",
+        "#00b0b0",
+        "#00fa9a",
+        "#2ebb57",
+        "#00ff00",
+        "#006400",
+        "#808000",
+        "#ffd700",
+        "#daa520",
+        "#b8860b",
+        "#ffe4b3",
+        "#ffe4c4",
+        "#cdb53f",
+        "#d2691e",
+        "#ff7f50",
+        "#ff4500",
+        "#ff6347",
+        "#f08080",
+        "#ff0000",
+        "#a52a2a",
+        "#800000"]

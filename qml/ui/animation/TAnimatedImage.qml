@@ -6,6 +6,7 @@ import "../../toolsbox/color.js" as Color
 
 View {
     id: root
+    hidenTabbarWhenPush: true
 
     NavigationBar {
         id: navbar

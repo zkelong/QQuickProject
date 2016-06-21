@@ -239,7 +239,7 @@ function getAnimalZodiac(year) {
 /////////-------对象判断-------/////////
 //判断对象是否为空--true: 为空， falsed: 不为空
 function chekObjectEmpty(obj) {
-    if(obj == null)
+    if(obj === null)
         return true
     var ret = true
     for(var item in obj) {
@@ -434,47 +434,3 @@ function getPhaseById(id) {
     }
     return qsTr("未设置")
 }
-
-//发布项目的数据
-var fansPublishBuff = {
-    //id            //项目id
-    //prs           //项目类型
-    //needDays      //所需天数
-    //issue         //期号
-    //titleText     //标题
-    //picUrl        //图片
-    //introduce     //简短介绍
-    //totolAmount   //目标金额
-    //getNum        //已达金额
-    //percentNum    //完成百分比
-    //commondNum    //评论数
-    //joinNum       //参与数
-    //startTime     //开始时间
-    //endTime       //结束时间
-    //moreDetail    //查看更多图文详情/分享链接
-    //focus         //是否关注
-    //status        //项目状态
-    //detailIntroduce   //详细介绍
-    //ownerId       //发布者
-    ////sort        //默认排序标准,从大到小
-    //proId         //省份id
-    //ProName       //省名
-    //cityId        //城市id
-    //CityName      //市名
-    //disId         //区id
-    //disName       //区名
-    //address       //详细地址
-    ////locked      //是否已锁定(项目进入众筹期，不允许再对基本信息进行修改)
-    ////onlyShow    //是否只是展示（不允许众投)
-    //files         //项目相关文件id,逗号分隔--图片
-    //ownerName     //发布者真实姓名
-    //ownerPhone    //发布者手机号
-    //ownerIdCard   //身份证号
-    //bankName      //开户行
-    //accountName   //开户名
-    //accountNum    //开户帐号
-    //created       //创建时间
-    //compereVideo  //主播视频地址
-}
-
-

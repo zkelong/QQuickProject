@@ -48,5 +48,8 @@
         <file>res/microphonePic.png</file>
         <file>res/a2.jpg</file>
         <file>res/a4.jpg</file>
+        <file>res/refresh.png</file>
+        <file>res/refresh_0.png</file>
+        <file>res/a3.jpg</file>
     </qresource>
 </RCC>

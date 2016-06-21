@@ -1,12 +1,13 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-import "../controls"
-import "../toolsbox/config.js" as Config
-import "../toolsbox/font.js" as FontUtl
-import "../toolsbox/color.js" as Color
+import "../../controls"
+import "../../toolsbox/config.js" as Config
+import "../../toolsbox/font.js" as FontUtl
+import "../../toolsbox/color.js" as Color
 
 View {
     id: root
+    hidenTabbarWhenPush: true
 
     NavigationBar {
         id: navbar

@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import "../testConfig.js" as Config
+import "../toolsbox/config.js" as Config
 
 Rectangle {
     anchors.fill: parent

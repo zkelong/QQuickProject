@@ -2,11 +2,13 @@ import QtQuick 2.0
 import "../controls"
 import "./animation"
 import "./img"
+import "./components"
 import "../toolsbox/config.js" as Config
 import "../toolsbox/font.js" as FontUtl
 
 View {
     id: root
+    hidenTabbarWhenPush: true
 
     property int cellHeight: Utl.dp(50)
 
@@ -58,11 +60,6 @@ View {
     }
 
     Component {
-        id: tbtn
-        TButtonGroup{}
-    }
-
-    Component {
         id: ani
         TAnimation{}
     }
@@ -71,6 +68,14 @@ View {
         id: ti
         TImage{}
     }
+    Component {
+        id: comp
+        TComponents{}
+    }
+    Component {
+        id: tm
+        TMouseArea{}
+    }
 
     ListModel {
         id: _model
@@ -78,17 +83,17 @@ View {
             lid: 1
             strName: "Image"
         }
-//        ListElement {
-//            lid: 2
-////            strName: "HueSaturation"
-//        }
+        ListElement {
+            lid: 2
+            strName: "Animation"
+        }
         ListElement {
             lid: 3
-            strName: "ButtonGroup"
+            strName: "Components"
         }
         ListElement {
             lid: 4
-            strName: "Animation"
+            strName: "MouseArea"
         }
     }
 
@@ -98,13 +103,16 @@ View {
             root.navigationView.push(ti)
             break;
         case 2:
-//            root.navigationView.push(thue)
+            root.navigationView.push(ani)
             break;
         case 3:
-            root.navigationView.push(tbtn)
+            root.navigationView.push(comp)
             break;
         case 4:
-            root.navigationView.push(ani)
+            root.navigationView.push(tm)
+            break;
+        case 5:
+//            root.navigationView.push(tpf)
             break;
         }
     }

@@ -5,6 +5,7 @@ import "../../toolsbox/font.js" as FontUtl
 
 View {
     id: root
+    hidenTabbarWhenPush: true
 
     property int cellHeight: Utl.dp(50)
 
@@ -56,9 +57,10 @@ View {
     }
 
     Component {
-        id: tst
-        TStatusImage{}
+        id: imf
+        TImageFillMode{}
     }
+
     Component {
         id: tri
         TRoundImage{}
@@ -66,13 +68,13 @@ View {
     Component {
         id: thue
         THueSaturation{}
-    }
+    }    
 
     ListModel {
         id: _model
         ListElement {
             lid: 1
-            strName: "StatusImage"
+            strName: "ImageFillMode"
         }
         ListElement {
             lid: 2
@@ -87,7 +89,7 @@ View {
     function toNext(id) {
         switch(id) {
         case 1:
-            root.navigationView.push(tst)
+            root.navigationView.push(imf)
             break;
         case 2:
             root.navigationView.push(tri)

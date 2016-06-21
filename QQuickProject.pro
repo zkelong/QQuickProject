@@ -41,6 +41,7 @@ OTHER_FILES += *.qml \
     qml/ui/*    \
     qml/ui/animation/*    \
     qml/ui/img/*    \
+    qml/ui/components/*    \
     qml/pathviewEx/* \
     qml/window/* \
 
