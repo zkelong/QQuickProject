@@ -17,7 +17,7 @@ Rectangle{
     //@param viewCompent 视图组件
     //@param properties 附加属性，可选
     function addItem(viewCompent, properties){
-         var obj = viewCompent.createObject(contanier, properties)
+        var obj = viewCompent.createObject(contanier, properties)
         root.items.push(obj)
 
         var c = circle.createObject(circles);

@@ -60,6 +60,10 @@ View {
         id: tai
         TAnimatedImage{}
     }
+    Component {
+        id: ts
+        TScaleAnimation{}
+    }
 
     ListModel {
         id: _model
@@ -67,12 +71,19 @@ View {
             lid: 1
             strName: "AnimatedImage/AnimatedSprite"
         }
+        ListElement {
+            lid: 2
+            strName: "ScaleAnimation"
+        }
     }
 
     function toNext(id) {
         switch(id) {
         case 1:
             root.navigationView.push(tai)
+            break;
+        case 2:
+            root.navigationView.push(ts)
             break;
         }
     }

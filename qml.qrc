@@ -87,5 +87,12 @@
         <file>qml/ui/img/TImageFillMode.qml</file>
         <file>qml/js/JsMain.qml</file>
         <file>qml/ui/TMouseArea.qml</file>
+        <file>qml/ui/components/TAdcolumn.qml</file>
+        <file>qml/controls/Adcolumn.qml</file>
+        <file>qml/ui/mycase/MyCase.qml</file>
+        <file>qml/ui/mycase/RadarMarry.qml</file>
+        <file>qml/ui/animation/TScaleAnimation.qml</file>
+        <file>qml/ui/mycase/RandarMarryPoints.qml</file>
+        <file>qml/ui/mycase/ScaleAnimationImage.qml</file>
     </qresource>
 </RCC>

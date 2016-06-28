@@ -69,6 +69,10 @@ View {
         id: tw
         TWaterfallView{}
     }
+    Component {
+        id: ad
+        TAdcolumn{}
+    }
 
     ListModel {
         id: _model
@@ -84,6 +88,10 @@ View {
             lid: 3
             strName: "WaterfallView"
         }
+        ListElement {
+            lid: 4
+            strName: "Adcolumn"
+        }
     }
 
     function toNext(id) {
@@ -96,6 +104,9 @@ View {
             break;
         case 3:
             root.navigationView.push(tw)
+            break;
+        case 4:
+            root.navigationView.push(ad)
             break;
         }
     }

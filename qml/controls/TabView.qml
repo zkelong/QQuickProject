@@ -55,6 +55,7 @@ Rectangle {
             view.visible =  _tabbar.selectedIndex == i;
         }
         _tabbar.items = items;
+        selectedIndex = 1;
     }
 
     onTabbarVisibleChanged: {   //tabbar可见度变化，调整contentView的大小

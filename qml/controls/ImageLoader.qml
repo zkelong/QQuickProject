@@ -10,9 +10,13 @@ Rectangle {
     id:root
     property string defaultSource: ""  //默认图片
     property string source: "" //要加载的图片地址
+    property alias fillModel: img.fillMode
     property alias cache: img2.cache
     property alias image: img2
 
+    signal sourceSuccessed()
+    signal sourceErroed()
+    signal loadFinished()
 
     onSourceChanged: {
         if(root.source.indexOf("http") == 0){
@@ -42,19 +46,24 @@ Rectangle {
         id:img
         anchors.fill: parent
         source: defaultSource
+        fillMode: fillModel
     }
 
     Image{
         id:img2
         asynchronous: true
         anchors.fill: parent
-//        source: root.source
+        fillMode: img.fillMode
         onStatusChanged: {
             if(img2.status === Image.Ready){
                 img.visible = false;
+                sourceSuccessed()
+                loadFinished()
+            } else if(img2.status === Image.Error) {
+                sourceErroed()
+                loadFinished()
             }
         }
     }
-
 }
 

@@ -1,6 +1,8 @@
 TEMPLATE = app
 
 QT += qml quick positioning multimedia location widgets
+QT +=sql
+
 #QT += core-private gui-private qml-private
 #QTPLUGIN += qavfcamera qsqlite
 QTPLUGIN += qsqlite
@@ -10,6 +12,7 @@ SOURCES += main.cpp \
     class/httpuploader.cpp \
 #    class/qumengqml.cpp \
 #    libs/ImagePicker/ImagePicker.cpp
+    class/databaseconnect.cpp
 
 
 RESOURCES += \
@@ -30,6 +33,7 @@ HEADERS += \
     class/httpuploader.h \
 #    class/qumengqml.h \
 #    libs/ImagePicker/ImagePicker.h
+    class/databaseconnect.h
 
 OTHER_FILES += *.qml \
     qml/* \
@@ -42,6 +46,7 @@ OTHER_FILES += *.qml \
     qml/ui/animation/*    \
     qml/ui/img/*    \
     qml/ui/components/*    \
+    qml/ui/mycase/*    \
     qml/pathviewEx/* \
     qml/window/* \
 

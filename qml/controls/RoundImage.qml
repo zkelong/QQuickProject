@@ -25,10 +25,14 @@ Rectangle{
     property alias colorMask: _colorMask    //选中效果
     property alias defaultSource: _img.defaultSource    //默认图片
 
+    signal sourceSuccessed()
+    signal sourceErroed()
+    signal loadFinished()
+
     Rectangle{
         id: _mask
         anchors.fill: parent
-        anchors.margins: root.border.width + borderScape - 1
+        anchors.margins: root.border.width + borderScape + 1
         radius: root.radius
         color:  "#fff"
         smooth: true
@@ -37,7 +41,7 @@ Rectangle{
     ImageLoader{
         id: _img
         anchors.fill: parent
-        anchors.margins: root.border.width + borderScape - 1
+        anchors.margins: root.border.width + borderScape + 1
         image.fillMode: Image.PreserveAspectCrop
         defaultSource: Config.DefaultImage
         smooth: true
@@ -45,6 +49,15 @@ Rectangle{
         image.sourceSize.width: 140
         image.sourceSize.height:140
         visible: false
+        onSourceSuccessed: {
+            root.sourceSuccessed()
+        }
+        onSourceErroed: {
+            root.sourceErroed()
+        }
+        onLoadFinished: {
+            root.loadFinished()
+        }
     }
 
     OpacityMask {

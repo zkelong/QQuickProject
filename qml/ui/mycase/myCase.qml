@@ -1,11 +1,7 @@
 import QtQuick 2.0
-import "../controls"
-import "./animation"
-import "./img"
-import "./components"
-import "./mycase"
-import "../toolsbox/config.js" as Config
-import "../toolsbox/font.js" as FontUtl
+import "../../controls"
+import "../../toolsbox/config.js" as Config
+import "../../toolsbox/font.js" as FontUtl
 
 View {
     id: root
@@ -15,7 +11,7 @@ View {
 
     NavigationBar {
         id: navbar
-        title: "UIMAIN"
+        title: "MyCase"
         onButtonClicked: {
             root.navigationView.pop()
         }
@@ -61,70 +57,28 @@ View {
     }
 
     Component {
-        id: ani
-        TAnimation{}
-    }
-
-    Component {
-        id: ti
-        TImage{}
-    }
-    Component {
-        id: comp
-        TComponents{}
-    }
-    Component {
-        id: tm
-        TMouseArea{}
-    }
-    Component {
-        id: mc
-        MyCase{}
+        id: rm
+        RadarMarry{}
     }
 
     ListModel {
         id: _model
         ListElement {
             lid: 1
-            strName: "Image"
-        }
-        ListElement {
-            lid: 2
-            strName: "Animation"
-        }
-        ListElement {
-            lid: 3
-            strName: "Components"
-        }
-        ListElement {
-            lid: 4
-            strName: "MouseArea"
-        }
-        ListElement {
-            lid: 99
-            strName: "MyCase"
+            strName: "雷达搜索"
         }
     }
 
     function toNext(id) {
         switch(id) {
         case 1:
-            root.navigationView.push(ti)
+            root.navigationView.push(rm)
             break;
         case 2:
-            root.navigationView.push(ani)
+//            root.navigationView.push(tri)
             break;
         case 3:
-            root.navigationView.push(comp)
-            break;
-        case 4:
-            root.navigationView.push(tm)
-            break;
-        case 5:
-//            root.navigationView.push(tpf)
-            break;
-        case 99:
-            root.navigationView.push(mc)
+//            root.navigationView.push(thue)
             break;
         }
     }
