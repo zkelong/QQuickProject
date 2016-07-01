@@ -73,3 +73,42 @@ Item {
     }
 }
 
+/************View 模板********************
+
+
+import QtQuick 2.0
+import "../../controls"
+import "../../toolsbox/config.js" as Config
+import "../../toolsbox/font.js" as FontUtl
+import "../../toolsbox/color.js" as Color
+
+View {
+    id: root
+    hidenTabbarWhenPush: true
+
+    NavigationBar {
+        id: navbar
+        title: "AnimatedImage(Sprite)"
+        onButtonClicked: {
+            root.navigationView.pop()
+        }
+    }
+
+    Flickable {
+        width: parent.width
+        anchors.top: navbar.bottom
+        anchors.bottom: parent.bottom
+        anchors.top: parent.top
+        anchors.topMargin: Utl.dp(10)
+        contentHeight: _col.height + Utl.dp(20)
+        Column {
+            id: _col
+            width: parent.width
+            height: childrenRect.height
+
+        }
+    }
+}
+
+
+*/

@@ -82,12 +82,6 @@ function registStack(stack){
 }
 
 
-
-
-
-
-
-
 /////////-------时间操作函数-------/////////
 //JS 日期格式化
 //调用方法: var time1 = new Date().format("yyyy-MM-dd HH:mm:ss");
@@ -113,7 +107,7 @@ Date.prototype.format = function (fmt) {
 //1.将时间转换为想要的格式
 //日期格式化：0000/00/00 00:00:00
 function dateFormatStr(d) {
-    if(!dateString)
+    if(!d)
         return "0001-01-01"
     var ret = d.getFullYear() + "/"
     ret += ("00" + (d.getMonth() + 1)).slice(-2) + "/"

@@ -56,17 +56,27 @@ View {
         }
     }
 
+    Component {
+        id: tim
+        TimeOperator{}
+    }
+
+    Component {
+        id: str
+        StringOperator{}
+    }
+
 
     ListModel {
         id: _model
-//        ListElement {
-//            lid: 1
-//            strName: "ImageFillMode"
-//        }
-//        ListElement {
-//            lid: 2
-//            strName: "RoundImage"
-//        }
+        ListElement {
+            lid: 1
+            strName: "时间处理"
+        }
+        ListElement {
+            lid: 2
+            strName: "String对象"
+        }
 //        ListElement {
 //            lid: 3
 //            strName: "HueSaturation"
@@ -76,10 +86,10 @@ View {
     function toNext(id) {
         switch(id) {
         case 1:
-//            root.navigationView.push(imf)
+            root.navigationView.push(tim)
             break;
         case 2:
-//            root.navigationView.push(tri)
+            root.navigationView.push(str)
             break;
         case 3:
 //            root.navigationView.push(thue)

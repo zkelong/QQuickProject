@@ -94,5 +94,8 @@
         <file>qml/ui/animation/TScaleAnimation.qml</file>
         <file>qml/ui/mycase/RandarMarryPoints.qml</file>
         <file>qml/ui/mycase/ScaleAnimationImage.qml</file>
+        <file>qml/js/TimeOperator.qml</file>
+        <file>qml/js/StringOperator.qml</file>
+        <file>qml/ui/animation/TTransition.qml</file>
     </qresource>
 </RCC>

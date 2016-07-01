@@ -20,7 +20,6 @@
         <file>res/arrow_right1.png</file>
         <file>res/arrow_right2.png</file>
         <file>res/defaultAvatar.jpg</file>
-        <file>res/a1.jpg</file>
         <file>res/emoji/emoji0.gif</file>
         <file>res/emoji/emoji1.gif</file>
         <file>res/emoji/emoji2.gif</file>
@@ -50,6 +49,12 @@
         <file>res/a4.jpg</file>
         <file>res/refresh.png</file>
         <file>res/refresh_0.png</file>
-        <file>res/a3.jpg</file>
+        <file>res/h1.jpg</file>
+        <file>res/h2.png</file>
+        <file>res/icon.png</file>
+        <file>res/l1.jpg</file>
+        <file>res/l2.jpg</file>
+        <file>res/l3.jpg</file>
+        <file>res/l4.jpg</file>
     </qresource>
 </RCC>
