@@ -97,5 +97,7 @@
         <file>qml/js/TimeOperator.qml</file>
         <file>qml/js/StringOperator.qml</file>
         <file>qml/ui/animation/TTransition.qml</file>
+        <file>qml/ui/properties/QmlProperties.qml</file>
+        <file>qml/ui/properties/TStates.qml</file>
     </qresource>
 </RCC>
