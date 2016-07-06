@@ -60,6 +60,22 @@ View {
         id: ta
         TListViewAnimation{}
     }
+    Component{
+        id: tlh
+        TListViewHighLight{}
+    }
+    Component{
+        id: tls
+        TListViewStyle{}
+    }
+    Component{
+        id: tlht
+        TListViewHeadAndFoot{}
+    }
+    Component{
+        id: lm
+        TListModelChanged{}
+    }
 
     ListModel {
         id: _model
@@ -67,42 +83,22 @@ View {
             lid: 1
             strName: "ListView-Animation"
         }
-//        ListElement {
-//            lid: 2
-//            strName: "ScaleAnimation"
-//        }
-//        ListElement {
-//            lid: 3
-//            strName: "Transition"
-//        }
-//        ListElement {
-//            lid: 4
-//            strName: "PropertyAnimation"
-//        }
-//        ListElement {
-//            lid: 5
-//            strName: "NumberAnimation"
-//        }
-//        ListElement {
-//            lid: 6
-//            strName: "RotationAnimator(tion)"
-//        }
-//        ListElement {
-//            lid: 7
-//            strName: "ColorAnimation"
-//        }
-//        ListElement {
-//            lid: 8
-//            strName: "Sequential/ParallelAnimation"
-//        }
-//        ListElement {
-//            lid: 9
-//            strName: "PauseAnimation"
-//        }
-//        ListElement {
-//            lid: 10
-//            strName: "PropertyAction"
-//        }
+        ListElement {
+            lid: 2
+            strName: "ListView-HighLight"
+        }
+        ListElement {
+            lid: 3
+            strName: "ListView-Style"
+        }
+        ListElement {
+            lid: 4
+            strName: "ListView-head/foot"
+        }
+        ListElement {
+            lid: 5
+            strName: "ListModelChanged"
+        }
     }
 
     function toNext(id) {
@@ -110,33 +106,18 @@ View {
         case 1:
             root.navigationView.push(ta)
             break;
-//        case 2:
-//            root.navigationView.push(ts)
-//            break;
-//        case 3:
-//            root.navigationView.push(tt)
-//            break;
-//        case 4:
-//            root.navigationView.push(pa)
-//            break;
-//        case 5:
-//            root.navigationView.push(na)
-//            break;
-//        case 6:
-//            root.navigationView.push(ra)
-//            break;
-//        case 7:
-//            root.navigationView.push(ca)
-//            break;
-//        case 8:
-//            root.navigationView.push(tsa)
-//            break;
-//        case 9:
-//            root.navigationView.push(tpa)
-//            break;
-//        case 10:
-//            root.navigationView.push(tpac)
-//            break;
+        case 2:
+            root.navigationView.push(tlh)
+            break;
+        case 3:
+            root.navigationView.push(tls)
+            break;
+        case 4:
+            root.navigationView.push(tlht)
+            break;
+        case 5:
+            root.navigationView.push(lm)
+            break;
         }
     }
 }

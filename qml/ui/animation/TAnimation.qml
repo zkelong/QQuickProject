@@ -99,6 +99,10 @@ View {
         id: tpac
         TPropertyAction{}
     }
+    Component{
+        id: sa
+        TSpringAnimation{}
+    }
 
     ListModel {
         id: _model
@@ -142,6 +146,10 @@ View {
             lid: 10
             strName: "PropertyAction"
         }
+        ListElement {
+            lid: 11
+            strName: "SpringAnimation"
+        }
     }
 
     function toNext(id) {
@@ -175,6 +183,9 @@ View {
             break;
         case 10:
             root.navigationView.push(tpac)
+            break;
+        case 11:
+            root.navigationView.push(sa)
             break;
         }
     }

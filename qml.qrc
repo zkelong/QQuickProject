@@ -108,5 +108,10 @@
         <file>qml/ui/animation/TPropertyAction.qml</file>
         <file>qml/ui/listview/TListViewMain.qml</file>
         <file>qml/ui/listview/TListViewAnimation.qml</file>
+        <file>qml/ui/listview/TListViewHighLight.qml</file>
+        <file>qml/ui/animation/TSpringAnimation.qml</file>
+        <file>qml/ui/listview/TListViewStyle.qml</file>
+        <file>qml/ui/listview/TListViewHeadAndFoot.qml</file>
+        <file>qml/ui/listview/TListModelChanged.qml</file>
     </qresource>
 </RCC>

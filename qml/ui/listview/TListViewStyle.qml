@@ -1,20 +1,33 @@
 import QtQuick 2.0
-import QtQuick 2.4
 import "../../controls"
+import "../../toolsbox/config.js" as Config
+import "../../toolsbox/font.js" as FontUtl
+import "../../toolsbox/color.js" as Color
 
 View {
     id: root
+    hidenTabbarWhenPush: true
 
-    property int listViewHeight: 200
-    property int listCellHight: 40
+    property int listViewHeight: root.height/2.5
+    property int listCellHight: Utl.dp(40)
+
+
+    NavigationBar {
+        id: navbar
+        title: "ListAnimation"
+        onButtonClicked: {
+            root.navigationView.pop()
+        }
+    }
 
     Flickable {
         id: flick
-        anchors.top: titleBar.bottom
+        anchors.top: navbar.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         contentHeight: childrenRect.height
+        clip: true
 
         Column {
             id: _column
@@ -75,42 +88,6 @@ View {
                     clip: true
                     model: listModel
                     delegate: normalDelegate
-                }
-            }
-            Rectangle {  //页眉，页脚
-                anchors.left: parent.left
-                anchors.right: parent.right
-                height: childrenRect.height
-
-                Text {
-                    id: txt3
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    font.pointSize: 16
-                    font.bold: true
-                    text: qsTr("页眉，页脚：")
-                }
-                ListView {
-                    anchors.top: txt3.bottom
-                    anchors.topMargin: 5
-                    width: parent.width
-                    height: listViewHeight
-                    clip: true
-                    model: listModel
-                    delegate: normalDelegate
-
-                    //QtQuick 2.4/ListView.InlineHeader(默认)；ListView.OverlayHeader(滑动时页眉不动，在list下方)；ListView.PullBackHeader(向上滑跟着动，向下画，不向下弹动)
-                    headerPositioning: ListView.PullBackHeader
-                    header: Rectangle{
-                        height: listCellHight*2; width: root.width; color: "#ddff00"
-                        Text{anchors.centerIn: parent; text: qsTr("页眉")}
-                    }
-                    //footerPositioning: //ListView.InlineFooter(default) ；ListView.OverlayFooter；ListView.PullBackFooter
-                    footer: Rectangle{
-                        height: listCellHight*2; width: root.width; color: "#ddff00"
-                        Text{anchors.centerIn: parent; text: qsTr("页脚")}
-                    }
                 }
             }
         }
@@ -185,13 +162,5 @@ View {
         }
     }
 
-    TitleBar {
-        id: titleBar
-        anchors.top: parent.top; anchors.left: parent.left
-        onClicked: {
-            root.navigationView.pop()
-        }
-    }
 }
-
 

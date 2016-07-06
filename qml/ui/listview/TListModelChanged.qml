@@ -1,12 +1,24 @@
-import QtQuick 2.0
+import QtQuick 2.4
 import "../../controls"
+import "../../toolsbox/config.js" as Config
+import "../../toolsbox/font.js" as FontUtl
+import "../../toolsbox/color.js" as Color
 
 View {
     id: root
+    hidenTabbarWhenPush: true
+
+    NavigationBar {
+        id: navbar
+        title: "Header/Footer"
+        onButtonClicked: {
+            root.navigationView.pop()
+        }
+    }
 
     ListView {
         id: listView
-        anchors.top: titleBar.bottom
+        anchors.top: navbar.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -141,14 +153,6 @@ View {
                 height: 1
                 color: "blue"
             }
-        }
-    }
-
-    TitleBar {
-        id: titleBar
-        anchors.top: parent.top; anchors.left: parent.left
-        onClicked: {
-            root.navigationView.pop()
         }
     }
 
