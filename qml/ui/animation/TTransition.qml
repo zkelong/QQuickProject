@@ -93,7 +93,49 @@ View {
                 }
             }
 
+            Item {
+                id: item2
+                width: parent.width
+                height: itemHeight
+                Rectangle {         //状态动画的过渡
+                    id: button
+                    width: parent.width/2; height: parent.width/2
+                    anchors.centerIn: parent
+                    border.width: Utl.dp(3)
+                    color: "black"
+                    state: "RELEASED"
 
+                    MouseArea {
+                        anchors.fill: parent
+                        onPressed: button.state = "PRESSED"
+                        onReleased: button.state = "RELEASED"
+                    }
+
+                    states: [
+                        State {
+                            name: "PRESSED"
+                            PropertyChanges { target: button; color: "purple"}
+                        },
+                        State {
+                            name: "RELEASED"
+                            PropertyChanges { target: button; color: "lightsteelblue"}  //默认样式
+                        }
+                    ]
+
+                    transitions: [
+                        Transition {
+                            from: "PRESSED"
+                            to: "RELEASED"
+                            ColorAnimation { target: button; duration: 1000}
+                        },
+                        Transition {
+                            from: "RELEASED"
+                            to: "PRESSED"
+                            ColorAnimation { target: button; duration: 1000}
+                        }
+                    ]
+                }
+            }
         }
     }
 }

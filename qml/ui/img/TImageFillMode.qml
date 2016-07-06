@@ -9,8 +9,8 @@ View {
     id: root
 
     property string source1: "qrc:/res/x.png"
-    property string source2: "qrc:/res/a1.jpg"
-    property string source3: "qrc:/res/a3.jpg"
+    property string source2: "qrc:/res/h1.jpg"
+    property string source3: "qrc:/res/l1.jpg"
 
     Component.onCompleted: {
         setSource(source1)

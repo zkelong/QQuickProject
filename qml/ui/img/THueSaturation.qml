@@ -29,7 +29,7 @@ View {
             width: parent.width - Utl.dp(30)
             fillMode: Image.PreserveAspectFit
             anchors.centerIn: parent
-            source: "qrc:/res/a1.jpg"
+            source: "qrc:/res/h1.jpg"
         }
 
         //处理工具

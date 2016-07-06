@@ -4,8 +4,6 @@ pragma Singleton
 
 QtObject {
     id:root
-
-
     property Component httpCmp: Component{
         Http{
             id:http

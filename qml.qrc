@@ -99,5 +99,14 @@
         <file>qml/ui/animation/TTransition.qml</file>
         <file>qml/ui/properties/QmlProperties.qml</file>
         <file>qml/ui/properties/TStates.qml</file>
+        <file>qml/ui/animation/TPropertyAnimation.qml</file>
+        <file>qml/ui/animation/TNumberAnimation.qml</file>
+        <file>qml/ui/animation/TRotationAnimator.qml</file>
+        <file>qml/ui/animation/TColorAnimation.qml</file>
+        <file>qml/ui/animation/TSequentialAnimation.qml</file>
+        <file>qml/ui/animation/TPauseAnimation.qml</file>
+        <file>qml/ui/animation/TPropertyAction.qml</file>
+        <file>qml/ui/listview/TListViewMain.qml</file>
+        <file>qml/ui/listview/TListViewAnimation.qml</file>
     </qresource>
 </RCC>

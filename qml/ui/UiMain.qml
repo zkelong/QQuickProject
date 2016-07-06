@@ -5,6 +5,7 @@ import "./img"
 import "./components"
 import "./mycase"
 import "./properties"
+import "./listview"
 import "../toolsbox/config.js" as Config
 import "../toolsbox/font.js" as FontUtl
 
@@ -70,6 +71,7 @@ View {
         id: ti
         TImage{}
     }
+
     Component {
         id: comp
         TComponents{}
@@ -86,6 +88,11 @@ View {
     Component {
         id: pr
         QmlProperties{}
+    }
+
+    Component {
+        id: lv
+        TListViewMain{}
     }
 
     ListModel {
@@ -111,6 +118,10 @@ View {
             strName: "QMLProperties"
         }
         ListElement {
+            lid: 6
+            strName: "ListView"
+        }
+        ListElement {
             lid: 99
             strName: "MyCase"
         }
@@ -132,6 +143,9 @@ View {
             break;
         case 5:
             root.navigationView.push(pr)
+            break;
+        case 6:
+            root.navigationView.push(lv)
             break;
         case 99:
             root.navigationView.push(mc)
