@@ -16,18 +16,39 @@ Rectangle {
     color: Color.NavigationLightGray
 
     property alias title: _title.text   //导航标题
-    property alias titleLabel: _title
+    property alias titleLabel: _title    
+    property alias content:_content
 
     property alias bottomLine: _line    //底部线条
     property alias button: _btn         //左边按钮
 
     signal buttonClicked()
 
-    Text{
-        id:_title
-        anchors.centerIn: parent
-        color: Color.GreenTheme
-        font.pointSize: 21
+
+    Rectangle{
+       id:statusBar
+       width: parent.width
+       height: Qt.platform.os === "ios"?Utl.dp(20):0
+       anchors.bottom: parent.top
+       color:_background.color
+       opacity:_background.opacity
+       visible:_background.visible
+       enabled: false
+    }
+
+    Rectangle{
+        id:_content
+        width: parent.width
+        height: Utl.dp(55)
+        anchors.top: parent.top
+        color: Color.Clear
+        Text{
+            id:_title
+            anchors.centerIn: parent
+            horizontalAlignment: Text.AlignHCenter
+            color: Color.GreenTheme
+            font.pointSize: FontUtl.FontSizeBigB
+        }
     }
 
     Button{

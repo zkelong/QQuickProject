@@ -66,11 +66,7 @@
         <file>qml/toolsbox/tools.js</file>
         <file>qml/ui/UiIn.qml</file>
         <file>qml/ui/UiMain.qml</file>
-        <file>qml/window/WindowIn.qml</file>
         <file>qml/controls/AdjustableScrollBar.qml</file>
-        <file>qml/window/WindowMain.qml</file>
-        <file>qml/window/TMessageDialog.qml</file>
-        <file>qml/window/TDialog.qml</file>
         <file>qml/controls/FlickableImage.qml</file>
         <file>qml/ui/animation/TAnimation.qml</file>
         <file>qml/ui/animation/TAnimatedImage.qml</file>
@@ -113,5 +109,8 @@
         <file>qml/ui/listview/TListViewStyle.qml</file>
         <file>qml/ui/listview/TListViewHeadAndFoot.qml</file>
         <file>qml/ui/listview/TListModelChanged.qml</file>
+        <file>qml/ddu/DDUIn.qml</file>
+        <file>qml/ddu/DDUMain.qml</file>
+        <file>qml/controls/NumberLock.qml</file>
     </qresource>
 </RCC>

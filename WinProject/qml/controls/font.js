@@ -14,7 +14,7 @@ var FontSizeBigB = 25;
 var FontSizeBigC = 24;
 var FontSizeBigD = 23;
 var FontSizeBigE = 22;
-var FontSizeBigF = 21;
+var FontSizeBigF = 22;
 
 //中字号
 var FontSizeMidA = 20;

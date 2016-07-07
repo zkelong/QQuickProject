@@ -50,7 +50,7 @@ OTHER_FILES += *.qml \
     qml/ui/properties/* \
     qml/ui/listview/* \
     qml/pathviewEx/* \
-    qml/window/* \
+    qml/ddu/* \
 
 win32 {
 #    INCLUDEPATH += libs/UmengQt/src

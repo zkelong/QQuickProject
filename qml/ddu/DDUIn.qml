@@ -5,19 +5,19 @@ View {
     id: root
     Text {
         anchors.centerIn: parent
-        text: "Window"
+        text: "DDU"
     }
 
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            root.navigationView.push(wm)
+            root.navigationView.push(ui)
         }
     }
 
     Component {
-        id: wm
-        WindowMain{}
+        id: ui
+        DDUMain {}
     }
 }
 

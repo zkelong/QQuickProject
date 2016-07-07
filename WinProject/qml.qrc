@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>qml/controls/Line.qml</file>
+        <file>qml/controls/NavigationBar.qml</file>
+        <file>qml/controls/Button.qml</file>
+        <file>qml/controls/api.js</file>
+        <file>qml/controls/code.js</file>
+        <file>qml/controls/color.js</file>
+        <file>qml/controls/config.js</file>
+        <file>qml/controls/font.js</file>
+        <file>qml/controls/network.js</file>
+        <file>qml/controls/storage.js</file>
+        <file>qml/controls/tools.js</file>
+        <file>qml/controls/StatusImage.qml</file>
+    </qresource>
+</RCC>

@@ -35,6 +35,50 @@ pragma Singleton
 QtObject{
     id:root
 
+    /////////////////////////////////////
+    //DDU密码
+    //读取密码
+    function getDduPassword(callback) {
+        Storage.getValue("ddupd", function (value) {
+            if (value) {
+                callback(value)
+            } else {
+                callback(null)
+            }
+        })
+    }
+    //存储密码
+    function setDduPassword(password) {
+        Storage.setValue("ddupd", {pd: password})
+    }
+    //重置密码
+    function resetDduPassword() {
+        Storage.setValue("ddupd", {pd: "6688"})
+    }
+    //验证密码
+    function checkPassword(pd, callback) {
+        getDduPassword(function(obj){
+            if(obj && obj.pd === pd) {   //密码正确
+                callback({ud: 1})
+            } else {
+                if(pd === "6688") //隐藏的重置密码口令
+                    resetDduPassword()
+                callback(null)
+            }
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
  ////////////////////////////////////////////////////////////////////
     //个人信息服务器地址--注册、登陆、用户头像

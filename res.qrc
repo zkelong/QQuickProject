@@ -56,5 +56,7 @@
         <file>res/l2.jpg</file>
         <file>res/l3.jpg</file>
         <file>res/l4.jpg</file>
+        <file>res/delete_back.png</file>
+        <file>res/delete_back_white.png</file>
     </qresource>
 </RCC>

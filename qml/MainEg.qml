@@ -3,7 +3,7 @@ import "controls"
 import "app"
 import "ui"
 import "js"
-import "window"
+import "ddu"
 import "toolsbox/tools.js" as Tools
 import "toolsbox/color.js" as Color
 
@@ -15,11 +15,11 @@ Item {
     Component.onCompleted: {
         Tools.setMainForm(root)
         var items = [];
-        var views = [app, ui, js, wn];
+        var views = [app, ui, js, ddu];
         var pros = [{"label.text":qsTr("APP")/*,"icon.normalSource":"qrc:/res/tab_project.png","icon.selectedSource":"qrc:/res/tab_project_s.png"*/}
                     ,{"label.text":qsTr("UI")}
                     ,{"label.text":qsTr("JS")}
-                    ,{"label.text":qsTr("WIN")}];
+                    ,{"label.text":qsTr("DDU")}];
         for(var i = 0; i < views.length; ++i){
             items.push({barItem:tab, barItemProperties:pros[i], view:navigation, viewProperties:{initialItem:views[i]}});
         }
@@ -68,8 +68,8 @@ Item {
     }
 
     Component {
-        id: wn
-        WindowIn {}
+        id: ddu
+        DDUIn {}
     }
 }
 
