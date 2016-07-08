@@ -4,8 +4,6 @@ import QKit 1.0
 import "."
 import "./controls"
 import "toolsbox/tools.js" as Tools
-
-
 import "toolsbox/api.js" as Api
 import "toolsbox/config.js" as Config
 
@@ -33,6 +31,7 @@ Window {
         initialItem: Component{
             MainEg{
             }
+            //MainTest{}
         }
     }
 

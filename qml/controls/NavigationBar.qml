@@ -24,17 +24,23 @@ Rectangle {
 
     signal buttonClicked()
 
+    Rectangle {
+       id:_background
+       anchors.fill: parent
+       color: parent.color
+    }
 
     Rectangle{
-       id:statusBar
+       id: statusBar
        width: parent.width
        height: Qt.platform.os === "ios"?Utl.dp(20):0
        anchors.bottom: parent.top
-       color:_background.color
-       opacity:_background.opacity
-       visible:_background.visible
+       color: _background.color
+       opacity: _background.opacity
+       visible: _background.visible
        enabled: false
     }
+
 
     Rectangle{
         id:_content

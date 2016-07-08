@@ -12,7 +12,9 @@ SOURCES += main.cpp \
     class/httpuploader.cpp \
 #    class/qumengqml.cpp \
 #    libs/ImagePicker/ImagePicker.cpp
-    class/databaseconnect.cpp
+    class/databaseconnect.cpp \
+    class/acameracall.cpp \
+    class/colormaker.cpp
 
 
 RESOURCES += \
@@ -33,12 +35,15 @@ HEADERS += \
     class/httpuploader.h \
 #    class/qumengqml.h \
 #    libs/ImagePicker/ImagePicker.h
-    class/databaseconnect.h
+    class/databaseconnect.h \
+    class/acameracall.h \
+    class/colormaker.h
 
 OTHER_FILES += *.qml \
     qml/* \
     qml/api/*   \
     qml/app/*   \
+    qml/app/androidSys/*   \
     qml/controls/* \
     qml/js/* \
     qml/toolsbox/* \
@@ -58,12 +63,12 @@ win32 {
 #    HEADERS += libs/UmengQt/win32/QUmeng_win.h
 }
 
-android {
+#android {
     QT += androidextras
 #    INCLUDEPATH += libs/UmengQt/src
 #    SOURCES += libs/UmengQt/android/QUmeng_android.cpp
 #    HEADERS += libs/UmengQt/android/QUmeng_android.h
-}
+#}
 
 DISTFILES += \
     android/AndroidManifest.xml \

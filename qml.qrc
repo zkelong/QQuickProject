@@ -112,5 +112,7 @@
         <file>qml/ddu/DDUIn.qml</file>
         <file>qml/ddu/DDUMain.qml</file>
         <file>qml/controls/NumberLock.qml</file>
+        <file>qml/app/androidSys/ASysMain.qml</file>
+        <file>qml/app/androidSys/TCamera.qml</file>
     </qresource>
 </RCC>

@@ -8,6 +8,8 @@
 #include <string>
 #include "kapplication.h"
 #include "qkit.h"
+#include "class/acameracall.h"
+#include "class/colormaker.h"
 
 int main(int argc, char *argv[])
 {
@@ -17,6 +19,8 @@ int main(int argc, char *argv[])
     qmlRegisterType<HttpPostFieldValue>("HttpUp", 1, 0, "HttpPostFieldValue");
     qmlRegisterType<HttpPostFieldFile>("HttpUp", 1, 0, "HttpPostFieldFile");
     qmlRegisterType<HttpUploader>("HttpUp", 1, 0, "HttpUploader");
+    qmlRegisterType<ACameraCall>("ACamera", 1,0, "ACameraCall");
+    qmlRegisterType<ColorMaker>("ColorMaker", 1, 0, "ColorMaker");
 
     KApplication app(argc, argv);
     QFont font;

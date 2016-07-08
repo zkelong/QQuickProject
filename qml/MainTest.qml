@@ -1,56 +1,139 @@
 import QtQuick 2.0
-import "controls"
-import "./api"      //用户登录信息
-//import "./pathviewEx"
-import "./toolsbox/tools.js" as Tools
-import "./toolsbox/api.js" as JSApi  //应用的项目信息
-import "./toolsbox/code.js" as Code
-import "./toolsbox/config.js" as Config
+import QtQuick.Controls 1.1
+import ColorMaker 1.0
+import ACamera 1.0
 
-View {
-    id: root
-    hidenTabbarWhenPush: true
+Rectangle {
+    width: 360;
+    height: 360;
+
+    ACameraCall {
+        id: ac
+        onSucceed: {
+            console.log("path....", path)
+        }
+    }
+
+    Rectangle {
+        width: 30
+        height: 30
+        color: "red"
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                var ss = "abcdefgh"
+//                ac.takePhoto()
+            }
+        }
+    }
+
+    Text {
+        id: timeLabel;
+        anchors.left: parent.left;
+        anchors.leftMargin: 4;
+        anchors.top: parent.top;
+        anchors.topMargin: 4;
+        font.pixelSize: 26;
+    }
+    ColorMaker {
+        id: colorMaker;
+        color: Qt.green;
+    }
+
+    Rectangle {
+        id: colorRect;
+        anchors.centerIn: parent;
+        width: 200;
+        height: 200;
+        color: "blue";
+    }
+
+    Button {
+        id: start;
+        text: "start";
+        anchors.left: parent.left;
+        anchors.leftMargin: 4;
+        anchors.bottom: parent.bottom;
+        anchors.bottomMargin: 4;
+        onClicked: {
+            colorMaker.start();
+        }
+    }
+    Button {
+        id: stop;
+        text: "stop";
+        anchors.left: start.right;
+        anchors.leftMargin: 4;
+        anchors.bottom: start.bottom;
+        onClicked: {
+            colorMaker.stop();
+        }
+    }
+
+    function changeAlgorithm(button, algorithm){
+        switch(algorithm)
+        {
+        case 0:
+            button.text = "RandomRGB";
+            break;
+        case 1:
+            button.text = "RandomRed";
+            break;
+        case 2:
+            button.text = "RandomGreen";
+            break;
+        case 3:
+            button.text = "RandomBlue";
+            break;
+        case 4:
+            button.text = "LinearIncrease";
+            break;
+        }
+    }
+
+    Button {
+        id: colorAlgorithm;
+        text: "RandomRGB";
+        anchors.left: stop.right;
+        anchors.leftMargin: 4;
+        anchors.bottom: start.bottom;
+        onClicked: {
+            var algorithm = (colorMaker.algorithm() + 1) % 5;
+            changeAlgorithm(colorAlgorithm, algorithm);
+            colorMaker.setAlgorithm(algorithm);
+        }
+    }
+
+    Button {
+        id: quit;
+        text: "quit";
+        anchors.left: colorAlgorithm.right;
+        anchors.leftMargin: 4;
+        anchors.bottom: start.bottom;
+        onClicked: {
+            Qt.quit();
+        }
+    }
 
     Component.onCompleted: {
-        for(var i = 0; i < 15; i++) {
-            var item = {
-                mid: i
-                ,picUrl: Config.testPicUrl[i]
-                ,title: "测试字符串"+i
-            }
-            listModel.append(item)
-        }
-        console.log(listModel.count)
+        colorMaker.color = Qt.rgba(0,180,120, 255);
+        colorMaker.setAlgorithm(ColorMaker.LinearIncrease);
+        changeAlgorithm(colorAlgorithm, colorMaker.algorithm());
     }
 
-    ListModel {
-        id: listModel
-    }
-
-    ListView {
-        width: Utl.dp(180)
-        height: parent.height
-        model: listModel
-        delegate: Image {
-            width: Utl.dp(80)
-            height: Utl.dp(60)
-            source: picUrl
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if(picss.picsData === null) {
-                        picss.picsData = listModel
-                    }
-                    picss.show(index)
-                }
-            }
+    Connections {
+        target: colorMaker;
+        onCurrentTime:{
+            timeLabel.text = strTime;
+            timeLabel.color = colorMaker.timeColor;
         }
     }
 
-    ShowPictrues {
-        id: picss
-        width: parent.width
-        height: parent.height
+    Connections {
+        target: colorMaker;
+        onColorChanged:{
+            colorRect.color = color;
+        }
     }
 }
 

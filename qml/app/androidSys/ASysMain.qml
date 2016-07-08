@@ -1,8 +1,7 @@
 import QtQuick 2.0
-import "../controls"
-import "./androidSys"
-import "../toolsbox/config.js" as Config
-import "../toolsbox/font.js" as FontUtl
+import "../../controls"
+import "../../toolsbox/config.js" as Config
+import "../../toolsbox/font.js" as FontUtl
 
 View {
     id: root
@@ -12,7 +11,7 @@ View {
 
     NavigationBar {
         id: navbar
-        title: "APPMAIN"
+        title: "ASysMain"
         onButtonClicked: {
             root.navigationView.pop()
         }
@@ -58,22 +57,28 @@ View {
     }
 
     Component {
-        id: asy
-        ASysMain{}
+        id: ca
+        TCamera{}
     }
 
     ListModel {
         id: _model
         ListElement {
             lid: 1
-            strName: "AndroidSystem"
+            strName: "TCamera"
         }
     }
 
     function toNext(id) {
         switch(id) {
         case 1:
-            root.navigationView.push(asy)
+            root.navigationView.push(ca)
+            break;
+        case 2:
+//            root.navigationView.push(tri)
+            break;
+        case 3:
+//            root.navigationView.push(thue)
             break;
         }
     }
