@@ -33,7 +33,7 @@ Rectangle {
     Rectangle{
        id: statusBar
        width: parent.width
-       height: Qt.platform.os === "ios"?Utl.dp(20):0
+       height: Qt.platform.os === "ios" ? Utl.dp(20) : 0
        anchors.bottom: parent.top
        color: _background.color
        opacity: _background.opacity
@@ -45,13 +45,12 @@ Rectangle {
     Rectangle{
         id:_content
         width: parent.width
-        height: Utl.dp(55)
+        height:  Utl.dp(44)
         anchors.top: parent.top
         color: Color.Clear
         Text{
             id:_title
             anchors.centerIn: parent
-            horizontalAlignment: Text.AlignHCenter
             color: Color.GreenTheme
             font.pointSize: FontUtl.FontSizeBigB
         }

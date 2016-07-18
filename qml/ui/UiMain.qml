@@ -6,6 +6,7 @@ import "./components"
 import "./mycase"
 import "./properties"
 import "./listview"
+import "./qmlcomponents"
 import "../toolsbox/config.js" as Config
 import "../toolsbox/font.js" as FontUtl
 
@@ -66,12 +67,10 @@ View {
         id: ani
         TAnimation{}
     }
-
     Component {
         id: ti
         TImage{}
     }
-
     Component {
         id: comp
         TComponents{}
@@ -89,12 +88,14 @@ View {
         id: pr
         QmlProperties{}
     }
-
     Component {
         id: lv
         TListViewMain{}
     }
-
+    Component {
+        id: tf
+        TFlickable{}
+    }
     ListModel {
         id: _model
         ListElement {
@@ -122,6 +123,10 @@ View {
             strName: "ListView"
         }
         ListElement {
+            lid: 7
+            strName: "Flickable"
+        }
+        ListElement {
             lid: 99
             strName: "MyCase"
         }
@@ -146,6 +151,9 @@ View {
             break;
         case 6:
             root.navigationView.push(lv)
+            break;
+        case 7:
+            root.navigationView.push(tf)
             break;
         case 99:
             root.navigationView.push(mc)

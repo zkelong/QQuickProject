@@ -67,6 +67,11 @@ View {
             lid: 1
             strName: "States"
         }
+
+        ListElement {
+            lid: 1
+            strName: "Rotation"
+        }
     }
 
     function toNext(id) {

@@ -114,5 +114,10 @@
         <file>qml/controls/NumberLock.qml</file>
         <file>qml/app/androidSys/ASysMain.qml</file>
         <file>qml/app/androidSys/TCamera.qml</file>
+        <file>qml/ddu/Memory.qml</file>
+        <file>qml/ui/properties/TRotation.qml</file>
+        <file>qml/ui/qmlcomponents/TFlickable.qml</file>
+        <file>qml/ui/components/TPullListView.qml</file>
+        <file>qml/ui/mycase/FloatedButton.qml</file>
     </qresource>
 </RCC>

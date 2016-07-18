@@ -1,12 +1,11 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-import ACamera 1.0
+//import ACamera 1.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
 import "../../toolsbox/font.js" as FontUtl
 import "../../toolsbox/color.js" as Color
 
-//图像处理HueSaturation
 View {
     id: root
     hidenTabbarWhenPush: true
@@ -40,7 +39,7 @@ View {
                 color: Color.ButtonColor
                 onClicked: {
                     console.log("Android.....")
-                    acamera.takePhoto()
+                    //acamera.takePhoto()
                 }
             }
         }
@@ -82,19 +81,19 @@ View {
         }
     }
 
-    ACameraCall {
-        id: acamera
-        onCanceled: {
+//    ACameraCall {
+//        id: acamera
+//        onCanceled: {
 
-        }
-        onErrored: {
-        }
-        onSucceed: {
-            txt.text = path
-            img.source = path
-            img.visible = true
-        }
-    }
+//        }
+//        onErrored: {
+//        }
+//        onSucceed: {
+//            txt.text = path
+//            img.source = path
+//            img.visible = true
+//        }
+//    }
 
     Text {
         id: txt

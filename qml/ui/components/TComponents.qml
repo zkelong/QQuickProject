@@ -73,6 +73,10 @@ View {
         id: ad
         TAdcolumn{}
     }
+    Component {
+        id: tpl
+        TPullListView{}
+    }
 
     ListModel {
         id: _model
@@ -92,6 +96,10 @@ View {
             lid: 4
             strName: "Adcolumn"
         }
+        ListElement {
+            lid: 5
+            strName: "PullListView"
+        }
     }
 
     function toNext(id) {
@@ -107,6 +115,9 @@ View {
             break;
         case 4:
             root.navigationView.push(ad)
+            break;
+        case 5:
+            root.navigationView.push(tpl)
             break;
         }
     }

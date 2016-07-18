@@ -60,12 +60,20 @@ View {
         id: rm
         RadarMarry{}
     }
+    Component {
+        id: fb
+        FloatedButton{}
+    }
 
     ListModel {
         id: _model
         ListElement {
             lid: 1
             strName: "雷达搜索"
+        }        
+        ListElement {
+            lid: 2
+            strName: "浮动按钮"
         }
     }
 
@@ -75,7 +83,7 @@ View {
             root.navigationView.push(rm)
             break;
         case 2:
-//            root.navigationView.push(tri)
+            root.navigationView.push(fb)
             break;
         case 3:
 //            root.navigationView.push(thue)

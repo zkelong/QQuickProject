@@ -54,6 +54,7 @@ OTHER_FILES += *.qml \
     qml/ui/mycase/*    \
     qml/ui/properties/* \
     qml/ui/listview/* \
+    qml/ui/qmlcomponents/*  \
     qml/pathviewEx/* \
     qml/ddu/* \
 
@@ -63,12 +64,12 @@ win32 {
 #    HEADERS += libs/UmengQt/win32/QUmeng_win.h
 }
 
-#android {
+android {
     QT += androidextras
 #    INCLUDEPATH += libs/UmengQt/src
 #    SOURCES += libs/UmengQt/android/QUmeng_android.cpp
 #    HEADERS += libs/UmengQt/android/QUmeng_android.h
-#}
+}
 
 DISTFILES += \
     android/AndroidManifest.xml \

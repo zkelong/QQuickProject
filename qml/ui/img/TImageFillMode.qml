@@ -40,7 +40,7 @@ View {
                 width: parent.width
                 height: parent.width / 3
                 Item {
-                    height: parent.height
+                    height: parent.height + Utl.dp(30)
                     width: height
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -60,7 +60,7 @@ View {
                     }
                 }
                 Item {
-                    height: parent.height
+                    height: parent.height + Utl.dp(30)
                     width: height
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -80,7 +80,7 @@ View {
                     }
                 }
                 Item {
-                    height: parent.height
+                    height: parent.height + Utl.dp(30)
                     width: height
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -105,7 +105,7 @@ View {
                 width: parent.width
                 height: parent.width / 3
                 Item {
-                    height: parent.height
+                    height: parent.height + Utl.dp(30)
                     width: height
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -125,7 +125,7 @@ View {
                     }
                 }
                 Item {
-                    height: parent.height
+                    height: parent.height + Utl.dp(30)
                     width: height
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -145,7 +145,7 @@ View {
                     }
                 }
                 Item {
-                    height: parent.height
+                    height: parent.height + Utl.dp(30)
                     width: height
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter
@@ -170,7 +170,7 @@ View {
                 width: parent.width
                 height: parent.width / 3
                 Item {
-                    height: parent.height
+                    height: parent.height + Utl.dp(30)
                     width: height
                     Text {
                         anchors.horizontalCenter: parent.horizontalCenter

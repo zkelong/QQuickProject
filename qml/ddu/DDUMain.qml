@@ -67,19 +67,24 @@ View {
         }
     }
 
+    Component {
+        id: nm
+        Memory{}
+    }
+
     ListModel {
         id: _model
-        //ListElement {
-        //    lid: 1
-        //    strName: "Image"
-        //}
+        ListElement {
+            lid: 1
+            strName: "NumberMemory"
+        }
     }
 
     function toNext(id) {
-        //switch(id) {
-        //case 1:
-        //    root.navigationView.push(ti)
-        //    break;
+        switch(id) {
+        case 1:
+            root.navigationView.push(nm)
+            break;
         //case 2:
         //    root.navigationView.push(ani)
         //    break;
@@ -98,7 +103,7 @@ View {
         //case 99:
         //    root.navigationView.push(mc)
         //    break;
-        //}
+        }
     }
 
     NumberLock { //锁定框
@@ -107,8 +112,11 @@ View {
         width: parent.width
         height: root.height
         onCanceled: {
-            console.log("alsdlgjlajsd;lgj;")
-            root.navigationView.pop()
+            if(numberlock.type == 0) {
+                root.navigationView.pop()
+            } else {
+                numberlock.hide()
+            }
         }
     }
 }
