@@ -58,5 +58,15 @@
         <file>res/l4.jpg</file>
         <file>res/delete_back.png</file>
         <file>res/delete_back_white.png</file>
+        <file>res/arrow_right.png</file>
+        <file>res/bg.png</file>
+        <file>res/bg_top.png</file>
+        <file>res/call_play.png</file>
+        <file>res/male_gray.png</file>
+        <file>res/phone_bg.png</file>
+        <file>res/phone_gray.png</file>
+        <file>res/start_yellow.png</file>
+        <file>res/start_yellowE.png</file>
+        <file>res/woman_gray.png</file>
     </qresource>
 </RCC>

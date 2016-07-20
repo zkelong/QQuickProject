@@ -76,6 +76,10 @@ View {
         id: lm
         TListModelChanged{}
     }
+    Component {
+        id: li
+        TListViewItem{}
+    }
 
     ListModel {
         id: _model
@@ -99,6 +103,10 @@ View {
             lid: 5
             strName: "ListModelChanged"
         }
+        ListElement {
+            lid: 6
+            strName: "ListViewItem"
+        }
     }
 
     function toNext(id) {
@@ -117,6 +125,8 @@ View {
             break;
         case 5:
             root.navigationView.push(lm)
+        case 6:
+            root.navigationView.push(li)
             break;
         }
     }

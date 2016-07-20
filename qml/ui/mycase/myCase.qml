@@ -63,6 +63,10 @@ View {
     Component {
         id: fb
         FloatedButton{}
+    }    
+    Component {
+        id: daphoto
+        DadaPhotoDetail{}
     }
 
     ListModel {
@@ -70,10 +74,14 @@ View {
         ListElement {
             lid: 1
             strName: "雷达搜索"
-        }        
+        }
         ListElement {
             lid: 2
             strName: "浮动按钮"
+        }
+        ListElement {
+            lid: 3
+            strName: "嗒嗒照片上传"
         }
     }
 
@@ -86,7 +94,7 @@ View {
             root.navigationView.push(fb)
             break;
         case 3:
-//            root.navigationView.push(thue)
+            root.navigationView.push(daphoto)
             break;
         }
     }

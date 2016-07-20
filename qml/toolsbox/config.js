@@ -17,6 +17,19 @@ var DefaultAvatar = "qrc:/res/defaultAvatar.png"
 
 
 //////////////////////////////////////////////////
+var wallpaperUrl = [
+            "http://image.tianjimedia.com/uploadImages/2012/289/1V470P0X440K.jpg"
+            ,"http://img6.3lian.com/c23/desk4/02/31/d/06.jpg"
+            ,"http://www.bz55.com/uploads/allimg/150317/140-15031G15519-50.jpg"
+            ,"http://img.51ztzj.com/upload/image/20140403/sj2014040401_279x419.jpg"
+            ,"http://pic.desk.chinaz.com/file/201301/1/luolimn2_p.jpg"
+            ,"http://www.bz55.com/uploads/allimg/150518/139-15051Q02H7-51.jpg"
+            ,"http://img.25pp.com/uploadfile/bizhi/iphone5/2014/0903/20140903113415287_pcm.jpg"
+            ,"http://img.pconline.com.cn/images/upload/upc/tx/wallpaper/1303/25/c1/19222772_1364200930738.jpg"
+            ,"http://www.bz55.com/uploads/allimg/150707/139-150FG03416.jpg"
+            ,"http://www.bz55.com/uploads/allimg/150707/139-150FG03412.jpg"
+        ]
+
 //测试用的图片链接
 var testPicUrl = [
             "http://d.hiphotos.baidu.com/image/pic/item/72f082025aafa40f58e927daa964034f78f0198d.jpg"
