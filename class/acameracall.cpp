@@ -123,5 +123,4 @@ void ACameraCall::takePhoto()
 //    CHECK_EXCEPTION()
 }
 
-
-
+//»•µÙ◊¢ Õ£¨±‡“Îapk

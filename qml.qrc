@@ -122,5 +122,7 @@
         <file>qml/ui/listview/TListViewItem.qml</file>
         <file>qml/ui/mycase/DadaPhotoDetail.qml</file>
         <file>qml/controls/ScoreView.qml</file>
+        <file>qml/ddu/Belief.qml</file>
+        <file>qml/ui/img/TImageMirro.qml</file>
     </qresource>
 </RCC>

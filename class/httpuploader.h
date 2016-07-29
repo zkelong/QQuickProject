@@ -166,7 +166,7 @@ public:
     void setUrl(const QUrl& url);
 
     //QDeclarativeListProperty<HttpPostField> postFields();
-    Q_PROPERTY(QQmlListProperty<HttpPostField> postFields READ postFields)
+    //Q_PROPERTY(QQmlListProperty<HttpPostField> postFields READ postFields)
     qreal progress() const;
     HttpUploader::State state() const;
     QString errorString() const;

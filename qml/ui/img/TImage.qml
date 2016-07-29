@@ -68,7 +68,11 @@ View {
     Component {
         id: thue
         THueSaturation{}
-    }    
+    }
+    Component {
+        id: mir
+        TImageMirro{}
+    }
 
     ListModel {
         id: _model
@@ -83,6 +87,10 @@ View {
         ListElement {
             lid: 3
             strName: "HueSaturation"
+        }        
+        ListElement {
+            lid: 4
+            strName: "Mirro"
         }
     }
 
@@ -96,6 +104,9 @@ View {
             break;
         case 3:
             root.navigationView.push(thue)
+            break;
+        case 4:
+            root.navigationView.push(mir)
             break;
         }
     }

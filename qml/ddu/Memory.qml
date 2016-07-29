@@ -187,7 +187,28 @@ View {
                 }
             }
             onTextChanged: {
-                searchIndex = 0
+                if(button.state == "buttonUseless") {
+                    button.state = ""
+                    button.selectTen = true
+                    changeType.state = "typeUseless"
+                }
+                if(button.selectTen) {   //十位
+                    if(input_field.text == "") {
+                        searchIndex = 0
+                    } else {
+                        searchIndex = 10* (parseInt(input_field.text) + 1)
+                    }
+                } else {    //个位
+                    if(input_field.text == "") {
+                        Tools.showTip("个位不能为空")
+                        button.state = ""
+                        button.selectTen = true
+                        return
+                    }
+                    searchIndex = parseInt(input_field.text)
+                }
+                searchBeginIndex = searchIndex
+                console.log("search_index....", searchIndex)
             }
         }
 
@@ -251,6 +272,7 @@ View {
                     } else {    //个位
                         if(input_field.text == "") {
                             Tools.showTip("个位不能为空")
+                            button.selectTen = true
                             button.state = ""
                             return
                         }
@@ -465,15 +487,17 @@ View {
 
     //显示下一个
     function showNext() {
+        console.log("show_nex...", searchIndex)
         if(button.state !== "buttonUseless") {  //按照十位/个位显示
             if(button.selectTen) {   //十位
+                console.log("shownext...十位")
                 number.text = baseData[searchIndex].id
                 object.text = baseData[searchIndex].value
                 searchIndex++
                 if(searchIndex - searchBeginIndex > 9)
                     searchIndex = searchBeginIndex
-
             } else {    //个位
+                console.log("shownext...个位")
                 number.text = baseData[searchIndex].id
                 object.text = baseData[searchIndex].value
                 searchIndex += 10
@@ -482,6 +506,7 @@ View {
             }
         } else {  //全部显示--随机/顺序
             if(!changeType.selectOrder) { //随机
+                console.log("shownext...随机")
                 var index = Math.floor(Math.random() * (numberData.length - randomIndex))
                 if(index == numberData.length - randomIndex && index != 0)    //超出数组--小概率
                     index = numberData.length - randomIndex - 1
@@ -497,6 +522,7 @@ View {
                 else
                     randomIndex = 0
             } else {    //顺序
+                console.log("shownext...顺序")
                 if(orderIndex == 0) {
                     getShowIndex()
                 }
@@ -508,10 +534,10 @@ View {
                 object.text = baseData[orderIndex].value
             }
         }
+        console.log("show_nex..xxxxeee.", searchIndex)
     }
 
     function getShowIndex() {   //获取当前显示的下标
-
         if(number.text === baseData[baseData.length-1]) {
             orderIndex = 0
         } else {

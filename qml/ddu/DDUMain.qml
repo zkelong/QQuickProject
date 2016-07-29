@@ -71,12 +71,20 @@ View {
         id: nm
         Memory{}
     }
+    Component {
+        id: bf
+        Belief{}
+    }
 
     ListModel {
         id: _model
         ListElement {
             lid: 1
             strName: "NumberMemory"
+        }
+        ListElement {
+            lid: 2
+            strName: "Belief"
         }
     }
 
@@ -85,9 +93,9 @@ View {
         case 1:
             root.navigationView.push(nm)
             break;
-        //case 2:
-        //    root.navigationView.push(ani)
-        //    break;
+        case 2:
+            root.navigationView.push(bf)
+            break;
         //case 3:
         //    root.navigationView.push(comp)
         //    break;
