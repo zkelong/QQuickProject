@@ -55,6 +55,7 @@ OTHER_FILES += *.qml \
     qml/ui/properties/* \
     qml/ui/listview/* \
     qml/ui/qmlcomponents/*  \
+    qml/ui/text/*  \
     qml/pathviewEx/* \
     qml/ddu/* \
 

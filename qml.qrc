@@ -124,5 +124,9 @@
         <file>qml/controls/ScoreView.qml</file>
         <file>qml/ddu/Belief.qml</file>
         <file>qml/ui/img/TImageMirro.qml</file>
+        <file>qml/ui/text/TTextMain.qml</file>
+        <file>qml/ui/text/TextShow.qml</file>
+        <file>qml/controls/ShineText.qml</file>
+        <file>qml/ui/text/TShineText.qml</file>
     </qresource>
 </RCC>
