@@ -1,97 +1,67 @@
-#include "acameracall.h"
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QDebug>
-#include <QDateTime>
-#include <QFile>
-#include <QDebug>
+#include "callnativecamera.h"
+#include "callnativecamera_p.h"
 
-class ACameraCall;
-#ifdef Q_OS_ANDROID
+//! [url](http://blog.csdn.net/foruok/article/details/43560437)
 
-#define CHECK_EXCEPTION() {         \
-    QAndroidJniEnvironment env;     \
-    if(env->ExceptionCheck())       \
-    {                               \
-    qDebug() << "exception occured";\
-    env->ExceptionDescribe();       \
-    env->ExceptionClear();          \
-    }                               \
-}
+#ifdef  Q_OS_ANDROID
 
-const int ResultReceiverC::ReceiverRequestCode = 1;
+const int ResultReceiver::ReceiverRequestCode = 1000;
 
-
-ResultReceiverC::ResultReceiverC()
+void ResultReceiver::handleActivityResult(int receiverRequestCode, int resultCode, const QAndroidJniObject &data)
 {
-
-}
-//处理返回结果
-void ResultReceiverC::handleActivityResult(int receiverRequestCode, int resultCode, const QAndroidJniObject & data)
-{
+#ifdef QT_DEBUG
     qDebug() << "handleActivityResult, requestCode - " << receiverRequestCode
              << " resultCode - " << resultCode
              << " data - " << data.toString();
+#endif
     //RESULT_OK == -1
-    if(resultCode == -1 && receiverRequestCode == 1)
-    {
-        qDebug() << "captured image to - " << m_imagePath;
-        qDebug() << "captured image exist - " << QFile::exists(m_imagePath);
-        notify->succeed(m_imagePath);
+    if(resultCode == -1 && receiverRequestCode == ReceiverRequestCode) {
+#ifdef QT_DEBUG
+        qDebug() << "captured image to - " << imagePath;
+        qDebug() << "captured image exist - " << QFile::exists(imagePath);
+#endif
+        emit notify->ready("file://"+imagePath);
     } else {
-        if(!QFile::exists(m_imagePath))
-        {
-            emit notify->errored();
+        if(!QFile::exists(imagePath)) {
+            emit notify->error(CallNativeCamera::CaptureFail, imagePath + " Not Exists");
         } else {
-            emit notify->errored();
+            emit notify->error(CallNativeCamera::Unkonwn, data.toString());
         }
     }
 }
 #endif
 
-ACameraCall::ACameraCall(QObject *parent) : QObject(parent)
+void CallNativeCameraPrivate::startCapture()
 {
-#ifdef Q_OS_ANDROID
-    receiver = new ResultReceiverC();
-    receiver->notify = this;
-#endif
-}
-
-ACameraCall::~ACameraCall()
-{
-
-}
-
-void ACameraCall::takePhoto()
-{
-#ifdef Q_OS_ANDROID
-
-    //拍照activity
+#ifdef  Q_OS_ANDROID
     QAndroidJniObject action = QAndroidJniObject::fromString(
                 "android.media.action.IMAGE_CAPTURE");
     QAndroidJniObject intent("android/content/Intent",
                              "(Ljava/lang/String;)V",
                              action.object<jstring>());
 
-
-    //文件名，存储路径
+    //setup saved image location
     QString date = QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss");
+
+    // 给 filename 指定 DCIM 目录--digital camera in memory 的简写，即存照片的文件夹（数码相机）。常见于数码相机、手机存储卡中的文件夹名字
     QAndroidJniObject fileName = QAndroidJniObject::fromString("DCIM/" + date + ".jpg");
     QAndroidJniObject savedDir = QAndroidJniObject::callStaticObjectMethod(
                 "android/os/Environment",
                 "getExternalStorageDirectory",
                 "()Ljava/io/File;"
                 );
-    CHECK_EXCEPTION()
-            qDebug() << "savedDir - " << savedDir.toString();
+
+    Q_SAFE_CALL_JAVA
+
     QAndroidJniObject savedImageFile(
                 "java/io/File",
                 "(Ljava/io/File;Ljava/lang/String;)V",
                 savedDir.object<jobject>(),
                 fileName.object<jstring>());
-    CHECK_EXCEPTION()
-            qDebug() << "savedImageFile - " << savedImageFile.toString();
+
+
+    Q_SAFE_CALL_JAVA
+
     QAndroidJniObject savedImageUri =
             QAndroidJniObject::callStaticObjectMethod(
                 "android/net/Uri",
@@ -99,7 +69,8 @@ void ACameraCall::takePhoto()
                 "(Ljava/io/File;)Landroid/net/Uri;",
                 savedImageFile.object<jobject>());
 
-    CHECK_EXCEPTION()
+
+    Q_SAFE_CALL_JAVA
 
     //tell IMAGE_CAPTURE the output location
     QAndroidJniObject mediaStoreExtraOutput
@@ -107,7 +78,9 @@ void ACameraCall::takePhoto()
                 "android/provider/MediaStore",
                 "EXTRA_OUTPUT",
                 "Ljava/lang/String;");
-    CHECK_EXCEPTION()
+
+    Q_SAFE_CALL_JAVA
+
     qDebug() << "MediaStore.EXTRA_OUTPUT - " << mediaStoreExtraOutput.toString();
     intent.callObjectMethod(
                 "putExtra",
@@ -115,14 +88,17 @@ void ACameraCall::takePhoto()
                 mediaStoreExtraOutput.object<jstring>(),
                 savedImageUri.object<jobject>());
 
-    receiver->m_imagePath = savedImageFile.toString();
-    //获得拍照结果
-    QtAndroid::startActivity(intent, ResultReceiverC::ReceiverRequestCode,
-                  receiver);
-    CHECK_EXCEPTION()
-#else
-    emit errored();
+    this->resultReceiver->imagePath = savedImageFile.toString();
+
+    QtAndroid::startActivity(intent, ResultReceiver::ReceiverRequestCode,
+                             this->resultReceiver);
 #endif
 }
 
-//去掉注释，编译apk
+
+CallNativeCameraPrivate::CallNativeCameraPrivate()
+#ifdef  Q_OS_ANDROID
+    : resultReceiver(new ResultReceiver)
+#endif
+{
+}

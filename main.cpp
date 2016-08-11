@@ -9,6 +9,7 @@
 #include "kapplication.h"
 #include "qkit.h"
 #include "class/acameracall.h"
+#include "class/callnativecamera.h"
 #include "class/colormaker.h"
 
 int main(int argc, char *argv[])
@@ -28,6 +29,7 @@ int main(int argc, char *argv[])
     app.setFont(font);
     QQmlApplicationEngine engine;
     QKit::registerTypes(&engine);
+    engine.rootContext()->setContextProperty("CallNativeCamera", new CallNativeCamera(&engine));
 
     engine.rootContext()->setContextProperty("Utl", QQuickUtl::instance());
     engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));

@@ -14,7 +14,9 @@ SOURCES += main.cpp \
 #    libs/ImagePicker/ImagePicker.cpp
     class/databaseconnect.cpp \
     class/acameracall.cpp \
-    class/colormaker.cpp
+    class/colormaker.cpp \
+    class/callnativecamera.cpp \
+    class/callnativecamera_p.cpp
 
 
 RESOURCES += \
@@ -37,7 +39,9 @@ HEADERS += \
 #    libs/ImagePicker/ImagePicker.h
     class/databaseconnect.h \
     class/acameracall.h \
-    class/colormaker.h
+    class/colormaker.h \
+    class/callnativecamera.h \
+    class/callnativecamera_p.h
 
 OTHER_FILES += *.qml \
     qml/* \

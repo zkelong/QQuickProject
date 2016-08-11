@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import QtGraphicalEffects 1.0
-//import ACamera 1.0
+import ACameraCall 1.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
 import "../../toolsbox/font.js" as FontUtl
@@ -31,15 +31,31 @@ View {
             width: parent.width
             height: itemHeight
             Button {
-                width: Utl.dp(140)
+                width: Utl.dp(120)
                 height: width*.6
                 radius: Utl.dp(5)
-                anchors.centerIn: parent
-                label.text: qsTr("Android系统的")
+                anchors.right: parent.horizontalCenter
+                anchors.rightMargin: Utl.dp(8)
+                anchors.verticalCenter: parent.verticalCenter
+                label.text: qsTr("Android系统1")
                 color: Color.ButtonColor
                 onClicked: {
                     console.log("Android.....")
-                    //acamera.takePhoto()
+                    capture()
+                }
+            }
+            Button {
+                width: Utl.dp(120)
+                height: width*.6
+                radius: Utl.dp(5)
+                anchors.left: parent.horizontalCenter
+                anchors.leftMargin: Utl.dp(8)
+                anchors.verticalCenter: parent.verticalCenter
+                label.text: qsTr("Android系统2")
+                color: Color.ButtonColor
+                onClicked: {
+                    console.log("Android.....")
+                    acamera.takePhoto()
                 }
             }
         }
@@ -81,24 +97,36 @@ View {
         }
     }
 
-//    ACameraCall {
-//        id: acamera
-//        onCanceled: {
+    ACameraCall {
+        id: acamera
+        onCanceled: {
 
-//        }
-//        onErrored: {
-//        }
-//        onSucceed: {
-//            txt.text = path
-//            img.source = path
-//            img.visible = true
-//        }
-//    }
+        }
+        onErrored: {
+            console.log("Only Run Android")
+        }
+        onSucceed: {
+            txt.text = path
+            img.source = "file://" + path
+            img.visible = true
+        }
+    }
 
-    Text {
-        id: txt
-        width: parent.width
-        wrapMode: Text.WrapAnywhere
+
+    Button {
+        width: Utl.dp(40)
+        height: Utl.dp(30)
+        radius: Utl.dp(6)
+        anchors.left: parent.left
+        anchors.leftMargin: Utl.dp(10)
+        anchors.top: navbar.bottom
+        anchors.topMargin: Utl.dp(10)
+        border.color: Color.GreenTheme
+        border.width: Utl.dp(2)
+        label.text: "show"
+        onClicked: {
+            img.visible = true
+        }
     }
 
     Image {
@@ -111,6 +139,33 @@ View {
             onClicked: {
                 img.visible = false
             }
+        }
+        Text {
+            id: txt
+            width: parent.width
+            anchors.bottom: parent.bottom
+            wrapMode: Text.WrapAnywhere
+            color: "red"
+        }
+    }
+
+    function capture() {
+        try {
+            CallNativeCamera.ready.connect(function(path){
+                CallNativeCamera.ready.disconnect(arguments.callee);
+                console.log(path);
+                txt.text = path
+                img.source = path
+                img.visible = true
+            });
+            CallNativeCamera.error.connect(function(error, errorString){
+                CallNativeCamera.error.disconnect(arguments.callee);
+                console.log("errorCode:", error);
+                console.log("errorString:", errorString);
+            });
+            CallNativeCamera.capture();
+        } catch(e) {
+            console.log(e)
         }
     }
 }
