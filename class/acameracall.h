@@ -45,7 +45,9 @@ signals:
     void succeed(QString path);
 
 protected:
+#ifdef Q_OS_ANDROID
     ResultReceiverC * receiver;
+#endif
 
 };
 

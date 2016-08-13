@@ -66,6 +66,11 @@ View {
         StringOperator{}
     }
 
+    Component {
+        id: ar
+        ArrayRandomSelect{}
+    }
+
 
     ListModel {
         id: _model
@@ -77,10 +82,10 @@ View {
             lid: 2
             strName: "String对象"
         }
-//        ListElement {
-//            lid: 3
-//            strName: "HueSaturation"
-//        }
+        ListElement {
+            lid: 3
+            strName: "Array"
+        }
     }
 
     function toNext(id) {
@@ -92,7 +97,7 @@ View {
             root.navigationView.push(str)
             break;
         case 3:
-//            root.navigationView.push(thue)
+            root.navigationView.push(ar)
             break;
         }
     }
