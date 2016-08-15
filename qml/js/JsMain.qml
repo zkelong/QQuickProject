@@ -68,12 +68,20 @@ View {
 
     Component {
         id: ar
-        ArrayRandomSelect{}
+        TArray{}
     }
 
+    Component {
+        id: ob
+        TObject{}
+    }
 
     ListModel {
         id: _model
+        ListElement {
+            lid: 4
+            strName: "OBJECT"
+        }
         ListElement {
             lid: 1
             strName: "时间处理"
@@ -98,6 +106,9 @@ View {
             break;
         case 3:
             root.navigationView.push(ar)
+            break;
+        case 4:
+            root.navigationView.push(ob)
             break;
         }
     }

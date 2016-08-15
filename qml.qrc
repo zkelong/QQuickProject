@@ -128,6 +128,7 @@
         <file>qml/ui/text/TextShow.qml</file>
         <file>qml/controls/ShineText.qml</file>
         <file>qml/ui/text/TShineText.qml</file>
-        <file>qml/js/ArrayRandomSelect.qml</file>
+        <file>qml/js/TArray.qml</file>
+        <file>qml/js/TObject.qml</file>
     </qresource>
 </RCC>
