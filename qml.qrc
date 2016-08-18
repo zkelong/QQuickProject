@@ -130,5 +130,6 @@
         <file>qml/ui/text/TShineText.qml</file>
         <file>qml/js/TArray.qml</file>
         <file>qml/js/TObject.qml</file>
+        <file>qml/app/androidSys/TAudio.qml</file>
     </qresource>
 </RCC>

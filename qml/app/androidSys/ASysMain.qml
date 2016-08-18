@@ -67,6 +67,14 @@ View {
             lid: 1
             strName: "TCamera"
         }
+        ListElement {
+            lid: 1
+            strName: "TAudio"
+        }
+        ListElement {
+            lid: 1
+            strName: "TDir"
+        }
     }
 
     function toNext(id) {
