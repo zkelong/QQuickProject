@@ -8,6 +8,8 @@ import "./properties"
 import "./listview"
 import "./qmlcomponents"
 import "./text"
+import "./edit"
+import "./canvas"
 import "../toolsbox/config.js" as Config
 import "../toolsbox/font.js" as FontUtl
 
@@ -101,6 +103,14 @@ View {
         id: ttm
         TTextMain{}
     }
+    Component {
+        id: edit
+        EditMain{}
+    }
+    Component{
+        id: canvas
+        CanvasMain{}
+    }
 
     ListModel {
         id: _model
@@ -137,6 +147,14 @@ View {
             strName: "Text"
         }
         ListElement {
+            lid: 9
+            strName: "Edit"
+        }
+        ListElement {
+            lid: 10
+            strName: "Canvas"
+        }
+        ListElement {
             lid: 99
             strName: "MyCase"
         }
@@ -167,6 +185,12 @@ View {
             break;
         case 8:
             root.navigationView.push(ttm)
+            break;
+        case 9:
+            root.navigationView.push(edit)
+            break;
+        case 10:
+            root.navigationView.push(canvas)
             break;
         case 99:
             root.navigationView.push(mc)

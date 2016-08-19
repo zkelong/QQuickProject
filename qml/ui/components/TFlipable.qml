@@ -1,21 +1,31 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.3
 
-import "../controls"
+import "../../controls"
 
 View {
     id: root
+    hidenTabbarWhenPush: true
+
+    NavigationBar {
+        id: navbar
+        title: "Flipable"
+        onButtonClicked: {
+            root.navigationView.pop()
+        }
+    }
 
     Flipable {
         id: flipable
+        clip: true
         anchors.centerIn: parent
         width: parent.width/2
         height: width*1.5
 
         property bool flipped: false
 
-        front: Image {width: parent.width; height: parent.height; source: "qrc:/res/a.png"; anchors.centerIn: parent }
-        back: Image {width: parent.width; height: parent.height; source: "qrc:/res/a.jpg"; anchors.centerIn: parent }
+        front: Image {width: parent.width; height: parent.height; source: "qrc:/res/h1.jpg"; anchors.centerIn: parent }
+        back: Image {width: parent.width; height: parent.height; source: "qrc:/res/h2.png"; anchors.centerIn: parent }
 
         transform: Rotation {
             id: rotation
@@ -38,14 +48,6 @@ View {
         MouseArea {
             anchors.fill: parent
             onClicked: flipable.flipped = !flipable.flipped
-        }
-    }
-
-    TitleBar {
-        id: titleBar
-        anchors.top: parent.top; anchors.left: parent.left
-        onClicked: {
-            root.navigationView.pop()
         }
     }
 }

@@ -2,13 +2,23 @@ import QtQuick 2.0
 import QtQuick.Controls 1.3
 
 import "../../controls"
-import "../../net"
 
 View {
     id: root
+    hidenTabbarWhenPush: true
+
+    NavigationBar {
+        id: navbar
+        title: "Text"
+        onButtonClicked: {
+            root.navigationView.pop()
+        }
+    }
+
     Flickable{
+        clip: true
         width: parent.width
-        anchors.top: titleBar.bottom
+        anchors.top: navbar.bottom
         anchors.bottom: parent.bottom
         contentHeight: clo.height + Utl.dp(20)
         Column {
@@ -138,13 +148,6 @@ View {
                     }
                 }
             }
-        }
-    }
-    TitleBar {
-        id: titleBar
-        anchors.top: parent.top; anchors.left: parent.left
-        onClicked: {
-            root.navigationView.pop()
         }
     }
 }

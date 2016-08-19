@@ -60,6 +60,8 @@ OTHER_FILES += *.qml \
     qml/ui/listview/* \
     qml/ui/qmlcomponents/*  \
     qml/ui/text/*  \
+    qml/ui/edit/*  \
+    qml/ui/canvas/*  \
     qml/pathviewEx/* \
     qml/ddu/* \
 

@@ -1,10 +1,14 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.3
-
 import "../../controls"
+import "../../toolsbox/config.js" as Config
+import "../../toolsbox/font.js" as FontUtl
+import "../../toolsbox/color.js" as Color
 
 View {
     id: root
+    hidenTabbarWhenPush: false
+
     property string marqueeStr: qsTr("滚动展示，轮播不停。。。滚动展示，轮播不停。。。11");
     property int rollTextMarginLeft: 0
     property int rollTextWidth: 0
@@ -19,13 +23,16 @@ View {
         rollTextMarginTop = (rollTextBox1.height - rollText1.height)/2
     }
 
-    Rectangle {
-        anchors.top: titleBar.bottom; anchors.bottom: parent.bottom
-        anchors.left: parent.left; anchors.right: parent.right
+    Item {
+        anchors.top: navbar.bottom;
+        anchors.topMargin: Utl.dp(20)
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left;
+        anchors.right: parent.right
 
         Column {
             anchors.fill: parent
-            spacing: 10
+            spacing: Utl.dp(20)
 
             //左右跑
             Rectangle {
@@ -34,7 +41,7 @@ View {
                 anchors.horizontalCenter: parent.horizontalCenter
                 clip: true
                 border.width: 2
-                border.color: "#000000"
+                border.color: "#555555"
 
                 Text {
                     id: rollText
@@ -59,7 +66,7 @@ View {
                 anchors.horizontalCenter: parent.horizontalCenter
                 clip: true
                 border.width: 2
-                border.color: "#000000"
+                border.color: "#555555"
 
                 Text {
                     id: rollText1
@@ -113,10 +120,11 @@ View {
         }
     }
 
-    TitleBar {
-        id: titleBar
-        anchors.top: parent.top; anchors.left: parent.left
-        onClicked: {
+
+    NavigationBar {
+        id: navbar
+        title: "TextAnimation"
+        onButtonClicked: {
             root.navigationView.pop()
         }
     }

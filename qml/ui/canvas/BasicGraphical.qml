@@ -6,10 +6,19 @@ import "basicGraphics.js" as Bg
 
 View {
     id: root
+    hidenTabbarWhenPush: true
+
+    NavigationBar {
+        id: navbar
+        title: "BasicGraphical"
+        onButtonClicked: {
+            root.navigationView.pop()
+        }
+    }
 
     Rectangle {
         id: rect1
-        anchors.top: titleBar.bottom
+        anchors.top: navbar.bottom
         width: parent.width; height: parent.height / 5
         Canvas {
             id: canvas0
@@ -46,14 +55,6 @@ View {
                 ctx.fillStyle='#00ff00';
                 ctx.fill();
             }
-        }
-    }
-
-    TitleBar {
-        id: titleBar
-        anchors.top: parent.top; anchors.left: parent.left
-        onClicked: {
-            root.navigationView.pop()
         }
     }
 }

@@ -131,5 +131,24 @@
         <file>qml/js/TArray.qml</file>
         <file>qml/js/TObject.qml</file>
         <file>qml/app/androidSys/TAudio.qml</file>
+        <file>qml/ui/text/TextAnimation.qml</file>
+        <file>qml/ui/edit/TestTextArea.qml</file>
+        <file>qml/ui/edit/TestTextEdit.qml</file>
+        <file>qml/ui/edit/TestTextField.qml</file>
+        <file>qml/ui/edit/TestTextInput.qml</file>
+        <file>qml/ui/edit/EditMain.qml</file>
+        <file>qml/ui/components/TFlipable.qml</file>
+        <file>qml/ui/canvas/BasicGraphical.qml</file>
+        <file>qml/ui/canvas/basicGraphics.js</file>
+        <file>qml/ui/canvas/CanvasMain.qml</file>
+        <file>qml/ui/canvas/ClipImage.qml</file>
+        <file>qml/ui/canvas/PieChart.qml</file>
+        <file>qml/ui/canvas/QChart.js</file>
+        <file>qml/ui/canvas/QChart.qml</file>
+        <file>qml/ui/canvas/QChartGallery.js</file>
+        <file>qml/ui/canvas/sampleGraphics.js</file>
+        <file>qml/ui/canvas/StatisticalChart.qml</file>
+        <file>qml/ui/canvas/statisticsGraphics.js</file>
+        <file>qml/ui/canvas/TestQChart.qml</file>
     </qresource>
 </RCC>

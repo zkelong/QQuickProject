@@ -65,6 +65,10 @@ View {
         id: tst
         TShineText{}
     }
+    Component {
+        id: txtA
+        TextAnimation{}
+    }
 
     ListModel {
         id: _model
@@ -91,7 +95,7 @@ View {
             root.navigationView.push(tst)
             break;
         case 3:
-            //root.navigationView.push(tls)
+            root.navigationView.push(txtA)
             break;
         }
     }

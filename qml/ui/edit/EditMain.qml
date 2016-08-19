@@ -2,7 +2,6 @@ import QtQuick 2.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
 import "../../toolsbox/font.js" as FontUtl
-import "."
 
 View {
     id: root
@@ -12,7 +11,7 @@ View {
 
     NavigationBar {
         id: navbar
-        title: "Components"
+        title: "Text"
         onButtonClicked: {
             root.navigationView.pop()
         }
@@ -58,77 +57,55 @@ View {
     }
 
     Component {
-        id: tbtn
-        TButtonGroup{}
+        id: ta
+        TestTextArea{}
     }
     Component {
-        id: tpf
-        TPullFlickable{}
+        id: te
+        TestTextEdit{}
     }
     Component {
-        id: tw
-        TWaterfallView{}
+        id: tf
+        TestTextField{}
     }
     Component {
-        id: ad
-        TAdcolumn{}
-    }
-    Component {
-        id: tpl
-        TPullListView{}
-    }
-    Component {
-        id: tfl
-        TFlipable{}
+        id: ti
+        TestTextInput{}
     }
 
     ListModel {
         id: _model
         ListElement {
             lid: 1
-            strName: "ButtonGroup"
+            strName: "TextArea"
         }
         ListElement {
             lid: 2
-            strName: "PullFlickable"
+            strName: "TextEdit"
         }
         ListElement {
             lid: 3
-            strName: "WaterfallView"
+            strName: "TextField"
         }
         ListElement {
             lid: 4
-            strName: "Adcolumn"
-        }
-        ListElement {
-            lid: 5
-            strName: "PullListView"
-        }
-        ListElement {
-            lid: 6
-            strName: "Flipable"
+            strName: "TextInput"
         }
     }
 
     function toNext(id) {
         switch(id) {
         case 1:
-            root.navigationView.push(tbtn)
+            root.navigationView.push(ta)
             break;
         case 2:
-            root.navigationView.push(tpf)
+            root.navigationView.push(te)
             break;
         case 3:
-            root.navigationView.push(tw)
+            root.navigationView.push(tf)
             break;
         case 4:
-            root.navigationView.push(ad)
-            break;
-        case 5:
-            root.navigationView.push(tpl)
-            break;
-        case 6:
-            root.navigationView.push(tfl)
+            root.navigationView.push(ti)
             break;
         }
     }

@@ -8,6 +8,7 @@ import "../../toolsbox/color.js" as Color
 //图像处理HueSaturation
 View {
     id: root
+    hidenTabbarWhenPush: false
 
     NavigationBar {
         id: navbar

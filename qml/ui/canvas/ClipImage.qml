@@ -6,10 +6,19 @@ import "basicGraphics.js" as Bg
 
 View {
     id: root
+    hidenTabbarWhenPush: true
+
+    NavigationBar {
+        id: navbar
+        title: "ClipImage"
+        onButtonClicked: {
+            root.navigationView.pop()
+        }
+    }
 
     Rectangle {
         id: rect1
-        anchors.top: titleBar.bottom
+        anchors.top: navbar.bottom
         width: parent.width; height: parent.height / 3.3
 
         Canvas {
@@ -39,7 +48,7 @@ View {
                 if(imageData != null) {
                     var path = "e:/"+new Date().getTime()+".png"
                     console.log("path...", path)
-                    root.save(path)
+                    //root.save(path)
                 }
             }
             onPainted: {    //绘制完成保存
@@ -52,7 +61,7 @@ View {
             onLoadReadyChanged: {
                 if(loadReady) {
                     console.log("path...", savePath)
-                    canvas1.save(savePath)
+                    //canvas1.save(savePath)
                     loadReady = false
                 }
             }
@@ -64,7 +73,7 @@ View {
         width: 280
         visible: false
         fillMode: Image.PreserveAspectFit
-        source: "file:///E:/QtSpace/QtQml/QtQuick/res/10.jpg"
+        source: "qrc:/res/a4.jpg"
         onStatusChanged: {
             if(img.status == Image.Ready){
                 canvas1.width = img.width
@@ -80,7 +89,7 @@ View {
         width: 280
         anchors.top: rect1.bottom
         fillMode: Image.PreserveAspectFit
-        source: "file:///E:/QtSpace/QtQml/QtQuick/res/10.jpg"
+        source: "qrc:/res/a2.jpg"
     }
 
     Rectangle {
@@ -138,14 +147,6 @@ View {
 //                if(loadReady)
 //                    canvas12.save("e:/test.png")
 //            }
-        }
-    }
-
-    TitleBar {
-        id: titleBar
-        anchors.top: parent.top; anchors.left: parent.left
-        onClicked: {
-            root.navigationView.pop()
         }
     }
 }

@@ -163,7 +163,6 @@ Rectangle{
             }
         }
 
-
         Button {
             id:cancelBtn
             width: Utl.dp(40)

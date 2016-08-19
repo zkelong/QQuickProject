@@ -12,7 +12,7 @@ View {
 
     NavigationBar {
         id: navbar
-        title: "Components"
+        title: "CanvasMain"
         onButtonClicked: {
             root.navigationView.pop()
         }
@@ -57,78 +57,36 @@ View {
         }
     }
 
-    Component {
-        id: tbtn
-        TButtonGroup{}
+
+    Component {   //基础图形
+        id: bgView
+        BasicGraphical {}
     }
+
     Component {
-        id: tpf
-        TPullFlickable{}
-    }
-    Component {
-        id: tw
-        TWaterfallView{}
-    }
-    Component {
-        id: ad
-        TAdcolumn{}
-    }
-    Component {
-        id: tpl
-        TPullListView{}
-    }
-    Component {
-        id: tfl
-        TFlipable{}
+        id: clip
+        ClipImage {}
     }
 
     ListModel {
         id: _model
         ListElement {
             lid: 1
-            strName: "ButtonGroup"
+            strName: "基础图形"
         }
         ListElement {
             lid: 2
-            strName: "PullFlickable"
-        }
-        ListElement {
-            lid: 3
-            strName: "WaterfallView"
-        }
-        ListElement {
-            lid: 4
-            strName: "Adcolumn"
-        }
-        ListElement {
-            lid: 5
-            strName: "PullListView"
-        }
-        ListElement {
-            lid: 6
-            strName: "Flipable"
+            strName: "裁剪图片"
         }
     }
 
     function toNext(id) {
         switch(id) {
         case 1:
-            root.navigationView.push(tbtn)
+            root.navigationView.push(bgView)
             break;
         case 2:
-            root.navigationView.push(tpf)
-            break;
-        case 3:
-            root.navigationView.push(tw)
-            break;
-        case 4:
-            root.navigationView.push(ad)
-            break;
-        case 5:
-            root.navigationView.push(tpl)
-            break;
-        case 6:
-            root.navigationView.push(tfl)
+            root.navigationView.push(clip)
             break;
         }
     }
