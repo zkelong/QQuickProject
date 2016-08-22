@@ -61,6 +61,11 @@ View {
         TCamera{}
     }
 
+    Component {
+        id: ta
+        TAudio{}
+    }
+
     ListModel {
         id: _model
         ListElement {
@@ -68,11 +73,16 @@ View {
             strName: "TCamera"
         }
         ListElement {
-            lid: 1
+            lid: 2
             strName: "TAudio"
         }
+        ListElement{
+            lid: 3
+            strName: "TMedia"
+        }
+
         ListElement {
-            lid: 1
+            lid: 4
             strName: "TDir"
         }
     }
@@ -83,10 +93,7 @@ View {
             root.navigationView.push(ca)
             break;
         case 2:
-//            root.navigationView.push(tri)
-            break;
-        case 3:
-//            root.navigationView.push(thue)
+            root.navigationView.push(ta)
             break;
         }
     }

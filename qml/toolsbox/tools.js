@@ -205,6 +205,19 @@ function dateSubtion(time1, time2) {
     return rData
 }
 
+//传入时间长度(s)，放回 00:00:00 格式的字符串
+function getTimeFormat(time) {
+    time = time || 0
+    var hour = Math.floor(time / (60 * 60))
+    var minute = Math.floor(time % (60 * 60) / 60)
+    var second = Math.floor(time % 60)
+    var ret = ""
+    ret += hour > 9 ? hour : "0" + hour
+    ret += ":" + ("00" + minute).slice(-2)
+    ret += ":" + ("00" + second).slice(-2)
+    return ret
+}
+
 //获取一年的天数
 function getYearDays(year) {
     var days =  new Date(year, 2, 0).getDate();    //2月份的天数，日传0，上个月的最后一天

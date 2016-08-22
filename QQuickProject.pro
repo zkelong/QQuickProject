@@ -16,7 +16,8 @@ SOURCES += main.cpp \
     class/acameracall.cpp \
     class/colormaker.cpp \
     class/callnativecamera.cpp \
-    class/callnativecamera_p.cpp
+    class/callnativecamera_p.cpp \
+    class/audio.cpp
 
 
 RESOURCES += \
@@ -41,7 +42,8 @@ HEADERS += \
     class/acameracall.h \
     class/colormaker.h \
     class/callnativecamera.h \
-    class/callnativecamera_p.h
+    class/callnativecamera_p.h \
+    class/audio.h
 
 OTHER_FILES += *.qml \
     qml/* \
@@ -86,5 +88,7 @@ DISTFILES += \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew.bat
+    source/music.mp3
+    source/videoviewdemo.mp4
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
