@@ -13,6 +13,7 @@ ListView {
     signal reload //重新加载
     signal loadmore //加载更多
     property real maxDragdownDistance: Utl.dp(120)  //最大下拉距离
+    property bool loadFinish: false //加载完成
 
     property real oldTopMargin: -1
 
@@ -87,16 +88,21 @@ ListView {
     Component.onCompleted:  {
         pullItem = pullComponent.createObject(root.contentItem)
         pullItem.y = -(pullItem.height + root.topMargin)
-        if(loading){
-            _doStartAction(true)
-        }
+        //if(loading){
+        //    _doStartAction(true)
+        //}
     }
 
-    onContentHeightChanged: {   //显示脚
-        if(contentHeight > 0 && root.height > 0 && contentHeight > root.height) //出现负数
-            isFooter = true
-        else
-            isFooter = false
+    onLoadingChanged: {
+        if(loading) { //开始加载
+            if(contentHeight > 0 && root.height > 0 && contentHeight < root.height) //出现负数
+                isFooter = false
+        } else {    //结束加载
+            if(contentHeight > 0 && root.height > 0 && contentHeight > root.height) //出现负数
+                isFooter = true
+            else
+                isFooter = false
+        }
     }
 
     Timer{
@@ -152,13 +158,14 @@ ListView {
                         refreshImg.source = "qrc:/res/refresh_0.png"
                     }
 
+                    if(loadFinish)
+                        return qsTr("加载完成")
                     if(root.freshRun){
                         return qsTr("加载中")
                     }
                     if(root.pullProgress >= 1){
                         return qsTr("释放刷新")
                     }
-
                     return qsTr("下拉刷新")
                 }
 
@@ -246,22 +253,26 @@ ListView {
         }
     }
 
-    NumberAnimation on topMargin {  //显示出刷新栏
+    NumberAnimation on contentY/*topMargin*/ {  //显示出刷新栏--topMargin,加载数据后动画执行到一半就挺了，
         id: startAnimation
         running: false
-        from: root.topMargin
-        to: oldTopMargin + pullItem.height
+        from: root.contentY //root.topMargin
+        to: root.contentY - pullItem.height //oldTopMargin + pullItem.height + root.originY
         onStopped: {
             root.freshRun = true
         }
     }
 
-    NumberAnimation on topMargin {  //隐藏刷新栏
+    NumberAnimation on contentY/*topMargin*/ {  //隐藏刷新栏
         id: stopAnimation
         running: false
-        from: root.topMargin
-        to: oldTopMargin
+        from: root.contentY //root.topMargin
+        to: -oldTopMargin
+        onStarted: {
+            loadFinish = true
+        }
         onStopped: {
+            loadFinish = false
             if(!loading){
                 root.contentY = -oldTopMargin
                 root.topMargin = oldTopMargin

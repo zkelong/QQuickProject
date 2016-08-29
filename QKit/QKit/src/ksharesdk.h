@@ -19,6 +19,7 @@ public:
     Q_INVOKABLE void showShare(QString title, QString text, QString url, QString imagePath, bool showEdit, KShareSDKListenner* listenner = nullptr);
     Q_INVOKABLE void doShare(QString platform, QString title, QString text, QString url, QString imagePath,KShareSDKListenner* listenner = nullptr);
     Q_INVOKABLE void doLogin(QString platform,KShareSDKListenner* listenner = nullptr);
+    Q_INVOKABLE void loginout(QString platform);
     
     Q_INVOKABLE void connectSinaWeibo(QString appkey, QString appSecret, QString redirectUri, bool useSSO);
     Q_INVOKABLE void connectTencentWeibo(QString appkey, QString appSecret, QString redirectUri);

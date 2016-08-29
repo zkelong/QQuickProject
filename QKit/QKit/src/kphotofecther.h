@@ -27,10 +27,14 @@ public:
     //获取系统相册列表
     Q_INVOKABLE void photoGroups();
     //获取某个相册的所有相片地址列表
-    Q_INVOKABLE void photosWithGroupUrl(QString url);    
+    Q_INVOKABLE void photosWithGroupUrl(QString url);
+
+    //拍照
+    Q_INVOKABLE void takeImage(bool editing = false);
 signals:
     void photoGroupCallback(PhotoGroup* group);
     void photoCallback(QString photoUrl);
+    void imageTook(QString path);
 
 public slots:
 };

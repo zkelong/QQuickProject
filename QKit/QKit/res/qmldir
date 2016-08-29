@@ -17,6 +17,7 @@ ImageCaptureDelegate 1.0 ImageCaptureDelegate.qml
 ImageTaker 1.0 ImageTaker.qml
 ImageLoader 1.0 ImageLoader.qml
 ImageEditor 1.0 ImageEditor.qml
+InterceptImage 1.0 InterceptImage.qml
 singleton Request 1.0 Request.qml
 singleton ShareSdkPlatform 1.0 ShareSdkPlatform.qml
 singleton ImageTakeHelper 1.0 ImageTakeHelper.qml

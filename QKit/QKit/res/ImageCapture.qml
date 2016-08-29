@@ -75,15 +75,17 @@ Rectangle {
                         path = FileTools.rotateImage(path, 90);
                     }
 
+                    var new_path = FileTools.scaleImageAndSave(path, 1200*1000);
+
                     if(!editable) {
                         if(delegate && delegate.imageSaved){
-                            delegate.imageCaptured(requestId, "file:///" + path)
-                            delegate.imageSaved(requestId, path)
+                            delegate.imageCaptured(requestId, "file:///" + new_path)
+                            delegate.imageSaved(requestId, new_path)
                         }
                     } else {
                         var editor = editorCmp.createObject(root);
                         editor.requestId = requestId;
-                        editor.imageUrl = "file:///" + path;
+                        editor.imageUrl = "file:///" + new_path;
                         editor.done.connect(editDone);
                     }
                 }

@@ -22,7 +22,8 @@ void _onPlatformComplete(const char* platform,
                          const char* userIcon,
                          const char* token,
                          const char* tokenSecret,
-                         long long expiresTime);
+                         long long expiresTime,
+                         const char* );
 void _onPlatformCancel(const char* platform);
 
 JNIEXPORT void JNICALL Java_qkit_KShareSdk_onPlatformError(JNIEnv *env, jclass, jstring platform)
@@ -39,7 +40,8 @@ JNIEXPORT void JNICALL Java_qkit_KShareSdk_onPlatformComplete(JNIEnv *env, jclas
                                                               jstring userIcon,
                                                               jstring token,
                                                               jstring tokenSecret,
-                                                              jlong expiresTime)
+                                                              jlong expiresTime,
+                                                              jstring sourceData)
 {
     qDebug() << "********** Java_qkit_KShareSdk_onPlatformComplete";
     const char* c_platform = env->GetStringUTFChars(platform,NULL);
@@ -48,7 +50,9 @@ JNIEXPORT void JNICALL Java_qkit_KShareSdk_onPlatformComplete(JNIEnv *env, jclas
     const char* c_userIcon = env->GetStringUTFChars(userIcon, NULL);
     const char* c_token = env->GetStringUTFChars(token, NULL);
     const char* c_tokenSecret = env->GetStringUTFChars(tokenSecret, NULL);
-    _onPlatformComplete(c_platform, c_userId, c_userName, c_userIcon, c_token, c_tokenSecret, (long long)expiresTime);
+    const char* c_sourceData = env->GetStringUTFChars(tokenSecret, NULL);
+
+    _onPlatformComplete(c_platform, c_userId, c_userName, c_userIcon, c_token, c_tokenSecret, (long long)expiresTime, c_sourceData);
 }
 
 JNIEXPORT void JNICALL Java_qkit_KShareSdk_onPlatformCancel(JNIEnv *env, jclass, jstring platform)
@@ -75,10 +79,11 @@ void _onPlatformComplete(const char* platform,
                          const char* userIcon,
                          const char* token,
                          const char* tokenSecret,
-                         long long expiresTime)
+                         long long expiresTime,
+                         const char* sourceData)
 {
     if(!s_sharesdk_listenner) return;
-    emit s_sharesdk_listenner->platformComplete(platform, userId, userName, userIcon, token, tokenSecret, expiresTime);
+    emit s_sharesdk_listenner->platformComplete(platform, userId, userName, userIcon, token, tokenSecret, expiresTime, sourceData);
     s_sharesdk_listenner = nullptr;
 }
 
@@ -595,4 +600,16 @@ void sharesdk_doLogin(QString platform, KShareSDKListenner* listenner)
                                               jPlatform.object<jstring>());
 }
 
+
+/**
+ * 退出登录
+ * @param platform 平台名称
+ */
+void sharesdk_loginout(QString platform)
+{
+    QAndroidJniObject jPlatform = QAndroidJniObject::fromString(platform);
+    QAndroidJniObject::callStaticMethod<void>("qkit/KShareSdk","doLoginout",
+                                              "(Ljava/lang/String;)V",
+                                              jPlatform.object<jstring>());
+}
 

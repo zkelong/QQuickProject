@@ -6,10 +6,18 @@
 #include "kdir.h"
 #include "qkit.h"
 #include "file_tools.h"
+#include <math.h>
+
+#include <QJSValue>
 
 
 static KFileTools*  s_file_tools = nullptr;
 
+
+class QQuickImageBase : public QObject{
+public:
+    QImage image() const;
+};
 
 
 KFileTools::KFileTools(QObject *parent) : QObject(parent)
@@ -57,6 +65,64 @@ QImage KFileTools::scaleImage(QString path, int maxArea)
     if(scale >= 1)
         return img;
     return img.scaled(img.width()*scale, img.height()*scale);
+}
+
+QString KFileTools::scaleImageAndSave(QString path, qreal maxArea)
+{
+    QImageReader reader(path);
+    if(!reader.canRead())
+        return path;
+    /*
+    QImage img = reader.read();
+    if(img.isNull())
+        return path;
+
+    int64_t originArea = (int64_t)img.width()*img.height();
+    float scale = float(maxArea/originArea);
+    if(scale >= 1)
+        return path;
+    qDebug() << "#####" << img.width() << " " << img.height() << " " << scale << " " <<maxArea <<" " << originArea;
+    int sw = int(img.width()*scale);
+    int sh = int(img.height()*scale);
+    qDebug() << "#####" << sw << " " << sh;
+    img = img.scaled(sw, sh);
+
+    path =  QKit::instance()->runTimeCachePath() + "/" + QKit::instance()->randString(8) + getFileExtension(path);
+    img.save(path);
+    */
+
+    auto sz = reader.size();
+    int64_t originArea = (int64_t)sz.width()*sz.height();
+    float scale = float(maxArea/originArea);
+    if(scale >= 1)
+        return path;
+    qDebug() << "##### originArea:" << originArea << " maxArea:" << maxArea << " scale:" << scale ;
+
+    scale = sqrtf(scale);
+    qDebug() << "scale:" << scale;
+    int sw = int(sz.width()*scale);
+    int sh = int(sz.height()*scale);
+    QSize ssz(sw, sh);
+
+    qDebug() << "sw:" << sw <<" sh:" << sh << " rt:" << ssz;
+
+    reader.setScaledSize(ssz);
+    QImage img = reader.read();
+    if(img.isNull())
+        return path;
+
+    path =  QKit::instance()->runTimeCachePath() + "/" + QKit::instance()->randString(8) + getFileExtension(path);
+    img.save(path);
+    return path;
+}
+
+QString KFileTools::getFileExtension(QString path)
+{
+    int pos = path.lastIndexOf('.');
+    if(pos == -1) {
+        return QString();
+    }
+    return path.right(path.length() - pos);
 }
 
 QString KFileTools::readablePath(QString path)
@@ -121,4 +187,16 @@ QString KFileTools::rotateImage(QString path, qreal angle)
     QImage newImg = img.transformed(trans);
     newImg.save(path);
     return path;
+}
+
+bool KFileTools::clipImageAndSave(QObject *image, qreal clipX, qreal clipY, qreal clipW, qreal clipH, QString path)
+{
+    QQuickImageBase *im = dynamic_cast<QQuickImageBase*>(image);
+    if(!im){
+        qDebug() << "KFileTools::clipImageAndSave() the object is not qml image ";
+        return false;
+    }
+    QImage copy = im->image().copy(clipX,clipY,clipW,clipH);
+
+    return copy.save(path);
 }

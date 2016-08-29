@@ -1,18 +1,10 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.1
 import ColorMaker 1.0
-import ACamera 1.0
 
 Rectangle {
     width: 360;
     height: 360;
-
-    ACameraCall {
-        id: ac
-        onSucceed: {
-            console.log("path....", path)
-        }
-    }
 
     Rectangle {
         width: 30

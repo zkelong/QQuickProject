@@ -1,6 +1,7 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <ImageIO/ImageIO.h>
+#import <UIKit/UIKit.h>
 
 #if defined(Q_OS_MAC)
 #import <CoreServices/CoreServices.h>
@@ -18,6 +19,13 @@ static NSLock* s_ALLocker = nullptr;
 void file_tools_init()
 {
     if (!library) {
+        ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
+        if (author == ALAuthorizationStatusRestricted || author == ALAuthorizationStatusDenied) {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"应用未获得访问照片的授权，您可以在隐私设置中开启" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+            [alert release];
+            return;
+        }
         library = [[ALAssetsLibrary alloc]init];
         assets_cache = [[NSMutableDictionary alloc]init];
         s_ALLocker = [[NSLock alloc] init];
@@ -201,23 +209,15 @@ bool ios_copyImageToPath(QString srcUrl, QString dstPath)
         return false;
     }
 
-    CGImageRef img = [[asset defaultRepresentation] fullResolutionImage];
 
-    CFURLRef tUrl = (CFURLRef)[NSURL fileURLWithPath:dstPath.toNSString()];
-    CGImageDestinationRef destination = CGImageDestinationCreateWithURL(tUrl, kUTTypePNG, 1, NULL);
-    if (!destination) {
-        NSLog(@"Failed to create CGImageDestination for %@", dstPath.toNSString());
-        return false;
-    }
-
-    CGImageDestinationAddImage(destination, img, nil);
-    if (!CGImageDestinationFinalize(destination)) {
-        NSLog(@"Faild to write image to %@", dstPath.toNSString());
-        CFRelease(destination);
-        return true;
-    }
-    CFRelease(destination);
-    return true;
+    ALAssetRepresentation *defaultRep = [asset defaultRepresentation];
+    //UIImage* img = [UIImage imageWithCGImage:[defaultRep fullResolutionImage] scale:[defaultRep scale] orientation:(UIImageOrientation)[defaultRep orientation]];
+    UIImage* img = [UIImage imageWithCGImage:[defaultRep fullScreenImage] scale:[defaultRep scale] orientation:(UIImageOrientation)[defaultRep orientation]];
+//    if(img.imageOrientation != UIImageOrientationUp){
+//        
+//    }
+    NSData* data = UIImagePNGRepresentation(img);
+    return [data writeToFile:dstPath.toNSString() atomically:YES];
 }
 
 

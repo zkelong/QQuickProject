@@ -11,6 +11,7 @@
 #include "class/acameracall.h"
 #include "class/callnativecamera.h"
 #include "class/colormaker.h"
+#include "class/audio.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<HttpUploader>("HttpUp", 1, 0, "HttpUploader");
     qmlRegisterType<ACameraCall>("ACameraCall", 1,0, "ACameraCall");
     qmlRegisterType<ColorMaker>("ColorMaker", 1, 0, "ColorMaker");
+    qmlRegisterType<Audio>("QAudio", 1, 0, "QAudio");
 
     KApplication app(argc, argv);
     QFont font;

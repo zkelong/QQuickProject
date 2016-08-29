@@ -60,9 +60,25 @@ public:
 
     //获取版本名
     Q_INVOKABLE QString getAppVersionName();
+    
+    //获取版本号
+    Q_INVOKABLE QString getAppVersionCode();
 
+    
+    //获取指定的元数据
+    Q_INVOKABLE QString getMetaDataForKey(QString key);
+    
     //使用外部程序打开url
     Q_INVOKABLE bool openUrl(QString url);
+
+    //打开设置
+    Q_INVOKABLE void openSettings(QString name);
+    
+    //检测是否为ipv6
+    Q_INVOKABLE bool isIPV6Network();
+
+    //设置桌面icon角标
+    Q_INVOKABLE void setApplicationIconBadgeNumber(int val);
 
 signals:
 

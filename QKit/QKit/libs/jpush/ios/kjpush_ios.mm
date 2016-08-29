@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "APService.h"
+#import "JPUSHService.h"
 
 #include <QObject>
 #include "kjpush_bridge.h"
@@ -12,20 +12,20 @@ void jpush_init()
 {
     if ([UIDevice currentDevice].systemVersion.floatValue >= 8.0) {
         //可以添加 categories
-        [APService registerForRemoteNotificationTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+        [JPUSHService registerForRemoteNotificationTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
     } else {
         //categories 必须为nil
-        [APService registerForRemoteNotificationTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
+        [JPUSHService registerForRemoteNotificationTypes:UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert categories:nil];
     }
-    [APService setupWithOption:s_launchingOption];
+    [JPUSHService setupWithOption:s_launchingOption];
 }
 
 void jpush_setDebugMode(bool value)
 {
     if (value) {
-        [APService setDebugMode];
+        [JPUSHService setDebugMode];
     } else {
-        [APService setLogOFF];
+        [JPUSHService setLogOFF];
     }
     
 }
@@ -33,7 +33,7 @@ void jpush_setDebugMode(bool value)
 
 void jpush_setAlias(QString alias)
 {
-    [APService setAlias:alias.toNSString() callbackSelector:nil object:nil];
+    [JPUSHService setAlias:alias.toNSString() callbackSelector:nil object:nil];
 }
 
 void jpush_setTags(QVariantList tags)
@@ -42,13 +42,13 @@ void jpush_setTags(QVariantList tags)
     for(auto it = tags.begin(); it != tags.end(); ++it){
         [nst addObject:(*it).toString().toNSString()];
     }
-    [APService setTags:nst callbackSelector:nil object:nil];
+    [JPUSHService setTags:nst callbackSelector:nil object:nil];
     
 }
 
 void jpush_clearAllNotifications()
 {
-    [APService clearAllLocalNotifications];
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    [JPUSHService resetBadge];
+    [JPUSHService clearAllLocalNotifications];
 }
 

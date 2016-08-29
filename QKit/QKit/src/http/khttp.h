@@ -21,6 +21,7 @@ class KHttp : public QObject, public QQmlParserStatus
     Q_PROPERTY(QString errorString READ errorString)
     Q_PROPERTY(QString responseText READ responseText)
     Q_PROPERTY(QString method READ method)
+    Q_PROPERTY(int timeout MEMBER m_timeout)
     Q_CLASSINFO("DefaultProperty", "postFields")
 public:
     //! State of the uploader object (compatible with XMLHttpRequest state)
@@ -81,6 +82,9 @@ signals:
     void progressChanged();
     void stateChanged();
     void statusChanged();
+    
+public:
+    int m_timeout;
 
 private:
     static void appendFunction(QQmlListProperty<KHttpField> *, KHttpField*);

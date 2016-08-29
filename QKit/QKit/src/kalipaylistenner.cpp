@@ -42,7 +42,7 @@ void removeAlipayListenner(KAlipayListenner* listenner)
     for(auto i = s_alipay_listenners.begin(); i != s_alipay_listenners.end(); ++i){
         if( (*i) == listenner ){
             s_alipay_listenners.erase(i);
-            return;
+            break;
         }
     }
     s_alipay_lock.unlock();

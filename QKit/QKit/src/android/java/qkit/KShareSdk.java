@@ -1,6 +1,8 @@
 package qkit;
 
 import java.util.HashMap;
+import java.util.Iterator;
+
 
 import android.util.Log;
 import cn.sharesdk.framework.Platform;
@@ -8,7 +10,13 @@ import cn.sharesdk.framework.Platform.ShareParams;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.wechat.moments.*;
+import cn.sharesdk.wechat.favorite.*;
+import cn.sharesdk.wechat.friends.Wechat;
 import qkit.KActivity;
+
+import java.util.Map.Entry; 
 
 public class KShareSdk {
 
@@ -84,34 +92,78 @@ public class KShareSdk {
 	 * @param url 链接地址
 	 * @param imagePath 图片地址(可以是本地或网络图片)
 	 */
-        public static void doShare(final String platform,final String title, final String text, final String url, final String imagePath)
-	{
-            KActivity.s_activity.runOnUiThread(new Runnable() {
+         public static void doShare(final String platform,final String title, final String text, final String url, final String imagePath)
+         {
+             KActivity.s_activity.runOnUiThread(new Runnable() {
 
-                    @Override
-                    public void run() {
-                        ShareParams sp = new ShareParams();
-                        sp.setTitle(title);
-                        sp.setTitleUrl(url);
-                        sp.setText(text);
-                        sp.setSite(s_appName);
-                        sp.setSiteUrl(url);
-                        if(imagePath.length() > 0){
-                                if(imagePath.indexOf("http") == 0){
-                                        sp.setImageUrl(imagePath);
-                                } else {
-                                        sp.setImageUrl(imagePath);
-                                }
-                        }
-                        Platform pl = ShareSDK.getPlatform(platform);
-                        KShareSdk.setHandler(pl);
-                        pl.share(sp);
+                     @Override
+                     public void run() {
+                         final ShareParams sp = new ShareParams();
+                         sp.setTitle(title);
+                         sp.setTitleUrl(url);
+                         sp.setText(text);
+                         sp.setSite(s_appName);
+                         sp.setSiteUrl(url);
+                         sp.setUrl(url);
+                         Log.d("KShareSdk", "platform=" + platform + " title=" + title + " text=" + text + " url=" + url + " imagePath=" + imagePath);
+                         if(platform.equals(Wechat.NAME) || platform.equals(WechatMoments.NAME) || platform.equals(WechatFavorite.NAME)){
+                                 if(url.length() > 0){
+                                         sp.setShareType(Platform.SHARE_WEBPAGE);
+                                 } else if(text.length() == 0 && imagePath.length() > 0){
+                                         sp.setShareType(Platform.SHARE_IMAGE);
+                                 }else {
+                                         sp.setShareType(Platform.SHARE_TEXT);
+                                 }
+                         } else if(platform.equals(SinaWeibo.NAME) && url.length() > 0){
+                                 sp.setText(text + url);
+                         }
+                         if(imagePath.length() > 0){
+                                 if(imagePath.indexOf("http") == 0){
+                                         sp.setImageUrl(imagePath);
+                                 } else {
+                                         sp.setImageUrl(imagePath);
+                                 }
+                         }
+                         final Platform pl = ShareSDK.getPlatform(platform);
 
-                    }
+                         if(platform.equals(SinaWeibo.NAME) && !pl.isAuthValid()){
 
-            });
+                                 pl.setPlatformActionListener(new PlatformActionListener() {
 
-	}
+                                         @Override
+                                         public void onError(Platform arg0, int arg1, Throwable arg2) {
+                                                 Log.d("KShareSdk", "PlatformAction error");
+                                                     arg2.printStackTrace();
+                                                 KShareSdk.onPlatformError(arg0.getName());
+                                         }
+
+                                         @Override
+                                         public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
+                                                 Log.d("KShareSdk", "PlatformAction auth complete now do share");
+
+                                                 KShareSdk.setHandler(pl);
+                                                 pl.share(sp);
+                                         }
+
+                                         @Override
+                                         public void onCancel(Platform arg0, int arg1) {
+                                                 Log.d("KShareSdk", "PlatformAction onCancel");
+                                                 KShareSdk.onPlatformCancel(arg0.getName());
+                                         }
+                                 });
+
+                                 pl.showUser(null);
+                         } else {
+                                 KShareSdk.setHandler(pl);
+                                 pl.share(sp);
+                         }
+
+
+                     }
+
+             });
+
+         }
 	
 	/**
 	 * 执行登录授权操作
@@ -126,7 +178,7 @@ public class KShareSdk {
 
                                     Platform pl = ShareSDK.getPlatform(platform);
                                     if(pl.isAuthValid()){
-                                            KShareSdk.handleAuth(pl);
+                                            KShareSdk.handleAuth(pl, "");
                                             return;
                                     }
                                     KShareSdk.setHandler(pl);
@@ -136,6 +188,15 @@ public class KShareSdk {
                         });
 
 	}
+
+        public static void doLoginout(final String platform)
+        {
+            Platform pl = ShareSDK.getPlatform(platform);
+            if(pl.isAuthValid()){
+                            pl.removeAccount(true);
+                    return;
+            }
+        }
 	
 	private static void setHandler(Platform pl)
 	{
@@ -144,24 +205,38 @@ public class KShareSdk {
 			@Override
 			public void onError(Platform arg0, int arg1, Throwable arg2) {
 				Log.d("KShareSdk", "PlatformAction error");	
+                                arg2.printStackTrace();
 				KShareSdk.onPlatformError(arg0.getName());
 			}
 			
 			@Override
 			public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
 				Log.d("KShareSdk", "PlatformAction complete");	
-				KShareSdk.handleAuth(arg0);
+				
+				KShareSdk.handleAuth(arg0, hashMapToJson(arg2));
 			}
 			
 			@Override
 			public void onCancel(Platform arg0, int arg1) {
-				Log.d("KShareSdk", "PlatformAction complete");	
+                                Log.d("KShareSdk", "PlatformAction onCancel");
 				KShareSdk.onPlatformCancel(arg0.getName());
 			}
 		});
 	}
 	
-	private static void handleAuth(Platform pl)
+	public static String hashMapToJson(HashMap<String, Object> map) {  
+        String string = "{";  
+        for (Iterator<?> it = map.entrySet().iterator(); it.hasNext();) {  
+            Entry<?, ?> e = (Entry<?, ?>) it.next();  
+            string += "'" + e.getKey() + "':";  
+            string += "'" + e.getValue() + "',";  
+        }  
+        string = string.substring(0, string.lastIndexOf(","));  
+        string += "}";  
+        return string;  
+    }  
+	
+	private static void handleAuth(Platform pl, String sourceData)
 	{
 		String userId = pl.getDb().getUserId();
 		String userName = pl.getDb().getUserName();
@@ -169,13 +244,14 @@ public class KShareSdk {
 		String token = pl.getDb().getToken();
 		String tokenSecret = pl.getDb().getTokenSecret();
 		long expiresTime = pl.getDb().getExpiresTime();
-		KShareSdk.onPlatformComplete(pl.getName(), userId, userName, userIcon, token, tokenSecret, expiresTime);		
+		
+		KShareSdk.onPlatformComplete(pl.getName(), userId, userName, userIcon, token, tokenSecret, expiresTime, sourceData);		
 	}
 	
 	//登录或分享失败回调 
 	public native static void onPlatformError(String platform);
 	//登录或分享成功回调 
-	public native static void onPlatformComplete(String platform,String userId, String userName, String userIcon, String token, String tokenSecret, long expiresTime);
+	public native static void onPlatformComplete(String platform,String userId, String userName, String userIcon, String token, String tokenSecret, long expiresTime, String sourceData);
 	//登录或分享取消回调 
 	public native static void onPlatformCancel(String platform);
 }

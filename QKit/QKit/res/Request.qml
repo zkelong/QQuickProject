@@ -4,6 +4,8 @@ pragma Singleton
 
 QtObject {
     id:root
+
+
     property Component httpCmp: Component{
         Http{
             id:http
@@ -37,6 +39,7 @@ QtObject {
         body: [可选]要发送的原始body字符串,如果设置将会忽略params和files
         files: [可选]要上传的文件，{name:path}，name对应字段名,path对应文件路径
         headers: [可选]要添加的header key,value对象
+        timeout: [可选] 请求超时时间 int
         stateChangeCallback: [可选]状态变化的回调 function(http)
         finishedCallback: [可选]请求完成后的回调 function(http)
       }
@@ -48,6 +51,7 @@ QtObject {
         var headers = null;
         var finishedCallback = null;
         var stateChangeCallback = null;
+        var timeout = 30;
 
         if(options){
             var t = typeof options;
@@ -60,6 +64,9 @@ QtObject {
                 params = options["params"];
                 body = options["body"];
                 files = options["files"];
+                if(options["timeout"]){
+                    timeout = options["timeout"];
+                }
             }
         }
 
@@ -74,6 +81,7 @@ QtObject {
         });
 
         http.open(method, url);
+        http.timeout = timeout;
 
         var k;
         if(headers){

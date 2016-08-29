@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import QtMultimedia 5.6
+import QKit 1.0
+import QAudio 1.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
 import "../../toolsbox/font.js" as FontUtl
@@ -12,7 +14,10 @@ View {
 
     property int typeSelect: 0  //选择类型: 0--Audio; 1--QAudio
     property real totalDuration: 0  //时长
-    property string sourcePath: "E:/QtSpace/QQuickProject/source/music.mp3" //此处字符串的反斜杠不认，双反斜杠也不认
+    property int playStatus: 0 //播放状态 0--等待，1--播放中，2--暂停
+    property int recordStatus: 0 //录音状态 0--等待，1--录音中，2--暂停，3--结束
+    property string sourcePath: Qt.platform === "android" ? FileTools.assetsUrl("/source/music.mp3") : "E:/QtSpace/QQuickProject/source/music.mp3" //此处字符串的反斜杠不认，双反斜杠也不认
+    property bool recordFinish: false
 
     NavigationBar {
         id: navbar
@@ -27,7 +32,7 @@ View {
         anchors.top: navbar.bottom
         anchors.bottom: parent.bottom
 
-        Item {
+        Item {  //展示
             id: item0
             width: parent.width
             height: parent.height * 0.66
@@ -35,7 +40,7 @@ View {
                 id: show_txt
                 anchors.centerIn: parent
                 font.pointSize: FontUtl.FontSizeMidE
-                text: "SHOW TEXT"
+                text: "Exist Source"
             }
 
             Text {
@@ -68,9 +73,12 @@ View {
                 MouseArea {
                     anchors.fill: parent
                     onClicked: {
-                        console.log("mouse....", mouseX, rect_bg.width)
                         var duration = (mouseX / rect_bg.width) * totalDuration
-                        seekTo(duration)
+                        if(typeSelect === 0) {  //qml
+                            player_q.seek(duration)
+                        } else {   //QMediaPlayer
+                            player_c.seek(duration)
+                        }
                     }
                 }
             }
@@ -86,7 +94,7 @@ View {
             }
         }
 
-        Item {
+        Item {  //类型选择
             width: parent.width
             anchors.top: item0.bottom
             anchors.bottom: parent.bottom
@@ -102,10 +110,11 @@ View {
                     width: Utl.dp(70)
                     height: Utl.dp(35)
                     radius: Utl.dp(4)
+                    enabled: playStatus !== 1 || typeSelect === 0
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     anchors.leftMargin: Utl.dp(40)
-                    label.color: typeSelect == 0 && enabled  ? Color.Blue : "#606060"
+                    label.color: typeSelect == 0 && enabled ? Color.Blue : "#606060"
                     label.text: "QML Audio"
                     onClicked: {
                         typeSelect = 0
@@ -116,10 +125,12 @@ View {
                     width: Utl.dp(70)
                     height: Utl.dp(35)
                     radius: Utl.dp(4)
+                    color: "red"
+                    enabled: playStatus !== 1 || typeSelect === 1
                     anchors.verticalCenter: btn_qml.verticalCenter
                     anchors.left: btn_qml.right
                     anchors.leftMargin: Utl.dp(20)
-                    label.color: typeSelect == 1 && enabled  ? Color.Blue : "#606060"
+                    label.color: typeSelect == 1 ? Color.Blue : "#606060"
                     label.text: "QAudio"
                     onClicked: {
                         typeSelect = 1
@@ -127,7 +138,7 @@ View {
                 }
             }
 
-            Item {
+            Item {  //播放控制
                 width: parent.width
                 anchors.top: item_model.bottom
                 anchors.bottom: parent.bottom
@@ -136,96 +147,164 @@ View {
                     id: btn_play_pause
                     width: Utl.dp(45)
                     height: Utl.dp(25)
+                    enabled: recordStatus !== 1 && recordStatus !==2 //不在录音中
                     anchors.top: parent.top
                     anchors.topMargin: Utl.dp(15)
                     anchors.left: parent.left
                     anchors.leftMargin: Utl.dp(60)
                     radius: Utl.dp(4)
-                    color: Color.GreenTheme
-                    label.text: "Play"
+                    color: enabled ? Color.GreenTheme : "#606060"
+                    label.text: playStatus === 1 ? "Pause" : "Play"
                     onClicked: {
-                        play()
+                        if(typeSelect === 0) {  //qml
+                            if(playStatus === 1) {
+                                player_q.pause()
+                            } else {
+                                player_q.play()
+                            }
+                        } else {    //QMediaPlayer
+                            if(playStatus === 1) {
+                                player_c.playPause()
+                            } else {
+                                player_c.play(sourcePath)
+                            }
+                        }
                     }
-                }
-                Button {
-                    id: btn_record_stop
-                    width: Utl.dp(45)
-                    height: Utl.dp(25)
-                    anchors.verticalCenter: btn_play_pause.verticalCenter
-                    anchors.left: btn_play_pause.right
-                    anchors.leftMargin: Utl.dp(15)
-                    radius: Utl.dp(4)
-                    color: Color.GreenTheme
-                    label.text: "Record"
-                    onClicked: {
 
+                    Button {
+                        id: btn_play_stop
+                        visible: playStatus !== 0
+                        width: btn_play_pause.width
+                        height: btn_play_pause.height
+                        anchors.top: btn_play_pause.bottom
+                        anchors.topMargin: Utl.dp(10)
+                        anchors.left: btn_play_pause.left
+                        radius: Utl.dp(4)
+                        color: Color.GreenTheme
+                        label.text: "Stop"
+                        onClicked: {
+                            if(typeSelect === 0) {  //qml
+                                player_q.stop()
+                            } else {    //QMediaPlayer
+                                player_c.playStop()
+                            }
+                        }
+                    }
+
+                    Button {
+                        id: btn_record_pause
+                        width: Utl.dp(45)
+                        height: Utl.dp(25)
+                        enabled: playStatus === 0
+                        anchors.verticalCenter: btn_play_pause.verticalCenter
+                        anchors.left: btn_play_pause.right
+                        anchors.leftMargin: Utl.dp(15)
+                        radius: Utl.dp(4)
+                        color: enabled ? Color.GreenTheme : "#606060"
+                        label.text: recordStatus === 0 ? "Record" : "Pause"
+                        onClicked: {
+                            if(recordStatus === 0) {    //录制
+                                player_c.record();
+                            } else {    //暂停
+                                player_c.recordPause();
+                            }
+                        }
+                    }
+
+                    Button {
+                        id: btn_record_stop
+                        visible: recordStatus !== 0
+                        width: Utl.dp(45)
+                        height: Utl.dp(25)
+                        anchors.verticalCenter: btn_play_pause.verticalCenter
+                        anchors.left: btn_play_pause.right
+                        anchors.leftMargin: Utl.dp(15)
+                        radius: Utl.dp(4)
+                        color: Color.GreenTheme
+                        label.text: "Stop"
+                        onClicked: {
+                            player_c.recordStop();
+                            recordFinish = true
+                        }
                     }
                 }
             }
         }
+
+        //QML类型，可以播放音频
+        Audio {
+            id: player_q
+            source: sourcePath
+            //autoLoad: false
+            //duration
+            //loops : int --Audio.Infinite
+            //position : int
+            onDurationChanged: {
+                if(duration > 0) {
+                    totalDuration = duration
+                    txt_time2.text = Tools.getTimeFormat(Math.floor(duration / 1000))
+                }
+            }
+            onPlaying: {
+                playStatus = 1
+            }
+            onPaused: {
+                playStatus = 3
+            }
+            onStopped: {
+                playStatus = 0
+                console.log("xxxxx", playStatus, btn_qaudio.enabled)
+            }
+            onError: {
+                playStatus = 0
+            }
+            onPositionChanged: {
+                txt_time1.text = Tools.getTimeFormat(Math.floor(position / 1000))
+                rect_progress.width = position / duration * rect_bg.width
+            }
+        }
     }
 
-    Audio {
-        id: player_q
-        source: sourcePath
-        //autoLoad: false
-        //duration
-        //loops : int --Audio.Infinite
-        //position : int
-        onDurationChanged: {
-            console.log("duration....", duration)
+    //C++QMediaPlayer
+    QAudio {
+        id: player_c
+        //播放
+        onPlayStateChanged: {
+            playStatus = state
+            if(recordFinish && state === 0)
+            {
+                sourcePath = "file:///" + getFilePath()
+            }
+
+            console.log("play state...", state)
+        }
+        onPlayErrored: {
+            playStatus = 0
+            console.log("error", error)
+        }
+        onPlayDurationChanged: {
+            console.log("duration...", duration)
             if(duration > 0) {
                 totalDuration = duration
                 txt_time2.text = Tools.getTimeFormat(Math.floor(duration / 1000))
             }
+            console.log("duration...", duration)
         }
-        onError: {
-            console.log("error...", error, errorString)
-        }
-        onPaused: {
-            console.log("pause....", duration)
-        }
-        onPlaying: {
-            console.log("playing....")
-        }
-        onStopped: {
-            //rect_progress.width = 0
-        }
-        onPositionChanged: {
+        onPlayPositionChanged: {
+            console.log("position...", position)
+
             txt_time1.text = Tools.getTimeFormat(Math.floor(position / 1000))
-            rect_progress.width = position / duration * rect_bg.width
+            rect_progress.width = position / totalDuration * rect_bg.width
         }
-    }
+        //录音
+        onRecordStateChanged: {
 
-
-    function play() {
-        console.log("has audio....", player_q.source, player_q.hasAudio, player_q.hasVideo,player_q.duration)
-        switch(typeSelect) {
-            case 0:
-                player_q.play()
-                break;
-            case 1:
-                break;
         }
-    }
+        onRecordErrored: {
 
-    function pause() {
-        switch(typeSelect) {
-            case 0:
-                player_q.pause()
-                break;
-            case 1:
-                break;
         }
-    }
+        onRecordDurationChanged: {
 
-    function seekTo(duration) {
-        switch(typeSelect) {
-            case 0:
-                player_q.seek(duration)
-                break;
-            case 1:
-                break;
         }
     }
 }

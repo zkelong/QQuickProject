@@ -26,7 +26,11 @@ public class KJPush {
 			
 			@Override
 			public void gotResult(int arg0, String arg1, Set<String> arg2) {
-				Log.d("JPush", "setAlias gotResult " + " status=" + arg0 + " alias=" + arg1 + " tags=" + arg2.toString());				
+                            if(arg2 != null){
+                                Log.d("JPush", "setAlias gotResult " + " status=" + arg0 + " alias=" + arg1 + " tags=" + arg2);
+                            } else {
+                                Log.d("JPush", "setAlias gotResult " + " status=" + arg0 + " alias=" + arg1);
+                            }
 			}
 		});
 	}

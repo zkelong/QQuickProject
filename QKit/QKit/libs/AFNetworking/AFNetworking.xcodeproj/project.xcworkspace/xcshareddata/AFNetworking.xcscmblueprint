@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "E701690B4B59B5807F79A9FED6F1E54C475AC3AE",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "1A368293DED172ABF2076E0AD167CFEA25AF39EE" : 0,
+    "E701690B4B59B5807F79A9FED6F1E54C475AC3AE" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "089A622C-97CB-49CE-BF99-6930B0DEA3DA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "1A368293DED172ABF2076E0AD167CFEA25AF39EE" : "",
+    "E701690B4B59B5807F79A9FED6F1E54C475AC3AE" : "QKit\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "AFNetworking",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "QKit\/libs\/AFNetworking\/AFNetworking.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/192.168.1.98:8080\/r\/app\/call-center.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1A368293DED172ABF2076E0AD167CFEA25AF39EE"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/192.168.1.98:8080\/r\/app\/QKit.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "E701690B4B59B5807F79A9FED6F1E54C475AC3AE"
+    }
+  ]
+}

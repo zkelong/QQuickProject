@@ -2,19 +2,28 @@
 #import "appdelegate_hook.h"
 #import <objc/runtime.h>
 #import <UIKit/UIKit.h>
-#import "APService.h"
+#import "JPUSHService.h"
 #import "JSONKit.h"
 #import <AlipaySDK/AlipaySDK.h>
+#import <ShareSDKInterfaceAdapter/ShareSDK+InterfaceAdapter.h>
 
 #include "application_state.h"
 #include "kalipaylistenner.h"
 #include <QJsonDocument>
 #include <QVariant>
+#import <CoreTelephony/CTCallCenter.h>
+#import <CoreTelephony/CTCall.h>
+
+#import "WXApiManager.h"
+
+#include "kphonestatelistener.h"
 
 
 extern void _emit_onReceiveNotification(const char* message, const char* extras);
+extern void phone_emit_state_changed(int state);
 
 static AppdelegateHook* s_appdelegate_hook = nil;
+static int64_t s_start_time = 0;
 NSDictionary* s_launchingOption = nil;
 
 static IMP handleOpenURL_imp = NULL;
@@ -69,6 +78,7 @@ IMP swizzleSelector(NSObject* obj, SEL sel)
         return;
     }
     s_is_init = YES;
+    s_start_time = (int64_t)[[NSDate new]timeIntervalSince1970];
 
     s_launchingOption = [[NSDictionary alloc]initWithDictionary:launchingOption];
     
@@ -79,6 +89,27 @@ IMP swizzleSelector(NSObject* obj, SEL sel)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    
+    CTCallCenter *callCenter = [[CTCallCenter alloc] init];
+
+    callCenter.callEventHandler=^(CTCall* call){
+
+        if (call.callState == CTCallStateDialing){
+            NSLog(@"Call Dialing");
+            phone_emit_state_changed(KPhoneStateListener::CALL_STATE_RINGING);
+        }
+        if (call.callState == CTCallStateConnected){
+            NSLog(@"Call Connected");
+            phone_emit_state_changed(KPhoneStateListener::CALL_STATE_OFFHOOK);
+        }
+        if (call.callState == CTCallStateDisconnected){
+            
+            NSLog(@"Call Disconnected");
+            phone_emit_state_changed(KPhoneStateListener::CALL_STATE_IDLE);
+
+        }
+
+    };
 
 }
 
@@ -131,6 +162,11 @@ IMP swizzleSelector(NSObject* obj, SEL sel)
 {
     NSLog(@"*************** handleOpenURL");
     BOOL ret = [ShareSDK handleOpenURL:url wxDelegate:self];
+    
+    if(!ret) {
+        ret = [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+    }
+    
     if (!ret) {
         //跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
@@ -153,6 +189,11 @@ IMP swizzleSelector(NSObject* obj, SEL sel)
 {
     NSLog(@"*************** openURL");
     BOOL ret = [ShareSDK handleOpenURL:url  sourceApplication:sourceApplication  annotation:annotation  wxDelegate:self];
+    
+    if(!ret) {
+        ret = [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+    }
+    
     if (!ret) {
         //跳转支付宝钱包进行支付，处理支付结果
         [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
@@ -173,7 +214,7 @@ IMP swizzleSelector(NSObject* obj, SEL sel)
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     NSLog(@"*************** didRegisterForRemoteNotificationsWithDeviceToken:%@", deviceToken);
-    [APService registerDeviceToken:deviceToken];
+    [JPUSHService registerDeviceToken:deviceToken];
     if (didRegisterForRemoteNotificationsWithDeviceToken_imp) {
         didRegisterForRemoteNotificationsWithDeviceToken_func func = (didRegisterForRemoteNotificationsWithDeviceToken_func)didRegisterForRemoteNotificationsWithDeviceToken_imp;
         func(application.delegate,@selector(application:didRegisterForRemoteNotificationsWithDeviceToken:),application,deviceToken);
@@ -188,7 +229,7 @@ IMP swizzleSelector(NSObject* obj, SEL sel)
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     NSLog(@"*************** didReceiveRemoteNotification: %@",userInfo);
-    [APService  handleRemoteNotification:userInfo];
+    [JPUSHService  handleRemoteNotification:userInfo];
     
     if (didReceiveRemoteNotification_imp) {
         didReceiveRemoteNotification_func func = (didReceiveRemoteNotification_func)didReceiveRemoteNotification_imp;
@@ -199,11 +240,19 @@ IMP swizzleSelector(NSObject* obj, SEL sel)
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
 {
     NSLog(@"*************** didReceiveRemoteNotification: %@",userInfo);
-    [APService handleRemoteNotification:userInfo];
-    NSMutableDictionary* extra = [NSMutableDictionary dictionaryWithDictionary:userInfo];
-    [extra removeObjectForKey:@"aps"];
-    NSString* content = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-    _emit_onReceiveNotification(content.UTF8String, extra.JSONString.UTF8String);
+    [JPUSHService handleRemoteNotification:userInfo];
+    
+    
+    /*
+     NSMutableDictionary* extra = [NSMutableDictionary dictionaryWithDictionary:userInfo];
+     [extra removeObjectForKey:@"aps"];
+     NSString* content = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    int64_t time = (int64_t)[[NSDate new]timeIntervalSince1970];
+    int dur = (int)(time - s_start_time);
+    if(s_start_time > 0 && dur > 3000){ //启动3秒的推送才发消息,防止crash
+        _emit_onReceiveNotification(content.UTF8String, extra.JSONString.UTF8String);
+    }
+    */
     
     if (didReceiveRemoteNotification_Fetch_imp) {
         didReceiveRemoteNotification_fetch_func func = (didReceiveRemoteNotification_fetch_func)didReceiveRemoteNotification_Fetch_imp;

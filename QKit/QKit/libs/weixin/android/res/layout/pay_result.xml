@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    style="@style/NavPage">
+
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_marginTop="30dp"
+        android:layout_width="116dp"
+        android:layout_height="102dp"
+        android:src="@drawable/wx_logo" />
+
+    
+    <TextView
+        android:id="@+id/wxResultTipText"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/pay_result_tip"
+        android:textColor="#ff000000"
+        android:textSize="20sp" />
+	
+</LinearLayout>

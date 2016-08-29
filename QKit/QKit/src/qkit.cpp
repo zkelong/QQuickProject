@@ -26,6 +26,15 @@
 #include "kevent.h"
 #include "kalipay.h"
 #include "kalipaylistenner.h"
+#include "kweixinpay.h"
+#include "kweixinpaylistenner.h"
+#include "ios/kAppStore.h"
+#include "ios/kAppStore_bridge.h"
+#include "kappstorelistenner.h"
+
+#ifdef Q_OS_IOS
+#include "http/khttp_iOS.h"
+#endif
 
 class QQuickImageBase : public QObject{
 public:
@@ -42,7 +51,7 @@ static QJSValue aProvider(QQmlEngine *engine, QJSEngine *scriptEngine)
     return value;
 }
 
-QKit::QKit(QObject *parent) : QObject(parent)
+QKit::QKit(QObject *parent) : QObject(parent), m_isTranslucentStatusBar(false)
 {
 
 }
@@ -65,6 +74,8 @@ void QKit::registerTypes(QQmlEngine *engine)
     engine->rootContext()->setContextProperty("ShareSDK", KShareSDK::instance());
     engine->rootContext()->setContextProperty("JPush", KJPush::instance());
     engine->rootContext()->setContextProperty("Alipay", KAlipay::instance());
+    engine->rootContext()->setContextProperty("AppStore", KAppStore::instance());
+    engine->rootContext()->setContextProperty("Weixinpay", KWeixinpay::instance());
     engine->addImageProvider(QLatin1String("picker"), new ImagePickerProvider());
 
     //qmlRegisterSingletonType("QKit", 1, 0, "K", aProvider);
@@ -80,7 +91,15 @@ void QKit::registerTypes(QQmlEngine *engine)
     qmlRegisterType<KKeyEvent>("QKit", 1, 0, "KKeyEvent");
     qmlRegisterType<KMouseEvent>("QKit", 1, 0, "KMouseEvent");
     qmlRegisterType<KAlipayListenner>("QKit", 1, 0, "AlipayListenner");
+    qmlRegisterType<KWeixinpayListenner>("QKit", 1, 0, "WeixinpayListenner");
+    qmlRegisterType<KAppStoreListenner>("QKit", 1, 0, "AppStoreListenner");
+    
+#ifdef Q_OS_IOS
+    KHttp_iOS::registerTypes();
+#else
     KHttp::registerTypes();
+#endif
+    
 }
 
 qreal QKit::dp(qreal pixel)
@@ -278,10 +297,81 @@ QString QKit::getAppVersionName()
     return "";
 }
 
+QString QKit::getAppVersionCode()
+{
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+    return bridge_getAppVersionCode();
+#endif
+    return "";
+}
+
+QString QKit::getMetaDataForKey(QString key)
+{
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+    return bridge_getMetaDataForKey(key);
+#endif
+    return "";
+}
+
 bool QKit::openUrl(QString url)
 {
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
     return bridge_openUrl(url);
 #endif
     return false;
+}
+
+void QKit::openSettings(QString name)
+{
+#if defined(Q_OS_ANDROID)
+    return bridge_openSettings(name);
+#endif
+}
+
+
+bool QKit::isIPV6Network()
+{
+    QList<QNetworkInterface> ifaces = QNetworkInterface::allInterfaces();
+    
+    bool ipdIsIPV6 = false;
+    bool en0IsIPV6 = false;
+    bool en0IsOpen = false;
+    for(auto i = ifaces.begin(); i != ifaces.end(); ++i){
+        auto fa = (*i);
+        if(fa.flags().testFlag(QNetworkInterface::InterfaceFlag::IsUp) && !fa.flags().testFlag(QNetworkInterface::InterfaceFlag::IsLoopBack)){
+            QList<QNetworkAddressEntry> ae = fa.addressEntries();
+            bool isEN0 = fa.name().indexOf("en0") != -1;
+            for (auto j = ae.begin(); j != ae.end(); ++j) {
+                QHostAddress ip = (*j).ip();
+                qDebug() << "fa.name() = "<< fa.name() << " ip="<< ip.toString();
+                bool isIPV6 = ip.protocol() == QAbstractSocket::IPv6Protocol;
+                if(isEN0){
+                    en0IsOpen = true;
+                    if(isIPV6 && ip.toString().lastIndexOf("%en0") == -1){
+                        en0IsIPV6 = true;
+                    }
+                } else if(fa.name().indexOf("pdp_ip") != -1){
+                    ipdIsIPV6 = isIPV6;
+                }
+            }
+        }
+    }
+    
+    if(en0IsOpen){
+        return en0IsIPV6;
+    }
+    
+    if(ipdIsIPV6){
+        return  true;
+    }
+    return false;
+}
+
+
+
+void QKit::setApplicationIconBadgeNumber(int val)
+{
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+    return set_application_icon_badge_number(val);
+#endif
 }

@@ -16,6 +16,7 @@ Rectangle {
     signal doneSelected(var selectedItems)
     signal cameraClicked();
 
+    property bool editing: false
     property bool multipleSelected: false //是否支持多选
     property alias navigationBar: topBar
     property bool showCameraBtn: false    //是否显示相机按钮
@@ -29,6 +30,7 @@ Rectangle {
     QtObject{
         id:pri
         property int __itemWidth: contentBox.width/4
+        property bool _done: false
     }
 
     Component.onCompleted: {
@@ -68,6 +70,17 @@ Rectangle {
             _model.append({src: path, ph: photoUrl, selected:false});
         }
 
+        onImageTook: {
+
+            if(path.length){
+                pri._done = true;
+                var new_path = FileTools.scaleImageAndSave(path, 1200*1000);
+                root.doneSelected( [ {preview:"file:///" + new_path, path:FileTools.readablePath(new_path)} ] );
+            } else {
+                root.doneSelected([]);
+            }
+
+        }
     }
 
     Component{
@@ -92,12 +105,18 @@ Rectangle {
                 }
 
                 onClicked: {
+                    if(pri._done) return;
+
                     if(ph === "CM"){
+
+                        fecther.takeImage(editing);
                         root.cameraClicked();
+
                         return;
                     }
 
                     if(!multipleSelected){
+                       pri._done = true;
                        root.doneSelected( [ {preview:src, path:FileTools.readablePath(ph)} ] );
                     } else {
                         selected = !selected;
@@ -112,27 +131,38 @@ Rectangle {
     Rectangle{
         id:topBar
         width: parent.width
-        height: K.isTranslucentStatusBar()?K.dp(60): K.dp(40)
+        height: {
+            if(K.isTranslucentStatusBar()) return K.dp(60);
+            if(Qt.platform.os === "android") return K.dp(55);
+            return K.dp(40);
+        }
+
         color: "#242424"
 
-        Item{
-            anchors.bottom: parent.bottom
+        Item {
+            id: space
+            height: K.isTranslucentStatusBar()?K.dp(20): 0
             width: parent.width
-            height: K.isTranslucentStatusBar() ? parent.height - K.dp(20) : parent.height
+        }
+
+        Item{
+            anchors.top: space.bottom
+            width: parent.width
+            height: parent.height - space.height
 
             Text{
                 id:_title
                 text:"图片库"
                 anchors.centerIn: parent
                 color:"white"
-                font.pointSize: FontDef.midD
+                font.pointSize: FontDef.midB
             }
 
             Button{
                 id:_cancelBtn
                 anchors.left: parent.left; anchors.leftMargin: K.dp(2)
                 anchors.verticalCenter: parent.verticalCenter
-                width: K.dp(60); height: K.dp(40)
+                width: K.dp(60); height: parent.height
                 text: qsTr("取消")
                 style: ButtonStyle{
                     background:Item{}
@@ -154,8 +184,9 @@ Rectangle {
                 id:_doneBtn
                 anchors.right: parent.right; anchors.rightMargin: K.dp(2)
                 anchors.verticalCenter: parent.verticalCenter
-                width: K.dp(60); height: K.dp(40)
+                width: K.dp(60); height: parent.height
                 text: qsTr("确定")
+                visible: multipleSelected;
                 style: ButtonStyle{
                     background:Item{}
                     label: Text{

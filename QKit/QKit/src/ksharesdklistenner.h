@@ -12,7 +12,7 @@ public:
 
 signals:
     void platformError(QString platform);
-    void platformComplete(QString platform, QString userId, QString userName, QString userIcon, QString token, QString tokenSecret, qreal expiresTime);
+    void platformComplete(QString platform, QString userId, QString userName, QString userIcon, QString token, QString tokenSecret, qreal expiresTime, QString sourceData);
     void platformCancel(QString platform);
 
 public slots:

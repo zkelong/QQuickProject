@@ -14,6 +14,12 @@ KJPush* KJPush::instance()
 
 void KJPush::init()
 {
+    static bool inited = false;
+    if (inited) {
+        return;
+    }
+    inited = true;
+    
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
     jpush_init();
 #endif

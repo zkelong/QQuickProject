@@ -38,6 +38,9 @@ public:
 
     //! Check if the field is valid (e.g. file exists)
     virtual bool validateVield() = 0;
+    
+    bool isInstancedFromQml() { return mInstancedFromQml; }
+    void setIsInstancedFromQml(bool v) { mInstancedFromQml = v; }
 
 public slots:
 

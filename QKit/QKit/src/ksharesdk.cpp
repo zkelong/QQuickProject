@@ -51,6 +51,13 @@ void KShareSDK::doLogin(QString platform,KShareSDKListenner* listenner)
 #endif
 }
 
+void KShareSDK::loginout(QString platform)
+{
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+    sharesdk_loginout(platform);
+#endif
+}
+
 void KShareSDK::connectSinaWeibo(QString appkey, QString appSecret, QString redirectUri, bool useSSO)
 {
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)

@@ -18,7 +18,8 @@ QtObject {
     }
 
 
-    function showImageTaker(callback){
+    function showImageTaker(callback, editing){
+        editing = editing || false;
         if(_taker){
             console.error("ImageTakerHelper.showImageTaker(): taker already created, please close it and retry!")
             return;
@@ -26,7 +27,8 @@ QtObject {
 
         var mainWindow = K.mainWindow();
         var ty = mainWindow.height;
-        _taker = Qt.createComponent("./ImageTaker.qml").createObject(mainWindow,{properties:{y:ty, visible:false}});
+        _taker = Qt.createComponent("./ImageTaker.qml").createObject(mainWindow,{properties:{y:ty, visible:false, editing:editing}});
+        _taker.editing = editing;
         _taker.doneSelected.connect(function(selectedItems){
             animation.from = 0;
             animation.to = ty;

@@ -3,6 +3,7 @@
 #include "khttpfieldvalue.h"
 #include "khttpfieldfile.h"
 #include "khttpdevice.h"
+#include "../bridge.h"
 
 bool canSendFile(QString mMethod){
     return (mMethod == "post" || mMethod == "put");
@@ -10,6 +11,7 @@ bool canSendFile(QString mMethod){
 
 KHttp::KHttp(QObject *parent) :
     QObject(parent),
+    m_timeout(0),
     mProgress(0.0),
     mState(Unsent),
     mPendingReply(NULL),
@@ -26,8 +28,11 @@ KHttp::~KHttp()
     if(mPendingReply) {
         mPendingReply->abort();
     }
+    //delete mNetworkAccessManager;
+    mNetworkAccessManager = nullptr;
     qDebug() << "KHttp released";
 }
+
 
 void KHttp::registerTypes()
 {
@@ -36,6 +41,7 @@ void KHttp::registerTypes()
     qmlRegisterType<KHttpFieldFile>("KHttp", 1, 0, "HttpFieldFile");
     qmlRegisterType<KHttp>("KHttp", 1, 0, "Http");
 }
+
 
 QUrl KHttp::url() const
 {
@@ -116,6 +122,7 @@ void KHttp::classBegin()
     } else {
         mNetworkAccessManager = engine->networkAccessManager();
     }
+//    mNetworkAccessManager = new QNetworkAccessManager();
 }
 
 
@@ -211,6 +218,14 @@ void KHttp::send()
     if( mState == Opened ) {
         bool hasContentType = (mRequest.hasRawHeader(QString("Content-type").toUtf8()) || mRequest.header(QNetworkRequest::ContentTypeHeader).isValid());
 
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+    QString user_agent = get_user_agent();
+
+    if(user_agent.length()){
+        mRequest.setHeader(QNetworkRequest::UserAgentHeader, user_agent);
+    }
+#endif
+
         if(mMethod == "post" || mMethod == "put"){
             QString contentType = mRequest.header(QNetworkRequest::ContentTypeHeader).toString();
             if(contentType.indexOf("application/x-www-form-urlencoded") >= 0 && mPostFields.length()){
@@ -248,7 +263,7 @@ void KHttp::send()
                     mRequest.setHeader(QNetworkRequest::ContentTypeHeader, ((KHttpDevice *)mUploadDevice)->contentType);
                 }
             }
-            mUploadDevice->open(QIODevice::ReadOnly);
+            mUploadDevice->open(QIODevice::ReadWrite);
             mRequest.setHeader(QNetworkRequest::ContentLengthHeader, mUploadDevice->size());
             mRequest.setUrl(mUrl);
             mPendingReply = mNetworkAccessManager->post(mRequest, mUploadDevice);
@@ -285,7 +300,7 @@ void KHttp::sendFile(const QString& fileName)
         QNetworkRequest request(mUrl);
 
         mUploadDevice = new QFile(fileName, this);
-        if(!mUploadDevice->open(QIODevice::ReadOnly)) {
+        if(!mUploadDevice->open(QIODevice::ReadWrite)) {
             mState = Done;
             mErrorString = mUploadDevice->errorString();
             delete mUploadDevice;

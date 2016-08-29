@@ -9,8 +9,8 @@ class ColorMaker : public QObject   //不加public，出现：QObject is an inaccesibl
     Q_OBJECT
     Q_ENUMS(GenerateAlgorithm)
 
-    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
-    Q_PROPERTY(QColor timeColor READ timeColor)
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)  //元系统，添加属性：color--可读；可写setColor;改变有信号colorChanged
+    Q_PROPERTY(QColor timeColor READ timeColor) //timerColor: 可读
 public:
     ColorMaker(QObject *parent = 0);
     ~ColorMaker();

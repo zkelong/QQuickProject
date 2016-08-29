@@ -78,6 +78,12 @@ void sharesdk_doShare(QString platform, QString title, QString text, QString url
  */
 void sharesdk_doLogin(QString platform,KShareSDKListenner* listenner = nullptr);
 
+/**
+ * 退出登录
+ * @param platform 平台名称
+ */
+void sharesdk_loginout(QString platform);
+
 
 #endif // KSHARESDK_BRIDGE_H
 

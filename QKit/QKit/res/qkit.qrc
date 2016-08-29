@@ -70,5 +70,7 @@
         <file>ShareSdkPlatform.qml</file>
         <file>ImageTakeHelper.qml</file>
         <file>ImageEditor.qml</file>
+        <file>InterceptImage.qml</file>
+        <file>drawable-xxhdpi/loading.png</file>
     </qresource>
 </RCC>

@@ -13,6 +13,7 @@ Rectangle {
     */
     signal doneSelected(var selectedItems)
 
+    property bool editing: false
     property bool multipleSelected: false //是否支持多选
     property Component pickerComponent: pickerCmp
     property ImagePicker picker: null
@@ -39,11 +40,20 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        var obj = pickerComponent.createObject(flip);
+
+        var obj = pickerComponent.createObject(flip, {properties:{editing:editing}});
         flip.front = obj;
         root.picker = obj;
-        obj.cameraClicked.connect(flip.showBack)
-        obj.doneSelected.connect(root.doneSelected)
+        //obj.cameraClicked.connect(flip.showBack)
+        obj.cameraClicked.connect(flip.cameraClick)
+        obj.doneSelected.connect(flip.takeDone)
+    }
+
+    onEditingChanged: {
+
+        if(root.picker){
+            root.picker.editing = editing;
+        }
     }
 
     Flipable{
@@ -57,9 +67,27 @@ Rectangle {
             isFront = true;
         }
 
+        function cameraClick() {
+            root.visible = false;
+        }
+
+        function takeDone(selectedItems) {
+            if(Qt.platform.os === "ios" && root.visible === false) {
+                root.doneSelected(selectedItems);
+                return;
+            }
+
+            if(editing && selectedItems && selectedItems.length === 1) {
+                root.visible = true;
+                interceptImage.createObject(root,{"source":"file:///" + selectedItems[0].path})
+            } else {
+                root.doneSelected(selectedItems);
+            }
+        }
+
         function showBack() {
             if(!root.capturer){
-                var obj = capturerCmp.createObject(flip);
+                var obj = capturerCmp.createObject(flip, {properties:{editing:editing}});
                 flip.back = obj;
                 root.capturer = obj;
             }
@@ -98,6 +126,16 @@ Rectangle {
             showPickerBtn: true
             onPickerClicked: {
                 flip.showFront();
+            }
+        }
+    }
+
+    Component{  //截图
+        id:interceptImage
+        InterceptImage{
+            id:item
+            onIsSave: {
+                root.doneSelected([{preview:"file:///" + path, path:path}]);
             }
         }
     }

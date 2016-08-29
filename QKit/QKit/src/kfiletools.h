@@ -24,6 +24,11 @@ public:
     // @param maxArea 最大的宽高乘积
     QImage scaleImage(QString path, int maxArea);
 
+    Q_INVOKABLE QString scaleImageAndSave(QString path, qreal maxArea);
+
+    //取指定路径的扩展名
+    Q_INVOKABLE QString getFileExtension(QString path);
+
     //将指定的特殊路径(iOS相册)转为可读取的路径
     Q_INVOKABLE QString readablePath(QString path);
 
@@ -34,6 +39,8 @@ public:
 
     //旋转图片
     Q_INVOKABLE QString rotateImage(QString path, qreal angle);
+
+    Q_INVOKABLE bool clipImageAndSave(QObject *image, qreal clipX, qreal clipY, qreal clipW, qreal clipH, QString path);
 
 signals:
 

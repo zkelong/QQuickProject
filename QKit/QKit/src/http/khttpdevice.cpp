@@ -3,7 +3,7 @@
 #include "khttpfieldvalue.h"
 #include "khttp.h"
 
-KHttpDevice::KHttpDevice(KHttp *http) : QIODevice(http), totalSize(0), ioIndex(0), lastIndex(0)
+KHttpDevice::KHttpDevice(QObject *http) : QIODevice(http), totalSize(0), ioIndex(0), lastIndex(0)
 {
     setup();
 }

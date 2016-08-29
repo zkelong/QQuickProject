@@ -13,10 +13,9 @@
 #import "WeiboSDK.h"
 //新浪微博SDK需要在项目Build Settings中的Other Linker Flags添加"-ObjC"
 
-//人人SDK头文件
-#import <RennSDK/RennSDK.h>
 
-#import <APOpenApi.h>
+
+#import <ShareSDKInterfaceAdapter/ShareSDK+InterfaceAdapter.h>
 
 #include <QObject>
 #include <QMap>
@@ -57,7 +56,7 @@ static NSDictionary* s_platforms = @{
                                      ,@"WhatsApp":@(ShareTypeWhatsApp)
                                      ,@"Pocket":@(ShareTypePocket)
                                      ,@"Instapaper":@(ShareTypeInstapaper)
-                                     ,@"Alipay":@(ShareTypeAliPaySocial)
+                                     ,@"Alipay":@(SSDKPlatformTypeAliPaySocial)
                                      };
 
 
@@ -72,6 +71,7 @@ NSString* platformNameByType(ShareType type)
             return key;
         }
     }
+    return nil;
 }
 
 void handler_platform_result(ShareType type,SSResponseState state, KShareSDKListenner* listenner)
@@ -88,7 +88,18 @@ void handler_platform_result(ShareType type,SSResponseState state, KShareSDKList
                     NSString* token = [[userInfo credential] token];
                     NSString* tokenSecret = [[userInfo credential] secret];
                     long long expired = [[userInfo credential] expired].timeIntervalSince1970;
-                    emit listenner->platformComplete(platformNameByType(type).UTF8String, uId.UTF8String, uName.UTF8String, uIcon.UTF8String, token.UTF8String, tokenSecret.UTF8String, expired);
+                    
+                    NSString *jsonString = nil;
+                    if (userInfo.sourceData) {
+                        @try {
+                            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:userInfo.sourceData options:0 error:nil];
+                            jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                        } @catch (NSException *exception) {
+                            NSLog(@"handler_platform_result error %@", exception);
+                        }
+                    }
+
+                    emit listenner->platformComplete(platformNameByType(type).UTF8String, uId.UTF8String, uName.UTF8String, uIcon.UTF8String, token.UTF8String, tokenSecret.UTF8String, expired, [jsonString UTF8String]);
                 } else {
                     emit listenner->platformError(platformNameByType(type).UTF8String);
                 }
@@ -211,11 +222,13 @@ void sharesdk_connectRenRen(QString appkey, QString appSecret)
 
 void sharesdk_connectRenRen(QString appId, QString appkey, QString appSecret)
 {
+    /*
     [ShareSDK connectRenRenWithAppId:appId.toNSString()
                               appKey:appkey.toNSString()
                            appSecret:appSecret.toNSString()
                    renrenClientClass:[RennClient class]];
     [s_default_platform_list addObject:getShareItemWithType(ShareTypeRenren)];
+     */
     
 }
 
@@ -307,15 +320,19 @@ void sharesdk_connectLine()
 void sharesdk_connectKakaoTalk(QString appkey)
 {
     Q_UNUSED(appkey);
+    /*
     [ShareSDK connectKaKaoTalk];
     [s_default_platform_list addObject:getShareItemWithType(ShareTypeKaKaoTalk)];
+     */
 }
 
 void sharesdk_connectKakaoStory(QString appkey)
 {
     Q_UNUSED(appkey);
+    /*
     [ShareSDK connectKaKaoStory];
     [s_default_platform_list addObject:getShareItemWithType(ShareTypeKaKaoStory)];
+     */
 }
 
 void sharesdk_connectWhatsApp()
@@ -339,8 +356,10 @@ void sharesdk_connectInstapaper(QString appkey, QString appSecret)
 
 void sharesdk_connectAlipay(QString appkey)
 {
+    /*
     [ShareSDK connectAliPaySocialWithAppID:appkey.toNSString() openApiCls:[APOpenAPI class] mediaMessageCls:[APMediaMessage class] shareTextObjectCls:[APShareTextObject class] shareImgObjectCls:[APShareImageObject class] shareWebObjectCls:[APShareWebObject class] sendMessageToAPReqCls:[APSendMessageToAPReq class]];
     [s_default_platform_list addObject:getShareItemWithType(ShareTypeAliPaySocial)];
+     */
 }
 
 void sharesdk_showShare(QString title, QString text, QString url, QString imagePath, bool showEdit, KShareSDKListenner* listenner)
@@ -366,6 +385,7 @@ void sharesdk_showShare(QString title, QString text, QString url, QString imageP
     
     id<ISSAuthOptions> authOptions = [ShareSDK authOptionsWithAutoAuth:YES allowCallback:YES authViewStyle:SSAuthViewStyleFullScreenPopup viewDelegate:nil authManagerViewDelegate:nil];
     [authOptions setPowerByHidden:YES];
+    
     
     NSMutableArray* list = [NSMutableArray arrayWithArray:s_default_platform_list];
     
@@ -423,28 +443,58 @@ void sharesdk_doShare(QString platform, QString title, QString text, QString url
 {
     
     id<ISSCAttachment> img = nil;
+    NSString *nurl = url.toNSString();
+    NSString *ntitle = title.toNSString();
+    
     if (imagePath.length()) {
-        if (imagePath.indexOf("http")) {
+        if (imagePath.indexOf("http") != -1) {
             img = [ShareSDK imageWithUrl:imagePath.toNSString()];
         } else {
             img = [ShareSDK imageWithPath:imagePath.toNSString()];
         }
     }
     
+    NSString *plt = platform.toNSString();
+    
+    ShareType tp = (ShareType)[s_platforms[plt] intValue];
+    SSPublishContentMediaType mt =  SSPublishContentMediaTypeNews;
+    
+    if (tp == ShareTypeSinaWeibo && url.length()) {
+        text += url;
+        nurl = nil;
+        mt =  SSPublishContentMediaTypeText;
+    }
+    
+    
+    if(text.length() == 0 && img){
+        mt = SSPublishContentMediaTypeImage;
+    }
+    
+    NSString *ntext = text.toNSString();
+    
+    NSLog(@"$$##$$ %@, %@, %@, %@", img, nurl, ntext, ntitle);
     
     //1、构造分享内容
-    id<ISSContent> publishContent = [ShareSDK content:text.toNSString()
-                                       defaultContent:nil
+    id<ISSContent> publishContent = [ShareSDK content:ntext
+                                       defaultContent:ntext
                                                 image:img
-                                                title: title.toNSString()
-                                                  url: url.toNSString()
-                                          description:text.toNSString()
-                                            mediaType:SSPublishContentMediaTypeNews];
+                                                title: ntitle
+                                                  url: nurl
+                                          description:ntext
+                                            mediaType:mt];
     
-    [ShareSDK shareContent:publishContent type:(ShareType)[s_platforms[platform.toNSString()] intValue] authOptions:nil shareOptions:nil statusBarTips:true  result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+    
+    [ShareSDK shareContent:publishContent type:tp authOptions:nil shareOptions:nil statusBarTips:true  result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
         Q_UNUSED(statusInfo)
-        Q_UNUSED(error)
         Q_UNUSED(end)
+
+        if(error && error.errorDescription){
+            NSLog(@"sharesdk_doShare error:%@", error.errorDescription);
+        } else if(tp == ShareTypeSinaWeibo && state == SSResponseStateSuccess){
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:NSLocalizedString(@"分享成功",@"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+            [alert release];
+        }
         handler_platform_result(type, state, listenner);
     }];
 }
@@ -452,4 +502,8 @@ void sharesdk_doShare(QString platform, QString title, QString text, QString url
 void sharesdk_doLogin(QString platform, KShareSDKListenner* listenner)
 {
     handler_platform_result((ShareType)[s_platforms[platform.toNSString()] intValue], SSResponseStateSuccess, listenner);
+}
+
+void sharesdk_loginout(QString platform) {
+    [ShareSDK cancelAuthorize:(SSDKPlatformType)[s_platforms[platform.toNSString()] intValue] ];
 }

@@ -8,38 +8,48 @@
 #include <QAudioRecorder>
 #include <QAudioEncoderSettings>
 
-class Audio: public QObject
+class Audio : public QObject
 {
     Q_OBJECT
 
-
-    enum state {
-        wait,
-        play,
-        playpause,
-        record,
-        recordpause
-    };
+    Q_PROPERTY(QString filePath READ getFilePath)
 
 public:
     Audio();
-    ~Audio(){}
-//    Q_INVOKABLE void record();
-//    Q_INVOKABLE void play(QString filePath);
-//    Q_INVOKABLE void pause();
-//    Q_INVOKABLE void stop();
-//    //·µ»ØÂ¼ÒôµØÖ·
-//    Q_INVOKABLE QString getFilePath();
+    ~Audio();
+    //²¥·Å
+    Q_INVOKABLE void play(QString filePath);
+    Q_INVOKABLE void playPause();
+    Q_INVOKABLE void playStop();
+    Q_INVOKABLE void seek(qint64 position);
+    //Â¼Òô
+    Q_INVOKABLE void record();
+    Q_INVOKABLE void recordPause();
+    Q_INVOKABLE void recordStop();
 
+    QString getFilePath();
 
 private:
-//    QMediaPlayer * player;
-//    QMediaRecorder * recorder;
+    void checkPlayInitial();
+    void checkRecordInitial();
+    void recordSetting();
+    QMediaPlayer *m_player;
+    QAudioRecorder *m_recorder;
+    QAudioEncoderSettings m_recorderSettings;
+    QString m_container;
+    QString m_filePath;
+
 
 signals:
-//    void onDurationChanged(qint64 duration);
-
-
+    //²¥·Å
+    void playStateChanged(QMediaPlayer::State state);
+    void playErrored(QMediaPlayer::Error error);
+    void playDurationChanged(qint64 duration);
+    void playPositionChanged(qint64 position);
+    //Â¼Òô
+    void recordStateChanged(QAudioRecorder::State state);
+    void recordErrored(QAudioRecorder::Error error);
+    void recordDurationChanged(qint64 duration);
 };
 
 #endif // AUDIO_H

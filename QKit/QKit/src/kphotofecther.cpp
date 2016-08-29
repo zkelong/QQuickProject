@@ -3,6 +3,7 @@
 #include <QImage>
 #include "kdir.h"
 #include "qkit.h"
+#include "bridge.h"
 
 
 #include "file_tools.h"
@@ -39,6 +40,8 @@ void KPhotoFecther::photoGroups()
     emit this->photoGroupCallback(new PhotoGroup(".", root)); //当前目录
 
 #ifdef Q_OS_ANDROID
+    return;
+    /*
     QString a_path = android_getStandardPicturePath();
     emit this->photoGroupCallback(new PhotoGroup(".", a_path)); //相册主目录
     QDir a_dir(a_path);
@@ -47,7 +50,7 @@ void KPhotoFecther::photoGroups()
         if((*it).at(0) != '.'){
             emit this->photoGroupCallback(new PhotoGroup(*it, root + "/" + *it));
         }
-    }
+    }*/
 #endif
 
     QDir dir(root);
@@ -68,6 +71,21 @@ void KPhotoFecther::photosWithGroupUrl(QString url)
         emit this->photoCallback(url);
     };
     ios_photosWithGroupUrl(url, callback);
+#elif defined(Q_OS_ANDROID)
+    Q_UNUSED(url);
+
+    extern QStringList bridge_getLocalImages();
+    auto list = bridge_getLocalImages();
+    for (auto it = list.begin(); it != list.end(); ++it) {
+
+        QString p = *it;
+        if(p.startsWith("thumb//")){
+            continue;
+        }
+
+        emit this->photoCallback(p);
+    }
+    emit this->photoCallback("");
 #else
     KDir dir(url);
     QStringList dirs = dir.entryList(KDir::Files);
@@ -77,6 +95,17 @@ void KPhotoFecther::photosWithGroupUrl(QString url)
     emit this->photoCallback("");
 #endif
     
+}
+
+void KPhotoFecther::takeImage(bool editing)
+{
+#ifdef Q_OS_ANDROID
+    TakeImageCallback callback = [this](QString path){
+        emit this->imageTook(path);
+    };
+
+    take_image(editing, callback);
+#endif
 }
 
 

@@ -1,18 +1,16 @@
 package qkit;
 
-import java.util.List;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ActivityManager;
-import android.app.ActivityManager.RunningTaskInfo;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
+import android.widget.TextView;
 import cn.jpush.android.api.JPushInterface;
 
 
@@ -51,43 +49,15 @@ public class PushReceiver extends BroadcastReceiver {
                 if(extras.length() > 0){
                         JSONObject jsonObj = new JSONObject(extras);
                         if(jsonObj.getBoolean("isCall")){
-                                String packageName = context.getPackageName();
-                        Intent intent1 = context.getPackageManager().getLaunchIntentForPackage(packageName);
-                        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-                        List<RunningTaskInfo> task_info = manager.getRunningTasks(20);
-                        String className = "";
-                        for (int i = 0; i < task_info.size(); i++)
-                        {
-                                 if (packageName.equals(task_info.get(i).topActivity.getPackageName()))
-                                 {
-                                          className = task_info.get(i).topActivity.getClassName();
-                                          //这里是指从后台返回到前台  前两个的是关键
-                                           intent1.setAction(Intent.ACTION_MAIN);
-                                           intent1.addCategory(Intent.CATEGORY_LAUNCHER);
-                                           try {
-                                                   intent1.setComponent(new ComponentName(context, Class.forName(className)));
-                                           } catch (ClassNotFoundException e) {
-                                               e.printStackTrace();
-                                           }//
-                                           intent1.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                                           context.startActivity(intent1);
-                                           processCustomMessage(context, bundle);
-                                           KJPush.clearAllNotifications();
-                                           return;
-                                }
-                       }
-                       Intent intent2 = context.getPackageManager().getLaunchIntentForPackage(packageName);
-                       context.startActivity(intent2);
-                       processCustomMessage(context, bundle);
-                       KJPush.clearAllNotifications();
-                       return;
+                        	KActivity.becomeToFront(context);
+                        	processCustomMessage(context, bundle); 
+                            return;
                         }
                 }
-
-                        } catch (JSONException e1) {
-                                // TODO Auto-generated catch block
-                                e1.printStackTrace();
-                        }
+            } catch (JSONException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+            }
 
             processCustomMessage(context, bundle);
 
