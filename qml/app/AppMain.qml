@@ -61,6 +61,10 @@ View {
         id: asy
         ASysMain{}
     }
+    Component {
+        id: qc
+        UseCInQml{}
+    }
 
     ListModel {
         id: _model
@@ -68,12 +72,19 @@ View {
             lid: 1
             strName: "AndroidSystem"
         }
+        ListElement {
+            lid: 2
+            strName: "QML-USE-C"
+        }
     }
 
     function toNext(id) {
         switch(id) {
         case 1:
             root.navigationView.push(asy)
+            break;
+        case 2:
+            root.navigationView.push(qc)
             break;
         }
     }

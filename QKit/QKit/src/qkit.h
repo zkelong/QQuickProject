@@ -50,6 +50,9 @@ public:
 
     //是否使用扬声器播放
     Q_INVOKABLE bool isSpeaker();
+
+    //是否插入了耳机
+    Q_INVOKABLE bool isHeadsetOpen();
     
     //ios 设置状态栏样式
     Q_INVOKABLE void iOS_setStatusBarStye(int stye);

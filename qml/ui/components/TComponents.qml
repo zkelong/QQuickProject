@@ -81,6 +81,14 @@ View {
         id: tfl
         TFlipable{}
     }
+    Component {
+        id: gp
+        TGridPage{}
+    }
+    Component {
+        id: pg
+        TPageView{}
+    }
 
     ListModel {
         id: _model
@@ -108,6 +116,14 @@ View {
             lid: 6
             strName: "Flipable"
         }
+        ListElement {
+            lid: 7
+            strName: "GridPage"
+        }
+        ListElement {
+            lid: 8
+            strName: "PageView"
+        }
     }
 
     function toNext(id) {
@@ -129,6 +145,12 @@ View {
             break;
         case 6:
             root.navigationView.push(tfl)
+            break;
+        case 7:
+            root.navigationView.push(gp)
+            break;
+        case 8:
+            root.navigationView.push(pg)
             break;
         }
     }

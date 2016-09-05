@@ -234,6 +234,15 @@ bool QKit::isSpeaker()
     return true;
 }
 
+bool QKit::isHeadsetOpen()
+{
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+    return is_headset_open();
+#endif
+
+    return true;
+}
+
 void QKit::iOS_setStatusBarStye(int stye)
 {
 #ifdef Q_OS_IOS

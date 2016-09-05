@@ -6,17 +6,26 @@
 #include "qkit.h"
 #include "kfiletools.h"
 
+static bool s_speaker_is_open = true;
+
 QString bridge_get_uuid()
 {
     NSString *adId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
     return adId.UTF8String;
 }
 
+bool _get_speaker_is_open()
+{
+    return s_speaker_is_open;
+}
+
 
 void set_speaker(bool value)
 {
+    s_speaker_is_open = value;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.001 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         AVAudioSession *session = [AVAudioSession sharedInstance];
+[session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
         if(value){
             //[session setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
             [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
@@ -26,8 +35,7 @@ void set_speaker(bool value)
         }
         
         NSError *activeSetError = nil;
-        [[AVAudioSession sharedInstance] setActive:YES
-                          error:&activeSetError];
+        [[AVAudioSession sharedInstance] setActive:YES  error:&activeSetError];
         
         if (activeSetError) {
             NSLog(@"Error activating AVAudioSession: %@", activeSetError);
@@ -87,7 +95,7 @@ QString get_user_agent()
         return s_agent;
     }
 
-    UIWebView *web = [[UIWebView alloc]initWithFrame:CGRectZero];
+    UIWebView *web = [[[UIWebView alloc]initWithFrame:CGRectZero] autorelease];
     NSString *agent = [web stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
     s_agent = agent.UTF8String;
     return s_agent;
@@ -107,4 +115,15 @@ void take_image(bool editing, TakeImageCallback callback)
     } cancelBlock:^{
         callback("");
     }];
+}
+
+
+bool is_headset_open()
+{
+    AVAudioSessionRouteDescription* route = [[AVAudioSession sharedInstance] currentRoute];
+    for (AVAudioSessionPortDescription* desc in [route outputs]) {
+        if ([[desc portType] isEqualToString:AVAudioSessionPortHeadphones])
+            return true;
+    }
+    return false;
 }

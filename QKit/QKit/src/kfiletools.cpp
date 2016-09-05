@@ -72,30 +72,17 @@ QString KFileTools::scaleImageAndSave(QString path, qreal maxArea)
     QImageReader reader(path);
     if(!reader.canRead())
         return path;
-    /*
-    QImage img = reader.read();
-    if(img.isNull())
-        return path;
-
-    int64_t originArea = (int64_t)img.width()*img.height();
-    float scale = float(maxArea/originArea);
-    if(scale >= 1)
-        return path;
-    qDebug() << "#####" << img.width() << " " << img.height() << " " << scale << " " <<maxArea <<" " << originArea;
-    int sw = int(img.width()*scale);
-    int sh = int(img.height()*scale);
-    qDebug() << "#####" << sw << " " << sh;
-    img = img.scaled(sw, sh);
-
-    path =  QKit::instance()->runTimeCachePath() + "/" + QKit::instance()->randString(8) + getFileExtension(path);
-    img.save(path);
-    */
 
     auto sz = reader.size();
     int64_t originArea = (int64_t)sz.width()*sz.height();
     float scale = float(maxArea/originArea);
-    if(scale >= 1)
+    if(scale >= 1){
+        if(getFileExtension(path).toLower() != ".jpg"){
+            path =  QKit::instance()->runTimeCachePath() + "/" + QKit::instance()->randString(8) + ".jpg";
+            reader.read().save(path, "JPG", 90);
+        }
         return path;
+    }
     qDebug() << "##### originArea:" << originArea << " maxArea:" << maxArea << " scale:" << scale ;
 
     scale = sqrtf(scale);
@@ -111,8 +98,10 @@ QString KFileTools::scaleImageAndSave(QString path, qreal maxArea)
     if(img.isNull())
         return path;
 
-    path =  QKit::instance()->runTimeCachePath() + "/" + QKit::instance()->randString(8) + getFileExtension(path);
-    img.save(path);
+    //path =  QKit::instance()->runTimeCachePath() + "/" + QKit::instance()->randString(8) + getFileExtension(path);
+    //img.save(path);
+    path =  QKit::instance()->runTimeCachePath() + "/" + QKit::instance()->randString(8) + ".jpg";
+    img.save(path, "JPG", 90);
     return path;
 }
 

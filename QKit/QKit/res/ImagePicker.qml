@@ -74,7 +74,7 @@ Rectangle {
 
             if(path.length){
                 pri._done = true;
-                var new_path = FileTools.scaleImageAndSave(path, 1200*1000);
+                var new_path = path; //FileTools.scaleImageAndSave(path, 1200*1000);
                 root.doneSelected( [ {preview:"file:///" + new_path, path:FileTools.readablePath(new_path)} ] );
             } else {
                 root.doneSelected([]);

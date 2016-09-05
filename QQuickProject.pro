@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     class/colormaker.cpp \
     class/callnativecamera.cpp \
     class/callnativecamera_p.cpp \
-    class/audio.cpp
+    class/audio.cpp \
+    class/qcameratest.cpp
 
 
 RESOURCES += \
@@ -43,7 +44,8 @@ HEADERS += \
     class/colormaker.h \
     class/callnativecamera.h \
     class/callnativecamera_p.h \
-    class/audio.h
+    class/audio.h \
+    class/qcameratest.h
 
 OTHER_FILES += *.qml \
     qml/* \

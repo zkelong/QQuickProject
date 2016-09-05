@@ -1,7 +1,7 @@
 package com.superlink.dada.wxapi;
 
 
-import com.superlink.dada.R;
+//import com.superlink.dada.R;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -31,7 +31,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pay_result);
+        //setContentView(R.layout.pay_result);
         if(api == null){
             api = WXAPIFactory.createWXAPI(this, s_weixinAppId);
         }
@@ -105,11 +105,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 //            builder.setTitle("微信支付");
 //            builder.setMessage(String.valueOf(resp.errCode));
 //            builder.show();
-            TextView tx = (TextView)this.findViewById(R.id.wxResultTipText);
+            //TextView tx = (TextView)this.findViewById(R.id.wxResultTipText);
             if(resp.errCode == 0) {
-                tx.setText("支付成功");
+                //tx.setText("支付成功");
             } else {
-                tx.setText("支付失败:" + String.valueOf(resp.errCode));
+                //tx.setText("支付失败:" + String.valueOf(resp.errCode));
             }
 
             onPayResult(resp.errCode);

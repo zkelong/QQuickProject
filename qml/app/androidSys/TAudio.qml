@@ -16,7 +16,7 @@ View {
     property real totalDuration: 0  //时长
     property int playStatus: 0 //播放状态 0--等待，1--播放中，2--暂停
     property int recordStatus: 0 //录音状态 0--等待，1--录音中，2--暂停，3--结束
-    property string sourcePath: Qt.platform === "android" ? FileTools.assetsUrl("/source/music.mp3") : "E:/QtSpace/QQuickProject/source/music.mp3" //此处字符串的反斜杠不认，双反斜杠也不认
+    property string sourcePath: Qt.platform === "android" ? FileTools.assetsUrl("source/music.mp3") : "E:/QtSpace/QQuickProject/source/music.mp3" //此处字符串的反斜杠不认，双反斜杠也不认
     property bool recordFinish: false
 
     NavigationBar {
@@ -257,6 +257,7 @@ View {
             }
             onError: {
                 playStatus = 0
+                console.log("Audio...Error..", error, errorString)
             }
             onPositionChanged: {
                 txt_time1.text = Tools.getTimeFormat(Math.floor(position / 1000))

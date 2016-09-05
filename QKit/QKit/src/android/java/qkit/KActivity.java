@@ -5,11 +5,14 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import qkit.KNative;
 import android.view.WindowManager;
 import android.os.Build;
@@ -42,12 +45,16 @@ public class KActivity extends org.qtproject.qt5.android.bindings.QtActivity {
     private static final int PHOTO_ZOOM = 2; // 缩放
     private static final int PHOTO_RESOULT = 3;// 结果
     private static String image_path;
+    private static boolean is_headset = false; //是否插入了耳机
+    static boolean old_speark_state = false; //插入拔耳机之前的扬声器状态
 
     public static KActivity s_activity;
 
     private static int currVolume = 0;
 
     private static boolean translucentStatusBar = false;
+    
+    HeadsetPlugReceiver headsetPlugReceiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +67,28 @@ public class KActivity extends org.qtproject.qt5.android.bindings.QtActivity {
             s_activity = this;
             setVolumeControlStream(AudioManager.STREAM_MUSIC);
             createPhoneListener();
+            
+            
+            this.registerHeadsetPlugReceiver();
+            
+            new Handler().postDelayed(new Runnable(){    
+                public void run() {    
+                	old_speark_state = KActivity.isSpeaker();
+                    AudioManager localAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);  
+                    is_headset = localAudioManager.isWiredHeadsetOn();
+                    if(is_headset){
+                    	KActivity.closeSpeaker();
+                    }
+                }    
+             }, 5000);
     }
+    
+    private void registerHeadsetPlugReceiver(){  
+        headsetPlugReceiver  = new HeadsetPlugReceiver ();  
+        IntentFilter  filter = new IntentFilter();  
+        filter.addAction("android.intent.action.HEADSET_PLUG");  
+        registerReceiver(headsetPlugReceiver, filter);  
+    } 
 
     @TargetApi(19)
     private void setStatusBarStatus(){
@@ -89,6 +117,7 @@ public class KActivity extends org.qtproject.qt5.android.bindings.QtActivity {
     public void onDestroy() {
             super.onDestroy();
             KNative.onDestroy();
+            this.unregisterReceiver(headsetPlugReceiver);
     }
 
 
@@ -145,6 +174,10 @@ public class KActivity extends org.qtproject.qt5.android.bindings.QtActivity {
 
     @SuppressWarnings("deprecation")
     static public void openSpeaker() {
+    	if(is_headset){
+    		old_speark_state = true;
+    		return;
+    	}
         s_activity.runOnUiThread(new Runnable()
             {
                     public void run()
@@ -163,6 +196,7 @@ public class KActivity extends org.qtproject.qt5.android.bindings.QtActivity {
                                     audioManager.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL ),
                                     AudioManager.STREAM_VOICE_CALL);
                             }
+                           old_speark_state = true;
                        } catch (Exception e) {
                            e.printStackTrace();
                        }
@@ -187,6 +221,7 @@ public class KActivity extends org.qtproject.qt5.android.bindings.QtActivity {
                                                 AudioManager.STREAM_VOICE_CALL);
                                    }
                                 }
+                               old_speark_state = false;
                             } catch (Exception e) {
                                e.printStackTrace();
                             }
@@ -433,6 +468,60 @@ public class KActivity extends org.qtproject.qt5.android.bindings.QtActivity {
        }
        Intent intent2 = context.getPackageManager().getLaunchIntentForPackage(packageName);
        context.startActivity(intent2);
+    }
+    
+    //是否插入了耳机
+    public static boolean isHeadsetOn()
+    {
+    	return is_headset;
+    }
+    
+    
+    private class HeadsetPlugReceiver extends BroadcastReceiver {  
+    	  
+        @Override  
+        public void onReceive(Context context, Intent intent) {  
+            // TODO Auto-generated method stub  
+              
+                if(intent.hasExtra("state")){  
+                    if(intent.getIntExtra("state", 0) == 0 ){//耳机拔出
+                    	is_headset = false;
+                         if(old_speark_state){
+                        	 KActivity.openSpeaker();
+                         } 
+                    }  
+                    else if(intent.getIntExtra("state", 0) == 1){//耳机插入
+                    	is_headset = true;
+                    	try {
+                            AudioManager audioManager = (AudioManager) s_activity.getSystemService(Context.AUDIO_SERVICE);
+                           if(audioManager != null) {
+                               if(audioManager.isSpeakerphoneOn()) {
+                                 audioManager.setSpeakerphoneOn(false);
+                                 audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL,currVolume,
+                                            AudioManager.STREAM_VOICE_CALL);
+                               }
+                            }
+                        } catch (Exception e) {
+                           e.printStackTrace();
+                        }
+                    }  
+                }  
+        }  
+      
+    }
+
+    public static void openUrl(final String url){
+        s_activity.runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Intent intent = new Intent();
+                    intent.setAction("android.intent.action.VIEW");
+                    Uri content_url = Uri.parse(url);
+                    intent.setData(content_url);
+                    s_activity.startActivity(intent);
+                }
+        });
     }
 }
 

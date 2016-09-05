@@ -138,7 +138,7 @@ void Audio::checkRecordInitial()
 
 void Audio::recordSetting()
 {
-    QStringList inputs = m_recorder->audioInput();
+    QStringList inputs = m_recorder->audioInputs();
     if(inputs.size() == 0){ //音频输入列表，设备列表？
         return;
     }
@@ -186,7 +186,7 @@ void Audio::recordSetting()
     m_recorderSettings.setQuality(QMultimedia::NormalQuality);
     m_recorderSettings.setBitRate(16000);
     m_recorderSettings.setEncodingMode(QMultimedia::AverageBitRateEncoding);
-    m_recorder.setEncodingSettings(m_recorderSettings,
+    m_recorder->setEncodingSettings(m_recorderSettings,
                                    QVideoEncoderSettings(),
                                    m_container
                                    );

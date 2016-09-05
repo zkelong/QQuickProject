@@ -103,7 +103,6 @@ void KPhotoFecther::takeImage(bool editing)
     TakeImageCallback callback = [this](QString path){
         emit this->imageTook(path);
     };
-
     take_image(editing, callback);
 #endif
 }

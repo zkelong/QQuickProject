@@ -17,6 +17,9 @@ void set_speaker(bool value);
 //是否使用的扬声器
 bool is_speaker();
 
+//是否插入了耳机
+bool is_headset_open();
+
 void setStatusBarStye(int stye);
 
 void android_enableTranslucentStatusBar();

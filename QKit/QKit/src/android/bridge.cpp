@@ -56,10 +56,15 @@ void set_speaker(bool value)
 //是否使用的扬声器
 bool is_speaker()
 {
-    jboolean  ret = QAndroidJniObject::callStaticMethod<jboolean>("qkit.KActivity","isSpeaker","()Ljava/lang/String;");
+    jboolean  ret = QAndroidJniObject::callStaticMethod<jboolean>("qkit.KActivity","isSpeaker","()Z");
     return ret;
 }
 
+bool is_headset_open()
+{
+    jboolean  ret = QAndroidJniObject::callStaticMethod<jboolean>("qkit.KActivity","isHeadsetOn","()Z");
+    return ret;
+}
 
 void android_enableTranslucentStatusBar()
 {
@@ -91,7 +96,12 @@ QString bridge_getMetaDataForKey(QString key)
 
 bool bridge_openUrl(QString url)
 {
-    return false;
+    QAndroidJniObject jurl = QAndroidJniObject::fromString(url);
+    QAndroidJniObject::callStaticMethod<void>("qkit.KActivity",
+                                              "openUrl",
+                                              "(Ljava/lang/String;)V",
+                                              jurl.object<jstring>());
+    return true;
 }
 
 

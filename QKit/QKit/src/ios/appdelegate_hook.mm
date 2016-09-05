@@ -13,6 +13,7 @@
 #include <QVariant>
 #import <CoreTelephony/CTCallCenter.h>
 #import <CoreTelephony/CTCall.h>
+#import <AVFoundation/AVFoundation.h>
 
 #import "WXApiManager.h"
 
@@ -21,6 +22,10 @@
 
 extern void _emit_onReceiveNotification(const char* message, const char* extras);
 extern void phone_emit_state_changed(int state);
+
+extern void set_speaker(bool value);
+extern bool is_headset_open();
+bool _get_speaker_is_open();
 
 static AppdelegateHook* s_appdelegate_hook = nil;
 static int64_t s_start_time = 0;
@@ -32,6 +37,8 @@ static IMP didRegisterForRemoteNotificationsWithDeviceToken_imp = NULL;
 static IMP didFailToRegisterForRemoteNotificationsWithError_imp = NULL;
 static IMP didReceiveRemoteNotification_imp = NULL;
 static IMP didReceiveRemoteNotification_Fetch_imp = NULL;
+
+static bool is_headset = false;
 
 typedef BOOL(*handleOpenURL_func)(id,SEL,UIApplication*,NSURL*);
 typedef BOOL(*openURL_func)(id,SEL,UIApplication*,NSURL*,NSString *,id);
@@ -110,7 +117,10 @@ IMP swizzleSelector(NSObject* obj, SEL sel)
         }
 
     };
-
+    
+    
+    AudioSessionInitialize (NULL, NULL, NULL, NULL);
+    AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,audioRouteChangeListenerCallback,self);
 }
 
 
@@ -128,6 +138,44 @@ IMP swizzleSelector(NSObject* obj, SEL sel)
     didReceiveRemoteNotification_imp = swizzleSelector(delegate, @selector(application:didReceiveRemoteNotification:));
     didReceiveRemoteNotification_Fetch_imp = swizzleSelector(delegate, @selector(application:didReceiveRemoteNotification:fetchCompletionHandler:));
     
+}
+
+
+void audioRouteChangeListenerCallback (
+                                       void                      *inUserData,
+                                       AudioSessionPropertyID    inPropertyID,
+                                       UInt32                    inPropertyValueS,
+                                       const void                *inPropertyValue
+                                       ) {
+    
+    UInt32 propertySize = sizeof(CFStringRef);
+    AudioSessionInitialize(NULL, NULL, NULL, NULL);
+    CFStringRef state = nil;
+    
+    //获取音频路线
+    AudioSessionGetProperty(kAudioSessionProperty_AudioRoute
+                            ,&propertySize,&state);//kAudioSessionProperty_AudioRoute：音频路线
+    NSLog(@"%@",(NSString *)state);//Headphone 耳机  Speaker 喇叭.
+    if ([(NSString*)state hasPrefix:@"Head"]) {
+        if(is_headset) return;
+        
+        is_headset = true;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
+        });
+        
+        
+    } else {
+        if(!is_headset) return;
+        
+        is_headset = false;
+        if (_get_speaker_is_open()) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
+            });
+            
+        }
+    }
 }
 
 
