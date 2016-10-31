@@ -31,7 +31,7 @@ Window {
         initialItem: Component{
             MainEg{
             }
-            //MainTest{}
+//            MainTest{}
         }
     }
 

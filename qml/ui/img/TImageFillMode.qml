@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
@@ -7,6 +7,7 @@ import "../../toolsbox/color.js" as Color
 
 View {
     id: root
+    hidenTabbarWhenPush: true
 
     property string source1: "qrc:/res/x.png"
     property string source2: "qrc:/res/h1.jpg"

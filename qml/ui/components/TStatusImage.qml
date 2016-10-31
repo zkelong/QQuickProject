@@ -1,10 +1,11 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
 import "../../toolsbox/font.js" as FontUtl
 
 View {
     id: root
+    hidenTabbarWhenPush: true
 
     property int cellHeight: Utl.dp(50)
 

@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import QtQuick.Controls 1.3
 import "../../controls"
 import "../../toolsbox/config.js" as Config
@@ -7,7 +7,7 @@ import "../../toolsbox/color.js" as Color
 
 View {
     id: root
-    hidenTabbarWhenPush: false
+    hidenTabbarWhenPush: true
 
     property string marqueeStr: qsTr("滚动展示，轮播不停。。。滚动展示，轮播不停。。。11");
     property int rollTextMarginLeft: 0

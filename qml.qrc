@@ -154,5 +154,8 @@
         <file>qml/ui/components/TGridPage.qml</file>
         <file>qml/ui/components/TPageView.qml</file>
         <file>qml/app/UseCInQml.qml</file>
+        <file>qml/controls/ProgressBar.qml</file>
+        <file>qml/ui/components/TTreeView.qml</file>
+        <file>qml/ui/components/TTreeViewT.qml</file>
     </qresource>
 </RCC>

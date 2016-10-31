@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
 import "../../toolsbox/font.js" as FontUtl
@@ -59,6 +59,10 @@ View {
     Component {
         id: ts
         TStates{}
+    }    
+    Component {
+        id: tr
+        TRotation{}
     }
 
     ListModel {
@@ -69,7 +73,7 @@ View {
         }
 
         ListElement {
-            lid: 1
+            lid: 2
             strName: "Rotation"
         }
     }
@@ -80,7 +84,7 @@ View {
             root.navigationView.push(ts)
             break;
         case 2:
-//            root.navigationView.push(ts)
+            root.navigationView.push(tr)
             break;
         case 3:
 //            root.navigationView.push(tt)

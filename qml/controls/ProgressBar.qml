@@ -1,8 +1,6 @@
 import QtQuick 2.0
 import "../toolsbox/color.js" as Color
 
-//调节进度，返回数字
-
 Rectangle {
     id: bar_bg
     height: Utl.dp(8)
@@ -16,12 +14,10 @@ Rectangle {
 
     MouseArea {
         height: parent.height > Utl.dp(9) ? parent.height : Utl.dp(10)
-        width: parent.width
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         onClicked: {
-            console.log("pro....", mouseX, bar_bg.width)
-            progress = (mouseX - bar_bg.width/2) / (bar_bg.width/2)
+            progress = mouseX / bar_bg.width
         }
     }
 
@@ -36,14 +32,14 @@ Rectangle {
 
     Rectangle {
         id: _rect
-        x: (progress * bar_bg.width/2 + bar_bg.width/2) - _rect.width/2
+        x: progress * bar_bg.width - _rect.width / 2
         height: parent.height * 2
         width: height
         anchors.verticalCenter: parent.verticalCenter
         radius: height/2
         color: "white"
         onXChanged: {
-            bar_bg.progress = (x + width/2 - bar_bg.width/2) / (bar_bg.width/2)
+            progress = (x + width/2) / bar_bg.width
         }
         MouseArea {
             anchors.fill: parent
@@ -52,10 +48,6 @@ Rectangle {
             drag.axis: Drag.XAxis
             drag.minimumX: -_rect.width / 2
             drag.maximumX: bar_bg.width - _rect.width / 2
-            onDoubleClicked: {
-                bar_bg.progress = 0
-            }
         }
     }
 }
-

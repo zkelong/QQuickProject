@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
 import "../../toolsbox/font.js" as FontUtl
@@ -8,7 +8,7 @@ View {
     id: root
     hidenTabbarWhenPush: true
 
-    property int cellHight: Utl.dp(100)
+    property int cellHight: Utl.dp(60)
 
     NavigationBar {
         id: navbar
@@ -148,6 +148,30 @@ View {
                     font.pointSize: FontUtl.FontSizeSmallA
                     text: "See the Qt Project website."
                     onLinkActivated:  Qt.openUrlExternally("qrc:/ui/properties/TStates.qml")
+                }
+            }
+            Item {
+                width: parent.width
+                height: cellHight
+                Text {
+                    width: parent.width - Utl.dp(18)
+                    anchors.centerIn: parent
+                    wrapMode: Text.WrapAnywhere
+                    font.pointSize: FontUtl.FontSizeSmallA
+                    color: "black"
+                    text: "Text " + "<font color='#aa2356'>" + "HTML" + "</font>" + qsTr("样式")
+                }
+            }
+            Item {
+                width: parent.width
+                height: cellHight
+                Text {
+                    width: parent.width - Utl.dp(18)
+                    anchors.centerIn: parent
+                    wrapMode: Text.WrapAnywhere
+                    font.pointSize: FontUtl.FontSizeSmallA
+                    color: "black"
+                    text: "Text Rich" + "<img width='" + Utl.dp(30)+"' height='"+Utl.dp(28)+"' src='"+ "qrc:/res/a2.jpg" +"'>" + qsTr("图片")
                 }
             }
         }

@@ -8,7 +8,7 @@ import "../../toolsbox/color.js" as Color
 //图像处理HueSaturation
 View {
     id: root
-    hidenTabbarWhenPush: false
+    hidenTabbarWhenPush: true
 
     NavigationBar {
         id: navbar
@@ -19,7 +19,7 @@ View {
     }
     Image {
         id: img
-        width: parent.width * 0.95
+        width: parent.width * 0.7
         height: width*1.5
         source: Config.wallpaperUrl[0]
         anchors.centerIn: parent

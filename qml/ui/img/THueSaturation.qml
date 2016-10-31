@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
@@ -8,6 +8,7 @@ import "../../toolsbox/color.js" as Color
 //图像处理HueSaturation
 View {
     id: root
+    hidenTabbarWhenPush: true
 
     NavigationBar {
         id: navbar
@@ -43,88 +44,76 @@ View {
         }
     }
 
-
-
     Column {
         id: _column
         width: parent.width
         height: childrenRect.y + childrenRect.height
-        anchors.left:parent.left
-        anchors.leftMargin: Utl.dp(10)
         anchors.top: _item.bottom
         spacing: Utl.dp(4)
 
         //色调
         Text {
+            anchors.left:parent.left
+            anchors.leftMargin: Utl.dp(10)
             font.pointSize: FontUtl.FontSizeSmallE
-            text: qsTr("色调(-1.0~1.0 default(0.0)):")
+            text: qsTr("色调(-1.0~1.0 default(0.0)): ") + bar1.progress
         }
-        Rectangle {
-            height: Utl.dp(18)
-            width: Utl.dp(80)
-            border.width: Utl.dp(1)
-            TextInput {
-                id: txt_hur
-                anchors.fill: parent
-                anchors.margins: Utl.dp(3)
-                verticalAlignment: TextInput.AlignVCenter
+        AdjustableScrollBar {
+            id: bar1
+            width: parent.width - Utl.dp(40)
+            anchors.horizontalCenter: parent.horizontalCenter
+            onProgressChanged: {
+                _hue.hue = progress
             }
         }
-
 
         //饱和度
         Text {
+            anchors.left:parent.left
+            anchors.leftMargin: Utl.dp(10)
             font.pointSize: FontUtl.FontSizeSmallE
-            text: qsTr("饱和度(-1.0~1.0 default(0.0)):")
+            text: qsTr("饱和度(-1.0~1.0 default(0.0)): ") + bar2.progress
         }
-        Rectangle {
-            height: Utl.dp(18)
-            width: Utl.dp(80)
-            border.width: Utl.dp(1)
-            TextInput {
-                id: txt_saturation
-                anchors.fill: parent
-                anchors.margins: Utl.dp(3)
-                verticalAlignment: TextInput.AlignVCenter
-            }
-        }
-        //亮度
-        Text {
-            font.pointSize: FontUtl.FontSizeSmallE
-            text: qsTr("亮度(-1.0~1.0 default(0.0)):")
-        }
-        Rectangle {
-            height: Utl.dp(18)
-            width: Utl.dp(80)
-            border.width: Utl.dp(1)
-            TextInput {
-                id: txt_lightness
-                anchors.fill: parent
-                anchors.margins: Utl.dp(3)
-                verticalAlignment: TextInput.AlignVCenter
+        AdjustableScrollBar {
+            id: bar2
+            width: parent.width - Utl.dp(40)
+            anchors.horizontalCenter: parent.horizontalCenter
+            onProgressChanged: {
+                _hue.saturation = progress
             }
         }
 
-        Button {
-            height: Utl.dp(18)
-            width: Utl.dp(50)
-            color: Color.ButtonColor
-            label.text: qsTr("确定")
-            onClicked: {
-                if(txt_hur.text.trim() != "" && !isNaN(txt_hur.text))
-                    _hue.hue = txt_hur.text
-                if(txt_saturation.text.trim() != "" && !isNaN(txt_saturation.text))
-                    _hue.saturation = txt_saturation.text
-                if(txt_lightness.text.trim() != "" && !isNaN(txt_lightness.text))
-                    _hue.lightness = txt_lightness.text
+        //亮度
+        Text {
+            anchors.left:parent.left
+            anchors.leftMargin: Utl.dp(10)
+            font.pointSize: FontUtl.FontSizeSmallE
+            text: qsTr("亮度(-1.0~1.0 default(0.0)): ") + bar3.progress
+        }
+        AdjustableScrollBar {
+            id: bar3
+            width: parent.width - Utl.dp(40)
+            anchors.horizontalCenter: parent.horizontalCenter
+            onProgressChanged: {
+                _hue.lightness = progress
             }
         }
     }
 
-
-    AdjustableScrollBar {
+    Text {
+        anchors.bottom: pb.top
+        anchors.topMargin: Utl.dp(5)
+        anchors.left:parent.left
+        anchors.leftMargin: Utl.dp(10)
+        font.pointSize: FontUtl.FontSizeSmallE
+        text: qsTr("进度条：") + pb.progress
+    }
+    ProgressBar {
+        id: pb
+        width: parent.width - Utl.dp(40)
+        anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: _column.bottom
-        width: Utl.dp(250)
+        anchors.topMargin: Utl.dp(40)
     }
 }
 

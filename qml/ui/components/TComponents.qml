@@ -89,6 +89,14 @@ View {
         id: pg
         TPageView{}
     }
+    Component {
+        id: tv
+        TTreeView{}
+    }
+    Component {
+        id: tvt
+        TTreeViewT{}
+    }
 
     ListModel {
         id: _model
@@ -124,6 +132,14 @@ View {
             lid: 8
             strName: "PageView"
         }
+        ListElement {
+            lid: 9
+            strName: "TreeView"
+        }
+        ListElement {
+            lid: 10
+            strName: "TreeViewT"
+        }
     }
 
     function toNext(id) {
@@ -151,6 +167,12 @@ View {
             break;
         case 8:
             root.navigationView.push(pg)
+            break;
+        case 9:
+            root.navigationView.push(tv)
+            break;
+        case 10:
+            root.navigationView.push(tvt)
             break;
         }
     }

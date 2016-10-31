@@ -1,11 +1,13 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import QtQuick.Controls 1.3
 
-import "../controls"
-import "../net"
+import "../../controls"
+import "../../toolsbox/config.js" as Config
+import "../../toolsbox/font.js" as FontUtl
 
 View {
     id: root
+    hidenTabbarWhenPush: true
 
     property var currentItem: rect1
 
@@ -220,10 +222,10 @@ View {
         }
     }
 
-    TitleBar {
-        id: titleBar
-        anchors.top: parent.top; anchors.left: parent.left
-        onClicked: {
+    NavigationBar {
+        id: navbar
+        title: "RaderMarry"
+        onButtonClicked: {
             root.navigationView.pop()
         }
     }

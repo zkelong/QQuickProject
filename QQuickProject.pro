@@ -89,7 +89,8 @@ DISTFILES += \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
+    android/gradlew.bat \
+    qml/ui/components/TTreeView.qml
     source/music.mp3
     source/videoviewdemo.mp4
 

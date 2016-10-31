@@ -2,6 +2,9 @@ import QtQuick 2.0
 
 Flickable {
      id: flick
+
+     property alias cursorPosition: edit.cursorPosition
+     property alias text: edit.text
      property alias textEdit: edit
      property alias inputFocus: edit.focus
 
