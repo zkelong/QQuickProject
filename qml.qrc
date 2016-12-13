@@ -157,5 +157,8 @@
         <file>qml/controls/ProgressBar.qml</file>
         <file>qml/ui/components/TTreeView.qml</file>
         <file>qml/ui/components/TTreeViewT.qml</file>
+        <file>qml/ui/qmlcomponents/TDelegateModel.qml</file>
+        <file>qml/ui/img/TFastBlur.qml</file>
+        <file>qml/controls/FuzzyPanel.qml</file>
     </qresource>
 </RCC>

@@ -101,6 +101,7 @@ View {
     }
 
     Text {
+        id: text
         anchors.bottom: pb.top
         anchors.topMargin: Utl.dp(5)
         anchors.left:parent.left
@@ -112,8 +113,8 @@ View {
         id: pb
         width: parent.width - Utl.dp(40)
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: _column.bottom
-        anchors.topMargin: Utl.dp(40)
+        anchors.top: text.bottom
+        anchors.topMargin: Utl.dp(14)
     }
 }
 

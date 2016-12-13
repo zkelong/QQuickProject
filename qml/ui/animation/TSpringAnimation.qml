@@ -1,4 +1,4 @@
-import QtQuick 2.4
+﻿import QtQuick 2.4
 import "../../controls"
 import "../../toolsbox/config.js" as Config
 import "../../toolsbox/font.js" as FontUtl
@@ -12,7 +12,7 @@ View {
 
     NavigationBar {
         id: navbar
-        title: "S/PlAnimation"
+        title: "SpringAnimation"
         onButtonClicked: {
             root.navigationView.pop()
         }

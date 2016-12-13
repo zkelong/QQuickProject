@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
 import "../../toolsbox/font.js" as FontUtl
@@ -73,6 +73,10 @@ View {
         id: mir
         TImageMirro{}
     }
+    Component {
+        id: tfast
+        TFastBlur{}
+    }
 
     ListModel {
         id: _model
@@ -87,10 +91,14 @@ View {
         ListElement {
             lid: 3
             strName: "HueSaturation"
-        }        
+        }
         ListElement {
             lid: 4
             strName: "Mirro"
+        }
+        ListElement {
+            lid: 5
+            strName: "FastBlur"
         }
     }
 
@@ -107,6 +115,9 @@ View {
             break;
         case 4:
             root.navigationView.push(mir)
+            break;
+        case 5:
+            root.navigationView.push(tfast)
             break;
         }
     }

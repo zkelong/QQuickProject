@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import "../toolsbox/color.js" as Color
 
 //调节进度，返回数字
@@ -20,7 +20,6 @@ Rectangle {
         anchors.left: parent.left
         anchors.verticalCenter: parent.verticalCenter
         onClicked: {
-            console.log("pro....", mouseX, bar_bg.width)
             progress = (mouseX - bar_bg.width/2) / (bar_bg.width/2)
         }
     }

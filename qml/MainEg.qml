@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import "controls"
 import "app"
 import "ui"
@@ -111,4 +111,20 @@ View {
 }
 
 
+*/
+
+
+/*
+listView的切换动画，放大，缩小效果
+时间滚轮
+瀑布流
+
+*/
+
+/*
+Qt Creator 例子：
+1.mapViewer //地图
+2.same game //游戏
+3.Bluetooth QML Chat Example //蓝牙
+4.Extending QML--Adding Types Example   //qml用c++定义的类，c++读取qml添加的类
 */

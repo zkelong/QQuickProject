@@ -1,4 +1,4 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import "../controls"
 import "./animation"
 import "./img"
@@ -107,6 +107,11 @@ View {
         id: edit
         EditMain{}
     }
+    Component {
+        id: tdel
+        TDelegateModel{}
+    }
+
     Component{
         id: canvas
         CanvasMain{}
@@ -155,6 +160,10 @@ View {
             strName: "Canvas"
         }
         ListElement {
+            lid: 11
+            strName: "DelegateModel"
+        }
+        ListElement {
             lid: 99
             strName: "MyCase"
         }
@@ -191,6 +200,9 @@ View {
             break;
         case 10:
             root.navigationView.push(canvas)
+            break;
+        case 11:
+            root.navigationView.push(tdel)
             break;
         case 99:
             root.navigationView.push(mc)

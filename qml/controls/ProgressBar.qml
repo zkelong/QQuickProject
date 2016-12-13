@@ -1,20 +1,20 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import "../toolsbox/color.js" as Color
 
 Rectangle {
     id: bar_bg
-    height: Utl.dp(8)
+    height: Utl.dp(10)
     radius: height/2
     border.color: "black"
     color: "#545454"
 
     property string pColor: Color.GreenTheme
-
     property real progress: 0
 
     MouseArea {
         height: parent.height > Utl.dp(9) ? parent.height : Utl.dp(10)
         anchors.left: parent.left
+        anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
         onClicked: {
             progress = mouseX / bar_bg.width

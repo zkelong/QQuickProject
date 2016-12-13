@@ -1,11 +1,10 @@
-import QtQuick 2.0
+﻿import QtQuick 2.0
 import QtGraphicalEffects 1.0
 import "../../controls"
 import "../../toolsbox/config.js" as Config
 import "../../toolsbox/font.js" as FontUtl
 import "../../toolsbox/color.js" as Color
 
-//图像处理HueSaturation
 View {
     id: root
     hidenTabbarWhenPush: true
@@ -19,8 +18,8 @@ View {
     }
     Image {
         id: img
-        width: parent.width * 0.7
-        height: width*1.5
+        height: (parent.height - navbar.height)*.85
+        width: height/1.5
         source: Config.wallpaperUrl[0]
         anchors.centerIn: parent
     }
